@@ -172,6 +172,7 @@ class _LoginPageState extends State<LoginPage> {
                           MaterialPageRoute(
                               builder: (context) => DashboardPageUser()),
                         );
+                        //login(context);
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: AppColor.loginF,

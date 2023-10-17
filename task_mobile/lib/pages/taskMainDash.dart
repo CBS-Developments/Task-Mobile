@@ -1,36 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:task_mobile/dashboards/dashadmin.dart';
+import 'package:task_mobile/dashboards/dashUser.dart';
 
 import '../methods/sizes.dart';
-import '../pages/taskMainDash.dart';
 
-class DashboardPageUser extends StatefulWidget {
+class TaskMainDashboard extends StatefulWidget {
   final List<String> containerTexts = [
-    'Tasks',
-    'Email',
-    'Chat',
-    'Calendar',
+    'Taxation',
+    'Talent Management',
+    'Finance & Accounting',
+    'Audit & Assurance',
+    'Company Secretarial',
+    'Developments',
   ];
 
-  final List<String> imagePaths = [
-    'images/task.png',
-    'images/email.png',
-    'images/chat.png',
-    'images/cal.png',
-  ];
 
-  DashboardPageUser({Key? key}) : super(key: key);
+  TaskMainDashboard({Key? key}) : super(key: key);
 
   @override
-  State<DashboardPageUser> createState() => _DashboardPageUserState();
+  State<TaskMainDashboard> createState() => _TaskMainDashboardState();
 }
 
-class _DashboardPageUserState extends State<DashboardPageUser> {
+class _TaskMainDashboardState extends State<TaskMainDashboard> {
+
   void _handleContainer0Pressed(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => TaskMainDashboard()),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => TaskMainDashboard()),
+    // );
   }
 
   void _handleContainer1Pressed(BuildContext context) {
@@ -42,6 +38,14 @@ class _DashboardPageUserState extends State<DashboardPageUser> {
   }
 
   void _handleContainer3Pressed(BuildContext context) {
+    // Add your code for handling the fourth container button press here.
+  }
+
+  void _handleContainer4Pressed(BuildContext context) {
+    // Add your code for handling the fourth container button press here.
+  }
+
+  void _handleContainer5Pressed(BuildContext context) {
     // Add your code for handling the fourth container button press here.
   }
 
@@ -63,6 +67,12 @@ class _DashboardPageUserState extends State<DashboardPageUser> {
             case 3:
               _handleContainer3Pressed(context);
               break;
+            case 4:
+              _handleContainer4Pressed(context);
+              break;
+            case 5:
+              _handleContainer5Pressed(context);
+              break;
           }
         },
         shape: RoundedRectangleBorder(
@@ -74,22 +84,16 @@ class _DashboardPageUserState extends State<DashboardPageUser> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              widget.imagePaths[index],
-              width: 130.0,
-              height: 100.0,
-            ),
-            const SizedBox(height: 10.0),
             Text(
               widget.containerTexts[index],
-              style: const TextStyle(fontSize: 14.0),
+              style: const TextStyle(fontSize: 16.0),
             ),
           ],
         ),
       ),
     );
-  }
 
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,31 +112,33 @@ class _DashboardPageUserState extends State<DashboardPageUser> {
                   children: [
                     Row(
                       children: [
-                        IconButton(onPressed: () {}, icon: const Icon(Icons.menu_rounded)),
-                        const SizedBox(width: 60),
+                        IconButton(onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => DashboardPageUser()),
+                          );
+                        }, icon: const Icon(Icons.arrow_back_rounded)),
+                        const SizedBox(width: 10),
                         const Text(
-                          'Workspace',
+                          'Tasks',
                           style: TextStyle(
-                            fontSize: 25,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Colors.deepPurple,
+                            color: Colors.black,
                           ),
                         ),
                       ],
                     ),
+
                     const SizedBox(
-                      height: 10,
-                    ),
-                    const Divider(),
-                    const SizedBox(
-                      height: 30,
+                      height: 40,
                     ),
                     Container(
                       padding: const EdgeInsets.all(5.0),
                       child: GridView.count(
                         crossAxisCount: 2,
                         shrinkWrap: true,
-                        children: List.generate(4, (index) {
+                        children: List.generate(6, (index) {
                           return _buildContainer(index, context);
                         }),
                       ),
@@ -145,5 +151,4 @@ class _DashboardPageUserState extends State<DashboardPageUser> {
         ],
       ),
     );
-  }
-}
+  }}

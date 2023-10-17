@@ -25,7 +25,7 @@ class DashMain extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Show a loading indicator while fetching user_role
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           // Handle error if there's an issue fetching user_role
           return Text('Error: ${snapshot.error}');
@@ -39,7 +39,7 @@ class DashMain extends StatelessWidget {
 
           } else if (userRole == 1) {
             print('user_role: $userRole'); // Print user_role
-            return DashboardPageAdmin(); // Navigate to PageTwo
+            return const DashboardPageAdmin(); // Navigate to PageTwo
           } else {
             return Text('Invalid user_role'); // Handle other cases
           }
