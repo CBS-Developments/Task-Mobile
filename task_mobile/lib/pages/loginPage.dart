@@ -5,9 +5,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_mobile/components/textField.dart';
 import 'package:task_mobile/methods/sizes.dart';
 import 'package:http/http.dart' as http;
-import 'package:task_mobile/pages/dashMain.dart';
+import 'package:task_mobile/dashboards/dashMain.dart';
 
 import '../components/test.dart';
+import '../dashboards/dashUser.dart';
 import '../methods/colors.dart';
 import 'createAccount.dart';
 
@@ -166,7 +167,11 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: ElevatedButton(
                       onPressed: () {
-                        login(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DashboardPageUser()),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: AppColor.loginF,

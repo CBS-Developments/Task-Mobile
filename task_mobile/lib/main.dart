@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:task_mobile/pages/dashMain.dart';
+import 'package:task_mobile/dashboards/dashMain.dart';
 import 'package:task_mobile/pages/loginPage.dart';
 
 void main() async {
