@@ -26,7 +26,7 @@ class TextFieldLogin extends StatelessWidget {
       margin: EdgeInsets.all(2),
       color: Colors.white60,
       width: 300,
-      height: 80,
+      height: 92,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
