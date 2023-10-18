@@ -1,0 +1,356 @@
+import 'dart:convert';
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:task_mobile/methods/colors.dart';
+import 'package:task_mobile/pages/mainTaskList.dart';
+
+import '../components/test.dart';
+import 'package:http/http.dart' as http;
+
+import '../methods/sizes.dart';
+
+class CreateMainTask extends StatefulWidget {
+  final String username;
+  final String firstName;
+  final String lastName;
+
+  const CreateMainTask({Key? key, required this.username, required this.firstName, required this.lastName}) : super(key: key);
+
+  @override
+  State<CreateMainTask> createState() => _CreateMainTaskState();
+}
+
+class _CreateMainTaskState extends State<CreateMainTask> {
+
+
+  String getCurrentDateTime() {
+    final now = DateTime.now();
+    final formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+    return formattedDate;
+  }
+
+  String getCurrentDate() {
+    final now = DateTime.now();
+    final formattedDate = DateFormat('yyyy-MM-dd').format(now);
+    return formattedDate;
+  }
+
+  String getCurrentMonth() {
+    final now = DateTime.now();
+    final formattedDate = DateFormat('yy-MM').format(now);
+    return formattedDate;
+  }
+
+  String generatedTaskId() {
+    final random = Random();
+    int min = 1;                  // Smallest 9-digit number
+    int max = 999999999;          // Largest 9-digit number
+    int randomNumber = min + random.nextInt(max - min + 1);
+    return randomNumber.toString().padLeft(9, '0');
+  }
+
+
+
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+
+
+  Future<void> createMainTask(
+      BuildContext context, {
+        required beneficiary,
+        required priority,
+        required due_date,
+        required sourceFrom,
+        required assignTo,
+        required categoryName,
+        required category,
+      }) async {
+    // Validate input fields
+    if (titleController.text.trim().isEmpty ||
+        descriptionController.text.isEmpty) {
+      // Show an error message if any of the required fields are empty
+      snackBar(context, "Please fill in all required fields", Colors.red);
+      return;
+    }
+
+    // Other validation logic can be added here
+    // If all validations pass, proceed with the registration
+    var url = "http://dev.workspace.cbs.lk/mainTaskCreate.php";
+
+    String firstLetterFirstName = widget.firstName.isNotEmpty ? widget.firstName[0] : '';
+    String firstLetterLastName = widget.lastName.isNotEmpty ? widget.lastName[0] : '';
+    String geCategory = categoryName.substring(categoryName.length - 3);
+    String taskID = getCurrentMonth() + firstLetterFirstName + firstLetterLastName + geCategory + generatedTaskId();
+
+
+    var data = {
+      "task_id": taskID,
+      "task_title":  titleController.text,
+      "task_type": '0',
+      "task_type_name": priority,
+      "due_date": due_date,
+      "task_description": descriptionController.text,
+      "task_create_by_id": widget.username,
+      "task_create_by": '${widget.firstName} ${widget.lastName}',
+      "task_create_date": getCurrentDate(),
+      "task_create_month": getCurrentMonth(),
+      "task_created_timestamp": getCurrentDateTime(),
+      "task_status": "0",
+      "task_status_name": "Pending",
+      "task_reopen_by": "",
+      "task_reopen_by_id": "",
+      "task_reopen_date": "",
+      "task_reopen_timestamp": "0",
+      "task_finished_by": "",
+      "task_finished_by_id": "",
+      "task_finished_by_date": "",
+      "task_finished_by_timestamp": "0",
+      "task_edit_by": "",
+      "task_edit_by_id": "",
+      "task_edit_by_date": "",
+      "task_edit_by_timestamp": "0",
+      "task_delete_by": "",
+      "task_delete_by_id": "",
+      "task_delete_by_date": "",
+      "task_delete_by_timestamp": "0",
+      "source_from": sourceFrom,
+      "assign_to": assignTo,
+      "company": beneficiary,
+      "document_number": '',
+      "action_taken_by_id": "",
+      "action_taken_by": "",
+      "action_taken_date": "",
+      "action_taken_timestamp": "0",
+      "category_name": categoryName,
+      "category": category,
+    };
+
+
+    http.Response res = await http.post(
+      Uri.parse(url),
+      body: data,
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      encoding: Encoding.getByName("utf-8"),
+    );
+
+    if (res.statusCode.toString() == "200") {
+      if (jsonDecode(res.body) == "true") {
+        if (!mounted) return;
+        showSuccessSnackBar(context);// Show the success SnackBar
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MainTaskList()),
+        );
+      } else {
+        if (!mounted) return;
+        snackBar(context, "Error", Colors.red);
+      }
+    } else {
+      if (!mounted) return;
+      snackBar(context, "Error", Colors.yellow);
+    }
+  }
+
+  void showSuccessSnackBar(BuildContext context) {
+    final snackBar = SnackBar(
+      content: Text('Main Task Created Successfully'),
+      backgroundColor: Colors.green, // You can customize the color
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+
+  void selectDate(
+      BuildContext context, TextEditingController controller) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2023),
+      lastDate: DateTime(2030),
+    );
+
+    if (picked != null && picked != controller.text) {
+      print('Selected date: $picked'); // Add this line for debugging
+      controller.text = DateFormat('yyyy-MM-dd')
+          .format(picked); // Adjust the date format as needed
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  void loadData() async {
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Create Main Task',
+          style: TextStyle(
+            color: AppColor.tealLog,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 1.0,
+      ),
+      body: Container(
+        color: Colors.white,
+        width: getPageWidth(context),
+        height: getPageHeight(context),
+        child: Container(
+          width: 100,
+          height: 400,
+          child: Column(
+            children: [
+              SizedBox(height: 15,),
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        controller: titleController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Task Title',
+                          hintText: 'Task Title',
+                        ),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        textInputAction: TextInputAction.done,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        controller: descriptionController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Description',
+                          hintText: 'Description',
+                        ),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 15,),
+
+              Container(
+                height: 400,
+                width: 340,
+                color: Colors.grey.shade300,
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 120,
+                      height: 320,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Beneficiary',
+                            style: TextStyle(
+                              fontSize:
+                              14, // Updated font size to 14
+                              fontWeight: FontWeight.bold,
+                              color: AppColor.tealLog,
+                            ),
+                          ),
+                          Text(
+                            'Due Date',
+                            style: TextStyle(
+                              fontSize:
+                              14, // Updated font size to 14
+                              fontWeight: FontWeight.bold,
+                              color: AppColor.tealLog,
+                            ),
+                          ),
+                          Text(
+                            'Assign To',
+                            style: TextStyle(
+                              fontSize:
+                              14, // Updated font size to 14
+                              fontWeight: FontWeight.bold,
+                              color: AppColor.tealLog,
+                            ),
+                          ),
+                          Text(
+                            'Priority',
+                            style: TextStyle(
+                              fontSize:
+                              14, // Updated font size to 14
+                              fontWeight: FontWeight.bold,
+                              color: AppColor.tealLog,
+                            ),
+                          ),
+                          Text(
+                            'Source From', // Updated text here
+                            style: TextStyle(
+                              fontSize:
+                              14, // Updated font size to 14
+                              fontWeight: FontWeight.bold,
+                              color: AppColor.tealLog,
+                            ),
+                          ),
+                          Text(
+                            'Task Category',
+                            style: TextStyle(
+                              fontSize:
+                              14, // Updated font size to 14
+                              fontWeight: FontWeight.bold,
+                              color: AppColor.tealLog,
+                            ),
+                          ),
+
+
+                        ],
+
+                      ),
+
+                    ),
+                    VerticalDivider(
+                      thickness: 2,
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+
+        ),
+      ),
+    );
+  }
+}

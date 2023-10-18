@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_mobile/dashboards/dashUser.dart';
+import 'package:task_mobile/methods/colors.dart';
+import 'package:task_mobile/pages/createMainTask.dart';
+import 'package:task_mobile/pages/mainTaskList.dart';
 
 import '../methods/sizes.dart';
 
 class TaskMainDashboard extends StatefulWidget {
+
   final List<String> containerTexts = [
     'Taxation',
     'Talent Management',
@@ -13,7 +18,6 @@ class TaskMainDashboard extends StatefulWidget {
     'Developments',
   ];
 
-
   TaskMainDashboard({Key? key}) : super(key: key);
 
   @override
@@ -21,12 +25,35 @@ class TaskMainDashboard extends StatefulWidget {
 }
 
 class _TaskMainDashboardState extends State<TaskMainDashboard> {
+  String userName = "";
+  String firstName = "";
+  String lastName = "";
+  String phone = "";
+  String userRole = "";
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  void loadData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString('user_name') ?? "";
+      firstName = prefs.getString('first_name') ?? "";
+      lastName = prefs.getString('last_name') ?? "";
+      phone = prefs.getString('phone') ?? "";
+      userRole = prefs.getString('user_role') ?? "";
+
+    });
+  }
 
   void _handleContainer0Pressed(BuildContext context) {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => TaskMainDashboard()),
-    // );
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MainTaskList()),
+    );
   }
 
   void _handleContainer1Pressed(BuildContext context) {
@@ -86,17 +113,33 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
           children: [
             Text(
               widget.containerTexts[index],
-              style: const TextStyle(fontSize: 16.0),
+              style: const TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),
       ),
     );
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Tasks',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 1.0,
+      ),
       body: ListView(
         children: [
           Container(
@@ -110,26 +153,6 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
                 color: Colors.white,
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        IconButton(onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => DashboardPageUser()),
-                          );
-                        }, icon: const Icon(Icons.arrow_back_rounded)),
-                        const SizedBox(width: 10),
-                        const Text(
-                          'Tasks',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-
                     const SizedBox(
                       height: 40,
                     ),
@@ -150,5 +173,17 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateMainTask(username: userName, firstName: firstName, lastName: lastName)),
+          );
+        },
+        child: Icon(Icons.add),
+        backgroundColor: AppColor.tealLog, // Customize the button color
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat, // Adjust the location if needed
     );
-  }}
+  }
+}
