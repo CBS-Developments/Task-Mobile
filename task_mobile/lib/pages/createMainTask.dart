@@ -144,7 +144,7 @@ class _CreateMainTaskState extends State<CreateMainTask> {
         showSuccessSnackBar(context);// Show the success SnackBar
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MainTaskList()),
+          MaterialPageRoute(builder: (context) => const MainTaskList()),
         );
       } else {
         if (!mounted) return;
@@ -157,7 +157,7 @@ class _CreateMainTaskState extends State<CreateMainTask> {
   }
 
   void showSuccessSnackBar(BuildContext context) {
-    final snackBar = SnackBar(
+    final snackBar = const SnackBar(
       content: Text('Main Task Created Successfully'),
       backgroundColor: Colors.green, // You can customize the color
     );
@@ -193,6 +193,14 @@ class _CreateMainTaskState extends State<CreateMainTask> {
 
   @override
   Widget build(BuildContext context) {
+    String beneficiary = '';
+    String dueDate = '';
+    String assignToValue = '';
+    String priorityValue = '';
+    String sourceFromValue = '';
+    String categoryValue = '';
+    String categoryInt = '';
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -204,19 +212,19 @@ class _CreateMainTaskState extends State<CreateMainTask> {
           ),
         ),
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
         elevation: 1.0,
       ),
       body: Container(
         color: Colors.white,
         width: getPageWidth(context),
         height: getPageHeight(context),
-        child: Container(
+        child: SizedBox(
           width: 100,
           height: 400,
           child: Column(
             children: [
-              SizedBox(height: 15,),
+              const SizedBox(height: 15,),
               Row(
                 children: [
                   Expanded(
@@ -265,7 +273,7 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                   ),
                 ],
               ),
-              SizedBox(height: 15,),
+              const SizedBox(height: 15,),
 
               Container(
                 height: 400,
@@ -277,72 +285,89 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                       width: 120,
                       height: 320,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Beneficiary',
-                            style: TextStyle(
-                              fontSize:
-                              14, // Updated font size to 14
-                              fontWeight: FontWeight.bold,
-                              color: AppColor.tealLog,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                            child: Text(
+                              'Beneficiary',
+                              style: TextStyle(
+                                fontSize:
+                                14, // Updated font size to 14
+                                fontWeight: FontWeight.bold,
+                                color: AppColor.tealLog,
+                              ),
                             ),
                           ),
-                          Text(
-                            'Due Date',
-                            style: TextStyle(
-                              fontSize:
-                              14, // Updated font size to 14
-                              fontWeight: FontWeight.bold,
-                              color: AppColor.tealLog,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                            child: Text(
+                              'Due Date',
+                              style: TextStyle(
+                                fontSize:
+                                14, // Updated font size to 14
+                                fontWeight: FontWeight.bold,
+                                color: AppColor.tealLog,
+                              ),
                             ),
                           ),
-                          Text(
-                            'Assign To',
-                            style: TextStyle(
-                              fontSize:
-                              14, // Updated font size to 14
-                              fontWeight: FontWeight.bold,
-                              color: AppColor.tealLog,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                            child: Text(
+                              'Assign To',
+                              style: TextStyle(
+                                fontSize:
+                                14, // Updated font size to 14
+                                fontWeight: FontWeight.bold,
+                                color: AppColor.tealLog,
+                              ),
                             ),
                           ),
-                          Text(
-                            'Priority',
-                            style: TextStyle(
-                              fontSize:
-                              14, // Updated font size to 14
-                              fontWeight: FontWeight.bold,
-                              color: AppColor.tealLog,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                            child: Text(
+                              'Priority',
+                              style: TextStyle(
+                                fontSize:
+                                14, // Updated font size to 14
+                                fontWeight: FontWeight.bold,
+                                color: AppColor.tealLog,
+                              ),
                             ),
                           ),
-                          Text(
-                            'Source From', // Updated text here
-                            style: TextStyle(
-                              fontSize:
-                              14, // Updated font size to 14
-                              fontWeight: FontWeight.bold,
-                              color: AppColor.tealLog,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                            child: Text(
+                              'Source From', // Updated text here
+                              style: TextStyle(
+                                fontSize:
+                                14, // Updated font size to 14
+                                fontWeight: FontWeight.bold,
+                                color: AppColor.tealLog,
+                              ),
                             ),
                           ),
-                          Text(
-                            'Task Category',
-                            style: TextStyle(
-                              fontSize:
-                              14, // Updated font size to 14
-                              fontWeight: FontWeight.bold,
-                              color: AppColor.tealLog,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                            child: Text(
+                              'Task Category',
+                              style: TextStyle(
+                                fontSize:
+                                14, // Updated font size to 14
+                                fontWeight: FontWeight.bold,
+                                color: AppColor.tealLog,
+                              ),
                             ),
                           ),
-
-
                         ],
-
                       ),
-
                     ),
-                    VerticalDivider(
+                    const VerticalDivider(
                       thickness: 2,
                     ),
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                    )
                   ],
                 ),
               )
