@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_mobile/dashboards/dashMain.dart';
+import 'package:task_mobile/pages/createMainTask.dart';
 import 'package:task_mobile/pages/loginPage.dart';
+
+import 'createAccountPopUps/assignToPopUp.dart';
+import 'createAccountPopUps/beneficiaryPopUp.dart';
+import 'createAccountPopUps/categoryPopUp.dart';
+import 'createAccountPopUps/priorityPopUp.dart';
+import 'createAccountPopUps/sourceFromPopUp.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,9 +30,62 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:
-      LandingPage(
-          prefs: prefs),
+      home: MultiProvider(
+        providers: [
+          // ChangeNotifierProvider<StatusDropdownState>.value(
+          //   value:
+          //   StatusDropdownState(), // Provide an instance of StatusDropdownState
+          // ),
+          // ChangeNotifierProvider<TaskDropdownState>.value(
+          //   value:
+          //   TaskDropdownState(), // Provide an instance of TaskDropdownState
+          // ),
+          // ChangeNotifierProvider<AssignedDropdownState>.value(
+          //   value:
+          //   AssignedDropdownState(), // Provide an instance of AssignedDropdownState
+          // ),
+          // ChangeNotifierProvider<CompanyDropdownState>.value(
+          //   value:
+          //   CompanyDropdownState(), // Provide an instance of AssignedDropdownState
+          // ),
+          // ChangeNotifierProvider<LabelDropdownState>.value(
+          //   value:
+          //   LabelDropdownState(), // Provide an instance of AssignedDropdownState
+          // ),
+          ChangeNotifierProvider<BeneficiaryState>(
+            create: (context) => BeneficiaryState(),
+          ),
+          ChangeNotifierProvider<DueDateState>(
+            create: (context) => DueDateState(),
+          ),
+          ChangeNotifierProvider<AssignToState>.value(
+            value: AssignToState(),
+          ),
+
+          ChangeNotifierProvider<PriorityState>.value(
+            value: PriorityState(), // Provide an instance of PriorityState
+          ),
+
+          ChangeNotifierProvider<SourceFromState>.value(
+            value: SourceFromState(),
+          ),
+
+          ChangeNotifierProvider<CategoryState>.value(
+            value: CategoryState(),
+          ),
+
+          // ChangeNotifierProvider<EditBeneficiaryState>(
+          //   create: (context) => EditBeneficiaryState(),
+          // ),
+
+
+
+
+
+        ],
+        child: LandingPage(
+            prefs: prefs), // Pass the plugin instance to LandingPage
+      ),
 
     );
   }

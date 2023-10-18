@@ -3,12 +3,18 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:task_mobile/methods/colors.dart';
 import 'package:task_mobile/pages/mainTaskList.dart';
 
 import '../components/test.dart';
 import 'package:http/http.dart' as http;
 
+import '../createAccountPopUps/assignToPopUp.dart';
+import '../createAccountPopUps/beneficiaryPopUp.dart';
+import '../createAccountPopUps/categoryPopUp.dart';
+import '../createAccountPopUps/priorityPopUp.dart';
+import '../createAccountPopUps/sourceFromPopUp.dart';
 import '../methods/sizes.dart';
 
 class CreateMainTask extends StatefulWidget {
@@ -229,7 +235,7 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(10.0),
                       child: TextField(
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.multiline,
@@ -253,7 +259,7 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(10.0),
                       child: TextField(
                         textInputAction: TextInputAction.done,
                         keyboardType: TextInputType.multiline,
@@ -275,100 +281,308 @@ class _CreateMainTaskState extends State<CreateMainTask> {
               ),
               const SizedBox(height: 15,),
 
-              Container(
-                height: 400,
-                width: 340,
-                color: Colors.grey.shade300,
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 120,
-                      height: 320,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
-                            child: Text(
-                              'Beneficiary',
-                              style: TextStyle(
-                                fontSize:
-                                14, // Updated font size to 14
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.tealLog,
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Container(
+                    height: 400,
+                    width: 500,
+                    color: Colors.grey.shade300,
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 120,
+                          height: 320,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                                child: Text(
+                                  'Beneficiary',
+                                  style: TextStyle(
+                                    fontSize:
+                                    14, // Updated font size to 14
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColor.tealLog,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
-                            child: Text(
-                              'Due Date',
-                              style: TextStyle(
-                                fontSize:
-                                14, // Updated font size to 14
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.tealLog,
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                                child: Text(
+                                  'Due Date',
+                                  style: TextStyle(
+                                    fontSize:
+                                    14, // Updated font size to 14
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColor.tealLog,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
-                            child: Text(
-                              'Assign To',
-                              style: TextStyle(
-                                fontSize:
-                                14, // Updated font size to 14
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.tealLog,
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                                child: Text(
+                                  'Assign To',
+                                  style: TextStyle(
+                                    fontSize:
+                                    14, // Updated font size to 14
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColor.tealLog,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
-                            child: Text(
-                              'Priority',
-                              style: TextStyle(
-                                fontSize:
-                                14, // Updated font size to 14
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.tealLog,
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                                child: Text(
+                                  'Priority',
+                                  style: TextStyle(
+                                    fontSize:
+                                    14, // Updated font size to 14
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColor.tealLog,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
-                            child: Text(
-                              'Source From', // Updated text here
-                              style: TextStyle(
-                                fontSize:
-                                14, // Updated font size to 14
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.tealLog,
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                                child: Text(
+                                  'Source From', // Updated text here
+                                  style: TextStyle(
+                                    fontSize:
+                                    14, // Updated font size to 14
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColor.tealLog,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
-                            child: Text(
-                              'Task Category',
-                              style: TextStyle(
-                                fontSize:
-                                14, // Updated font size to 14
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.tealLog,
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                                child: Text(
+                                  'Task Category',
+                                  style: TextStyle(
+                                    fontSize:
+                                    14, // Updated font size to 14
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColor.tealLog,
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                        const VerticalDivider(
+                          thickness: 2,
+                        ),
+
+                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Consumer<BeneficiaryState>(
+                              builder: (context, beneficiaryState, child) {
+                                beneficiary = beneficiaryState.value ?? 'DefaultBeneficiary'; // Set beneficiaryValue based on state
+
+                                return TextButton(
+                                  onPressed: () {
+                                    beneficiaryPopupMenu(context, beneficiaryState);
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        beneficiary,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Icon(
+                                          Icons.keyboard_arrow_down_rounded,
+                                          color: Colors.black,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+
+                            Consumer<DueDateState>(
+                              builder: (context, dueDateState, child) {
+                                dueDate = dueDateState.selectedDate != null
+                                    ? DateFormat('yyyy-MM-dd').format(dueDateState.selectedDate!)
+                                    : 'Due date';
+
+                                return TextButton(
+                                  onPressed: () {
+
+                                    showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(2023),
+                                      lastDate: DateTime(2030),
+                                    ).then((pickedDate) {
+                                      if (pickedDate != null) {
+                                        dueDateState.selectedDate = pickedDate;
+                                        print(dueDateState.selectedDate);
+                                      }
+                                    });
+                                    // Your logic for dueDate popup menu
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        dueDate,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Icon(
+                                          Icons.keyboard_arrow_down_rounded,
+                                          color: Colors.black,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                            Consumer<AssignToState>(
+                              builder: (context, assignToState, child) {
+                                assignToValue = assignToState.value ?? 'Assign To';
+
+                                return TextButton(
+                                  onPressed: () {
+                                    assignToPopupMenu(context, assignToState);
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        assignToValue,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Icon(
+                                          Icons.keyboard_arrow_down_rounded,
+                                          color: Colors.black,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                            Consumer<PriorityState>(
+                              builder: (context, priorityState, child) {
+                                priorityValue = priorityState.value ?? 'Priority';
+
+                                return TextButton(
+                                  onPressed: () {
+                                    priorityPopupMenu(context, priorityState);
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        priorityValue,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Icon(
+                                          Icons.keyboard_arrow_down_rounded,
+                                          color: Colors.black,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                            Consumer<SourceFromState>(
+                              builder: (context, sourceFromState, child) {
+                                sourceFromValue = sourceFromState.value ?? 'Source From';
+
+                                return TextButton(
+                                  onPressed: () {
+                                    sourceFromPopupMenu(context, sourceFromState);
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        sourceFromValue,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Icon(
+                                          Icons.keyboard_arrow_down_rounded,
+                                          color: Colors.black,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                            Consumer<CategoryState>(
+                              builder: (context, categoryState, child) {
+                                categoryValue = categoryState.value ?? 'Category';
+                                categoryInt = categoryState.selectedIndex.toString();
+
+                                return TextButton(
+                                  onPressed: () {
+                                    categoryPopupMenu(context, categoryState);
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        categoryValue,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Icon(
+                                          Icons.keyboard_arrow_down_rounded,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        )
+
+                      ],
                     ),
-                    const VerticalDivider(
-                      thickness: 2,
-                    ),
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                    )
-                  ],
+                  ),
+
+
                 ),
               )
             ],
@@ -377,5 +591,15 @@ class _CreateMainTaskState extends State<CreateMainTask> {
         ),
       ),
     );
+  }
+}
+class DueDateState extends ChangeNotifier {
+  DateTime? _selectedDate;
+
+  DateTime? get selectedDate => _selectedDate;
+
+  set selectedDate(DateTime? newDate) {
+    _selectedDate = newDate;
+    notifyListeners();
   }
 }
