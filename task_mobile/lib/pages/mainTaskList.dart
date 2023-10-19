@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_mobile/methods/colors.dart';
 
 import '../methods/sizes.dart';
 
@@ -15,7 +16,7 @@ class _MainTaskListState extends State<MainTaskList> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Tasks',
+          'Taxation',
           style: TextStyle(
             color: Colors.black,
             fontSize: 22,
@@ -30,6 +31,22 @@ class _MainTaskListState extends State<MainTaskList> {
         color: Colors.white,
         width: getPageWidth(context),
         height: getPageHeight(context),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Text('Main Tasks:',
+                    style: TextStyle(
+                      color: AppColor.tealLog,
+                      fontSize: 20
+                    ),)
+                ],
+              ),
+            )
+          ],
+        ),
       )
     );
   }

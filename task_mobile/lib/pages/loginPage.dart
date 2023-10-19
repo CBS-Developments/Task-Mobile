@@ -167,12 +167,12 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DashboardPageUser()),
-                        );
-                        //login(context);
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) => DashboardPageUser()),
+                        // );
+                        login(context);
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: AppColor.loginF,
