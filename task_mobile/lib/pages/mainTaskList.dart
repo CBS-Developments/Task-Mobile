@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:task_mobile/methods/colors.dart';
 import 'package:http/http.dart' as http;
+import '../methods/colors.dart';
 import '../methods/sizes.dart';
 
 class MainTaskList extends StatefulWidget {
@@ -15,7 +15,6 @@ class MainTaskList extends StatefulWidget {
 }
 
 class _MainTaskListState extends State<MainTaskList> {
-
   List<MainTask> mainTaskList = [];
   List<MainTask> searchResultAsMainTaskList = [];
   TextEditingController taskListController = TextEditingController();
@@ -40,10 +39,8 @@ class _MainTaskListState extends State<MainTaskList> {
       lastName = prefs.getString('last_name') ?? "";
       phone = prefs.getString('phone') ?? "";
       userRole = prefs.getString('user_role') ?? "";
-
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -64,150 +61,136 @@ class _MainTaskListState extends State<MainTaskList> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Text('Main Tasks:',
-                        style: TextStyle(
-                          color: AppColor.tealLog,
-                          fontSize: 20
-                        ),)
-                    ],
-                  ),
-                ),
-                Container(
-                  width: 330,
-                  height: 120,
-                  //color: Colors.red,
-                  decoration:  BoxDecoration(
-                    color: Colors.grey[300],
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.white, // Shadow color
-                        blurRadius: 2, // Spread radius
-                        offset: Offset(0, 2), // Offset in x and y directions
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 320,
-                        height: 55,
-                        padding: const EdgeInsets.all(4),
-                        //color: Colors.redAccent,
-                        child: TextField(
-                          controller: taskListController,
-                          textAlign: TextAlign.start,
-                          textAlignVertical: TextAlignVertical.bottom,
-                          decoration: InputDecoration(
-                              suffixIcon:const Icon(Icons.search,color: Colors.grey,) ,
-                              enabledBorder:  OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey.shade200),
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey.shade400),
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
-                              fillColor: Colors.white,
-                              filled: true,
-                              hintText: 'Search',
-                              hintStyle: TextStyle(color: Colors.grey[500],fontSize: 16
-                              )
-                          ),
-
-                        ),
-                      ),
-                      const Divider(),
-
-
-                    ],
-                  ),
-
-
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-
-                SingleChildScrollView(
-                  child: SizedBox(
-                    width: 330,
-                    height: 500,
-                    //color: Colors.red,
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              height: 80,
-                              width: 330,
-                              decoration: BoxDecoration(
-                                //color: Colors.teal, // Background color
-                                borderRadius: BorderRadius.circular(4.0), // Optional: Add rounded corners
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.shade300, // Shadow color
-                                    //blurRadius: 2.0, // Spread of the shadow
-                                    offset: const Offset(2, 2), // Offset of the shadow
-                                  ),
-                                ],
-                              ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: mainTaskList.map((task) {
-                                    return Container(
-                                      height: 70,
-                                      width: 330,
-                                      decoration: BoxDecoration(
-                                        //color: Colors.teal,
-                                        borderRadius: BorderRadius.circular(8.0),
-                                        boxShadow: const [
-                                          BoxShadow(
-                                            color: Colors.grey,
-                                            blurRadius: 2.0,
-                                            offset: Offset(2, 2),
-                                          ),
-                                        ],
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Text(task.taskTitle),
-                                          ),
-                                          SizedBox(height: 10),
-                                          Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Text('Due Date:'),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  }).toList(),
-                                )
-
-                            ),
-
-
-                          ],
-                        ),
-                      ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Text(
+                    'Main Tasks:',
+                    style: TextStyle(
+                      color: AppColor.tealLog,
+                      fontSize: 20,
                     ),
                   ),
-                )
+                ],
+              ),
+            ),
+            Container(
+              width: 330,
+              height: 120,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.white,
+                    blurRadius: 2,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    width: 320,
+                    height: 55,
+                    padding: const EdgeInsets.all(4),
+                    child: TextField(
+                      controller: taskListController,
+                      textAlign: TextAlign.start,
+                      textAlignVertical: TextAlignVertical.bottom,
+                      decoration: InputDecoration(
+                        suffixIcon: const Icon(Icons.search, color: Colors.grey),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey.shade200),
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey.shade400),
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        fillColor: Colors.white,
+                        filled: true,
+                        hintText: 'Search',
+                        hintStyle: TextStyle(
+                          color: Colors.grey[500],
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Divider(),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+              width: 330,
+              height: 500,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: mainTaskList.map((task) {
+                              return Container(
+                                height: 80,
+                                width: 330,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.shade300,
+                                      //blurRadius: 2.0,
+                                      offset: const Offset(2, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(task.taskTitle,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold
+                                        ),),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          const Text('Due Date:',
+                                          style: TextStyle(
+                                            fontSize: 12
+                                          ),),
+                                          const SizedBox(width: 5),
+                                          Text(task.dueDate,
+                                            style: const TextStyle(
+                                                fontSize: 12
+                                            ),),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          ),
 
-
-              ],
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
-      )
+      ),
     );
   }
 
@@ -235,8 +218,10 @@ class _MainTaskListState extends State<MainTaskList> {
             b.taskCreatedTimestamp.compareTo(a.taskCreatedTimestamp));
 
         // Count tasks with taskStatus = 0
-        int pendingTaskCount = mainTaskList.where((task) => task.taskStatus == "0").length;
-        int inProgressTaskCount = mainTaskList.where((task) => task.taskStatus == "1").length;
+        int pendingTaskCount =
+            mainTaskList.where((task) => task.taskStatus == "0").length;
+        int inProgressTaskCount =
+            mainTaskList.where((task) => task.taskStatus == "1").length;
         int allTaskCount = mainTaskList.length;
         print("Pending Task: $pendingTaskCount");
         print("All Task: $allTaskCount");
@@ -246,7 +231,6 @@ class _MainTaskListState extends State<MainTaskList> {
       throw Exception('Failed to load jobs from API');
     }
   }
-
 }
 
 class MainTask {
