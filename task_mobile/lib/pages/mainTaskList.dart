@@ -181,7 +181,6 @@ class _MainTaskListState extends State<MainTaskList> {
                               );
                             }).toList(),
                           ),
-
                       ],
                     ),
                   ],
