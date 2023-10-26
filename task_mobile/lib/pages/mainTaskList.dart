@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
-import '../methods/colors.dart';
-import '../methods/sizes.dart';
+import 'package:task_mobile/methods/colors.dart';
+
+import 'createMainTask.dart';
 
 class MainTaskList extends StatefulWidget {
   const MainTaskList({Key? key}) : super(key: key);
@@ -16,7 +17,6 @@ class MainTaskList extends StatefulWidget {
 
 class _MainTaskListState extends State<MainTaskList> {
   List<MainTask> mainTaskList = [];
-  List<MainTask> searchResultAsMainTaskList = [];
   TextEditingController taskListController = TextEditingController();
   String userName = "";
   String firstName = "";
@@ -68,7 +68,7 @@ class _MainTaskListState extends State<MainTaskList> {
                   Text(
                     'Main Tasks:',
                     style: TextStyle(
-                      color: AppColor.tealLog,
+                      color: Colors.black,
                       fontSize: 20,
                     ),
                   ),
@@ -128,67 +128,71 @@ class _MainTaskListState extends State<MainTaskList> {
             SizedBox(
               width: 330,
               height: 500,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: mainTaskList.map((task) {
-                              return Container(
-                                height: 80,
-                                width: 330,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.shade300,
-                                      //blurRadius: 2.0,
-                                      offset: const Offset(2, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(task.taskTitle,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold
-                                        ),),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        children: [
-                                          const Text('Due Date:',
-                                          style: TextStyle(
-                                            fontSize: 12
-                                          ),),
-                                          const SizedBox(width: 5),
-                                          Text(task.dueDate,
-                                            style: const TextStyle(
-                                                fontSize: 12
-                                            ),),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }).toList(),
-                          ),
+              child: ListView.builder(
+                itemCount: mainTaskList.length,
+                itemBuilder: (context, index) {
+                  MainTask task = mainTaskList[index];
+                  return Container(
+                    height: 80,
+                    width: 330,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.shade300,
+                          offset: const Offset(2, 2),
+                        ),
                       ],
                     ),
-                  ],
-                ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            task.taskTitle,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              const Text(
+                                'Due Date:',
+                                style: TextStyle(fontSize: 12),
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                task.dueDate,
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                      ],
+                    ),
+                  );
+
+                },
               ),
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) =>  const CreateMainTask(username: '', firstName: '', lastName: '',)),
+          );
+        },
+        backgroundColor: AppColor.tealLog,
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -231,7 +235,6 @@ class _MainTaskListState extends State<MainTaskList> {
     }
   }
 }
-
 class MainTask {
   String taskId;
   String taskTitle;
