@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:task_mobile/dashboards/dashUser.dart';
 import 'package:task_mobile/methods/colors.dart';
+import 'package:task_mobile/pages/auditMain.dart';
+import 'package:task_mobile/pages/companySecretarialMain.dart';
 import 'package:task_mobile/pages/createMainTask.dart';
+import 'package:task_mobile/pages/developmentMain.dart';
 import 'package:task_mobile/pages/financeMain.dart';
 import 'package:task_mobile/pages/mainTaskList.dart';
 import 'package:task_mobile/pages/talentMain.dart';
@@ -53,34 +55,43 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
   void _handleContainer0Pressed(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => TaxationMainTask()),
+      MaterialPageRoute(builder: (context) => const TaxationMainTask()),
     );
   }
 
   void _handleContainer1Pressed(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => TalentMain()),
+      MaterialPageRoute(builder: (context) => const TalentMain()),
     );
   }
 
   void _handleContainer2Pressed(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => FinanceMain()),
+      MaterialPageRoute(builder: (context) => const FinanceMain()),
     );
   }
 
   void _handleContainer3Pressed(BuildContext context) {
-    // Add your code for handling the fourth container button press here.
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const AuditMain()),
+    );
   }
 
   void _handleContainer4Pressed(BuildContext context) {
-    // Add your code for handling the fourth container button press here.
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SecretarialMain()),
+    );
   }
 
   void _handleContainer5Pressed(BuildContext context) {
-    // Add your code for handling the fourth container button press here.
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) =>const DevelopmentMain()),
+    );
   }
 
   Widget _buildContainer(int index, BuildContext context) {
@@ -136,11 +147,11 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MainTaskList()),
+          MaterialPageRoute(builder: (context) => const MainTaskList()),
         );
 
       },
-      child: Text(
+      child: const Text(
         'All Tasks',
         style: TextStyle(
           color: Colors.teal,
@@ -164,7 +175,7 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
           ),
         ),
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
         elevation: 1.0,
       ),
 
@@ -217,8 +228,8 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
                     lastName: lastName)),
           );
         },
-        child: Icon(Icons.add),
-        backgroundColor: AppColor.tealLog, // Customize the button color
+        backgroundColor: AppColor.tealLog,
+        child: const Icon(Icons.add), // Customize the button color
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation
           .endFloat, // Adjust the location if needed
