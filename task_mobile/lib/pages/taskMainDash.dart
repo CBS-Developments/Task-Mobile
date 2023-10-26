@@ -4,11 +4,11 @@ import 'package:task_mobile/dashboards/dashUser.dart';
 import 'package:task_mobile/methods/colors.dart';
 import 'package:task_mobile/pages/createMainTask.dart';
 import 'package:task_mobile/pages/mainTaskList.dart';
+import 'package:task_mobile/pages/taxationMain.dart';
 
 import '../methods/sizes.dart';
 
 class TaskMainDashboard extends StatefulWidget {
-
   final List<String> containerTexts = [
     'Taxation',
     'Talent Management',
@@ -45,14 +45,13 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
       lastName = prefs.getString('last_name') ?? "";
       phone = prefs.getString('phone') ?? "";
       userRole = prefs.getString('user_role') ?? "";
-
     });
   }
 
   void _handleContainer0Pressed(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MainTaskList()),
+      MaterialPageRoute(builder: (context) => TaxationMainTask()),
     );
   }
 
@@ -124,11 +123,31 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
     );
   }
 
+  Widget _buildTextButton(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MainTaskList()),
+        );
+
+      },
+      child: Text(
+        'All Tasks',
+        style: TextStyle(
+          color: Colors.teal,
+          fontSize: 16.0,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Tasks',
           style: TextStyle(
             color: Colors.black,
@@ -140,6 +159,7 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 1.0,
       ),
+
       body: ListView(
         children: [
           Container(
@@ -166,6 +186,10 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
                         }),
                       ),
                     ),
+                    const SizedBox(
+                      height: 20, // Adjust the spacing between the GridView and Text Button
+                    ),
+                    _buildTextButton(context), // Add the Text Button here
                   ],
                 ),
               ),
@@ -173,17 +197,23 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
           ),
         ],
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => CreateMainTask(username: userName, firstName: firstName, lastName: lastName)),
+            MaterialPageRoute(
+                builder: (context) => CreateMainTask(
+                    username: userName,
+                    firstName: firstName,
+                    lastName: lastName)),
           );
         },
         child: Icon(Icons.add),
         backgroundColor: AppColor.tealLog, // Customize the button color
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat, // Adjust the location if needed
+      floatingActionButtonLocation: FloatingActionButtonLocation
+          .endFloat, // Adjust the location if needed
     );
   }
 }
