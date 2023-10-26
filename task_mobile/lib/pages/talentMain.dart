@@ -6,14 +6,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'createMainTask.dart';
 import 'mainTaskList.dart';
 
-class TaxationMainTask extends StatefulWidget {
-  const TaxationMainTask({Key? key}) : super(key: key);
+class TalentMain extends StatefulWidget {
+  const TalentMain({Key? key}) : super(key: key);
 
   @override
-  State<TaxationMainTask> createState() => _TaxationMainTaskState();
+  State<TalentMain> createState() => _TalentMainState();
 }
 
-class _TaxationMainTaskState extends State<TaxationMainTask> {
+class _TalentMainState extends State<TalentMain> {
+
 
   List<MainTask> mainTaskList = [];
   List<MainTask> searchResultAsMainTaskList = [];
@@ -195,11 +196,12 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
       ),
     );
   }
+
   Future<void> getTaskList() async {
     mainTaskList.clear();
     var data = {};
 
-    const url = "http://dev.workspace.cbs.lk/mainTaskListTaxation.php";
+    const url = "http://dev.workspace.cbs.lk/mainTaskListTalent.php";
     http.Response res = await http.post(
       Uri.parse(url),
       body: data,
@@ -230,5 +232,4 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
       throw Exception('Failed to load jobs from API');
     }
   }
-
 }

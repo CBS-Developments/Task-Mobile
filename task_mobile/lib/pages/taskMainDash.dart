@@ -4,6 +4,7 @@ import 'package:task_mobile/dashboards/dashUser.dart';
 import 'package:task_mobile/methods/colors.dart';
 import 'package:task_mobile/pages/createMainTask.dart';
 import 'package:task_mobile/pages/mainTaskList.dart';
+import 'package:task_mobile/pages/talentMain.dart';
 import 'package:task_mobile/pages/taxationMain.dart';
 
 import '../methods/sizes.dart';
@@ -56,7 +57,10 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
   }
 
   void _handleContainer1Pressed(BuildContext context) {
-    // Add your code for handling the second container button press here.
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => TalentMain()),
+    );
   }
 
   void _handleContainer2Pressed(BuildContext context) {
