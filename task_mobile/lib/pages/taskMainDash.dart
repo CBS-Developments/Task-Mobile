@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_mobile/dashboards/dashUser.dart';
 import 'package:task_mobile/methods/colors.dart';
 import 'package:task_mobile/pages/createMainTask.dart';
+import 'package:task_mobile/pages/financeMain.dart';
 import 'package:task_mobile/pages/mainTaskList.dart';
 import 'package:task_mobile/pages/talentMain.dart';
 import 'package:task_mobile/pages/taxationMain.dart';
@@ -64,7 +65,10 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
   }
 
   void _handleContainer2Pressed(BuildContext context) {
-    // Add your code for handling the third container button press here.
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => FinanceMain()),
+    );
   }
 
   void _handleContainer3Pressed(BuildContext context) {
