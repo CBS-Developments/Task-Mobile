@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:task_mobile/methods/colors.dart';
+import 'dart:convert';
 
 import 'createMainTask.dart';
 
@@ -18,28 +15,11 @@ class MainTaskList extends StatefulWidget {
 class _MainTaskListState extends State<MainTaskList> {
   List<MainTask> mainTaskList = [];
   TextEditingController taskListController = TextEditingController();
-  String userName = "";
-  String firstName = "";
-  String lastName = "";
-  String phone = "";
-  String userRole = "";
 
   @override
   void initState() {
     super.initState();
     getTaskList();
-    loadData();
-  }
-
-  void loadData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      userName = prefs.getString('user_name') ?? "";
-      firstName = prefs.getString('first_name') ?? "";
-      lastName = prefs.getString('last_name') ?? "";
-      phone = prefs.getString('phone') ?? "";
-      userRole = prefs.getString('user_role') ?? "";
-    });
   }
 
   @override
@@ -58,140 +38,140 @@ class _MainTaskListState extends State<MainTaskList> {
         iconTheme: const IconThemeData(color: Colors.black),
         elevation: 1.0,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Text(
-                    'Main Tasks:',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                    ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Text(
+                  'Main Tasks:',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Container(
-              width: 330,
-              height: 120,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.white,
-                    blurRadius: 2,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    width: 320,
-                    height: 55,
-                    padding: const EdgeInsets.all(4),
-                    child: TextField(
-                      controller: taskListController,
-                      textAlign: TextAlign.start,
-                      textAlignVertical: TextAlignVertical.bottom,
-                      decoration: InputDecoration(
-                        suffixIcon: const Icon(Icons.search, color: Colors.grey),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade200),
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade400),
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        fillColor: Colors.white,
-                        filled: true,
-                        hintText: 'Search',
-                        hintStyle: TextStyle(
-                          color: Colors.grey[500],
-                          fontSize: 16,
-                        ),
+          ),
+          Container(
+            width: 330,
+            height: 120,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.white,
+                  blurRadius: 2,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                Container(
+                  width: 320,
+                  height: 55,
+                  padding: const EdgeInsets.all(4),
+                  child: TextField(
+                    controller: taskListController,
+                    textAlign: TextAlign.start,
+                    textAlignVertical: TextAlignVertical.bottom,
+                    decoration: InputDecoration(
+                      suffixIcon: const Icon(Icons.search, color: Colors.grey),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey.shade200),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey.shade400),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: 'Search',
+                      hintStyle: TextStyle(
+                        color: Colors.grey[500],
+                        fontSize: 16,
                       ),
                     ),
                   ),
-                  const Divider(),
-                ],
-              ),
+                ),
+                const Divider(),
+              ],
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            SizedBox(
-              width: 330,
-              height: 500,
-              child: ListView.builder(
-                itemCount: mainTaskList.length,
-                itemBuilder: (context, index) {
-                  MainTask task = mainTaskList[index];
-                  return Container(
-                    height: 80,
-                    width: 330,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade300,
-                          offset: const Offset(2, 2),
-                        ),
-                      ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: mainTaskList.length,
+              itemBuilder: (context, index) {
+                MainTask task = mainTaskList[index];
+                return Card(
+                  elevation: 2.0,
+                  margin: EdgeInsets.all(10.0),
+                  child: ListTile(
+                    title: Text(
+                      task.taskTitle,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    subtitle: Row(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            task.taskTitle,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                        const Text(
+                          'Due Date:',
+                          style: TextStyle(fontSize: 12),
                         ),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              const Text(
-                                'Due Date:',
-                                style: TextStyle(fontSize: 12),
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                task.dueDate,
-                                style: const TextStyle(fontSize: 12),
-                              ),
-                            ],
-                          ),
+                        const SizedBox(width: 5),
+                        Text(
+                          task.dueDate,
+                          style: const TextStyle(fontSize: 12),
                         ),
-
                       ],
                     ),
-                  );
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.edit, color: Colors.blue),
+                          onPressed: () {
 
-                },
-              ),
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.delete, color: Colors.red),
+                          onPressed: () {
+                            
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
-          ],
-        ),
+          ),
+
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) =>  const CreateMainTask(username: '', firstName: '', lastName: '',)),
+            MaterialPageRoute(
+              builder: (context) => const CreateMainTask(
+                username: '',
+                firstName: '',
+                lastName: '',
+              ),
+            ),
           );
         },
-        backgroundColor: AppColor.tealLog,
+        backgroundColor: Colors.teal, // Use the actual color, e.g., Colors.teal
         child: const Icon(Icons.add),
       ),
     );
@@ -219,16 +199,6 @@ class _MainTaskListState extends State<MainTaskList> {
         }
         mainTaskList.sort((a, b) =>
             b.taskCreatedTimestamp.compareTo(a.taskCreatedTimestamp));
-
-        // Count tasks with taskStatus = 0
-        int pendingTaskCount =
-            mainTaskList.where((task) => task.taskStatus == "0").length;
-        int inProgressTaskCount =
-            mainTaskList.where((task) => task.taskStatus == "1").length;
-        int allTaskCount = mainTaskList.length;
-        print("Pending Task: $pendingTaskCount");
-        print("All Task: $allTaskCount");
-        print("In Progress Task: $inProgressTaskCount");
       });
     } else {
       throw Exception('Failed to load jobs from API');
