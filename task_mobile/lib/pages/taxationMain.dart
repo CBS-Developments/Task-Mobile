@@ -155,12 +155,6 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // IconButton(
-                        //   icon: Icon(Icons.edit, color: Colors.blue),
-                        //   onPressed: () {
-                        //
-                        //   },
-                        // ),
                         IconButton(
                           icon: Icon(Icons.delete, color: Colors.red),
                           onPressed: () {
