@@ -155,10 +155,11 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        // Add a new button to open a dialog
                         IconButton(
-                          icon: Icon(Icons.delete, color: Colors.red),
+                          icon: Icon(Icons.info, color: Colors.blue),
                           onPressed: () {
-
+                            _openInfoDialog(task);
                           },
                         ),
                       ],
@@ -189,6 +190,27 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
       ),
     );
   }
+  void _openInfoDialog(MainTask task) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Task Information'),
+          content: Text(
+              'Task ID: ${task.taskId}\nDescription: ${task.task_description}'), // Customize the content as needed
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> getTaskList() async {
     mainTaskList.clear();
     var data = {};

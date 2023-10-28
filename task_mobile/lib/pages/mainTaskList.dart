@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 import 'createMainTask.dart';
@@ -134,9 +135,9 @@ class _MainTaskListState extends State<MainTaskList> {
                       children: [
                         // Add a new button to open a dialog
                         IconButton(
-                          icon: Icon(Icons.info, color: Colors.blue),
+                          icon: Icon(Icons.menu_open_rounded, color: Colors.teal),
                           onPressed: () {
-                            _openInfoDialog(task);
+                            _openInfoDialog(task, task.taskTitle);
                           },
                         ),
                       ],
@@ -168,20 +169,72 @@ class _MainTaskListState extends State<MainTaskList> {
   }
 
   // Method to open an info dialog
-  void _openInfoDialog(MainTask task) {
+  void _openInfoDialog(MainTask task, var taskTitle) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Task Information'),
-          content: Text(
-              'Task ID: ${task.taskId}\nDescription: ${task.task_description}'), // Customize the content as needed
-          actions: [
+          title: SelectableText('$taskTitle',
+          style: TextStyle(
+            fontSize: 18
+          ),),
+          content: SelectableText(
+              'Task ID: ${task.taskId}\n\nAssign To: ${task.assignTo}'), // Customize the content as needed
+          actions: <Widget>[
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+              child: const Text(
+                'Create Sub Task',
+                style: TextStyle(color: Colors.teal),
+              ),
+              onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setString('main_task_id', task.taskId);
+                prefs.setString('main_task_title', task.taskTitle);
+                prefs.setString('intent_from', "main_dashboard");
+                if (!mounted) return;
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //       builder: (context) => const CreateSubTask()),
+                // );
               },
-              child: Text('Close'),
+            ),
+            TextButton(
+              child: const Text(
+                'Edit Main Task',
+                style: TextStyle(color: Colors.blue),
+              ),
+              onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setString('main_task_id', task.taskId);
+                prefs.setString('task_title', task.taskTitle);
+                prefs.setString('task_type', task.taskType);
+                prefs.setString('task_type_name', task.taskTypeName);
+                prefs.setString('task_create_by', task.taskCreateBy);
+                prefs.setString('task_create_date', task.taskCreateDate);
+                prefs.setString(
+                    'task_created_timestamp', task.taskCreatedTimestamp);
+                prefs.setString('task_status', task.taskStatus);
+                prefs.setString('task_status_name', task.taskStatusName);
+                prefs.setString('due_date', task.dueDate);
+                prefs.setString('assign_to', task.assignTo);
+                prefs.setString('source_from', task.sourceFrom);
+                prefs.setString('company', task.company);
+                if (!mounted) return;
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => const EditMainTask()),
+                // );
+              },
+            ),
+            TextButton(
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: Colors.black),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
           ],
         );
