@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 import 'createMainTask.dart';
@@ -85,7 +84,7 @@ class _MainTaskListState extends State<MainTaskList> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey.shade400),
-                        borderRadius: BorderRadius.circular(5.0),
+                        //borderRadius: BorderRadius circular(5.0),
                       ),
                       fillColor: Colors.white,
                       filled: true,
@@ -133,16 +132,11 @@ class _MainTaskListState extends State<MainTaskList> {
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // IconButton(
-                        //   icon: Icon(Icons.edit, color: Colors.blue),
-                        //   onPressed: () {
-                        //
-                        //   },
-                        // ),
+                        // Add a new button to open a dialog
                         IconButton(
-                          icon: Icon(Icons.delete, color: Colors.red),
+                          icon: Icon(Icons.info, color: Colors.blue),
                           onPressed: () {
-
+                            _openInfoDialog(task);
                           },
                         ),
                       ],
@@ -152,7 +146,6 @@ class _MainTaskListState extends State<MainTaskList> {
               },
             ),
           ),
-
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -168,9 +161,31 @@ class _MainTaskListState extends State<MainTaskList> {
             ),
           );
         },
-        backgroundColor: Colors.teal, // Use the actual color, e.g., Colors.teal
+        backgroundColor: Colors.teal,
         child: const Icon(Icons.add),
       ),
+    );
+  }
+
+  // Method to open an info dialog
+  void _openInfoDialog(MainTask task) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Task Information'),
+          content: Text(
+              'Task ID: ${task.taskId}\nDescription: ${task.task_description}'), // Customize the content as needed
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -194,14 +209,15 @@ class _MainTaskListState extends State<MainTaskList> {
         for (Map<String, dynamic> details in responseJson) {
           mainTaskList.add(MainTask.fromJson(details));
         }
-        mainTaskList.sort((a, b) =>
-            b.taskCreatedTimestamp.compareTo(a.taskCreatedTimestamp));
+        mainTaskList.sort(
+            (a, b) => b.taskCreatedTimestamp.compareTo(a.taskCreatedTimestamp));
       });
     } else {
       throw Exception('Failed to load jobs from API');
     }
   }
 }
+
 class MainTask {
   String taskId;
   String taskTitle;
