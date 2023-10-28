@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 import 'createMainTask.dart';
+import 'createSubTask.dart';
 
 class MainTaskList extends StatefulWidget {
   const MainTaskList({Key? key}) : super(key: key);
@@ -192,11 +193,11 @@ class _MainTaskListState extends State<MainTaskList> {
                 prefs.setString('main_task_title', task.taskTitle);
                 prefs.setString('intent_from', "main_dashboard");
                 if (!mounted) return;
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => const CreateSubTask()),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const CreateSubTask()),
+                );
               },
             ),
             TextButton(

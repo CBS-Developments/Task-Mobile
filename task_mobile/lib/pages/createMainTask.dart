@@ -150,7 +150,7 @@ class _CreateMainTaskState extends State<CreateMainTask> {
         showSuccessSnackBar(context);// Show the success SnackBar
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const MainTaskList()),
+          MaterialPageRoute(builder: (context) =>  MainTaskList()),
         );
       } else {
         if (!mounted) return;
