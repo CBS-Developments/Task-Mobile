@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_mobile/methods/colors.dart';
 import 'package:task_mobile/pages/mainTaskList.dart';
 
@@ -30,6 +31,11 @@ class CreateMainTask extends StatefulWidget {
 
 class _CreateMainTaskState extends State<CreateMainTask> {
 
+  String userName = "";
+  String firstName = "";
+  String lastName = "";
+  String phone = "";
+  String userRole = "";
 
   String getCurrentDateTime() {
     final now = DateTime.now();
@@ -56,8 +62,6 @@ class _CreateMainTaskState extends State<CreateMainTask> {
     int randomNumber = min + random.nextInt(max - min + 1);
     return randomNumber.toString().padLeft(9, '0');
   }
-
-
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
