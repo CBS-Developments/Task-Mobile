@@ -4,8 +4,17 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import '../components/test.dart';
+import '../createAccountPopUps/assignToPopUp.dart';
+import '../createAccountPopUps/beneficiaryPopUp.dart';
+import '../createAccountPopUps/categoryPopUp.dart';
+import '../createAccountPopUps/priorityPopUp.dart';
+import '../createAccountPopUps/sourceFromPopUp.dart';
+import '../methods/colors.dart';
+import '../methods/sizes.dart';
+import 'createMainTask.dart';
 
 class CreateSubTask extends StatefulWidget {
   final String username;
@@ -172,7 +181,466 @@ class _CreateSubTaskState extends State<CreateSubTask> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    String subTaskBeneficiary = '';
+    String subTaskDueDate = '';
+    String subTaskAssignToValue = ''; // Define assignToValue in the outer scope
+    String subTaskPriorityValue = ''; // Define priorityValue in the outer scope
+    String subTaskSourceFromValue = ''; // Define sourceFromValue in the outer scope
+    String subTaskCategoryValue = '';
+    String subTaskCategoryInt = '';
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Create Sub Task',
+          style: TextStyle(
+            color: AppColor.tealLog,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.black),
+        elevation: 1.0,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              color: Colors.white,
+              width: getPageWidth(context),
+              height: 640,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 15,),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: TextField(
+                              textInputAction: TextInputAction.next,
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
+                              controller: subTaskTitleController,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Task Title',
+                                hintText: 'Task Title',
+                              ),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: TextField(
+                              textInputAction: TextInputAction.done,
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
+                              controller: subTaskDescriptionController,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Description',
+                                hintText: 'Description',
+                              ),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15,),
+
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Container(
+                          height: 400,
+                          width: 500,
+                          color: Colors.grey.shade300,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 120,
+                                height: 320,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                                      child: Text(
+                                        'Beneficiary',
+                                        style: TextStyle(
+                                          fontSize:
+                                          14, // Updated font size to 14
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColor.tealLog,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                                      child: Text(
+                                        'Due Date',
+                                        style: TextStyle(
+                                          fontSize:
+                                          14, // Updated font size to 14
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColor.tealLog,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                                      child: Text(
+                                        'Assign To',
+                                        style: TextStyle(
+                                          fontSize:
+                                          14, // Updated font size to 14
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColor.tealLog,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                                      child: Text(
+                                        'Priority',
+                                        style: TextStyle(
+                                          fontSize:
+                                          14, // Updated font size to 14
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColor.tealLog,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                                      child: Text(
+                                        'Source From', // Updated text here
+                                        style: TextStyle(
+                                          fontSize:
+                                          14, // Updated font size to 14
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColor.tealLog,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                                      child: Text(
+                                        'Task Category',
+                                        style: TextStyle(
+                                          fontSize:
+                                          14, // Updated font size to 14
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColor.tealLog,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const VerticalDivider(
+                                thickness: 2,
+                              ),
+
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Consumer<BeneficiaryState>(
+                                    builder: (context, beneficiaryState, child) {
+                                      subTaskBeneficiary = beneficiaryState.value ?? 'DefaultBeneficiary'; // Set beneficiaryValue based on state
+
+                                      return TextButton(
+                                        onPressed: () {
+                                          beneficiaryPopupMenu(context, beneficiaryState);
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              subTaskBeneficiary,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            const Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Icon(
+                                                Icons.keyboard_arrow_down_rounded,
+                                                color: Colors.black,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+
+                                  Consumer<DueDateState>(
+                                    builder: (context, dueDateState, child) {
+                                      subTaskDueDate = dueDateState.selectedDate != null
+                                          ? DateFormat('yyyy-MM-dd').format(dueDateState.selectedDate!)
+                                          : 'Due date';
+
+                                      return TextButton(
+                                        onPressed: () {
+
+                                          showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime(2023),
+                                            lastDate: DateTime(2030),
+                                          ).then((pickedDate) {
+                                            if (pickedDate != null) {
+                                              dueDateState.selectedDate = pickedDate;
+                                              print(dueDateState.selectedDate);
+                                            }
+                                          });
+                                          // Your logic for dueDate popup menu
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              subTaskDueDate,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            const Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Icon(
+                                                Icons.keyboard_arrow_down_rounded,
+                                                color: Colors.black,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  Consumer<AssignToState>(
+                                    builder: (context, assignToState, child) {
+                                      subTaskAssignToValue = assignToState.value ?? 'Assign To';
+
+                                      return TextButton(
+                                        onPressed: () {
+                                          assignToPopupMenu(context, assignToState);
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              subTaskAssignToValue,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            const Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Icon(
+                                                Icons.keyboard_arrow_down_rounded,
+                                                color: Colors.black,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  Consumer<PriorityState>(
+                                    builder: (context, priorityState, child) {
+                                      subTaskPriorityValue = priorityState.value ?? 'Priority';
+
+                                      return TextButton(
+                                        onPressed: () {
+                                          priorityPopupMenu(context, priorityState);
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              subTaskPriorityValue,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            const Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Icon(
+                                                Icons.keyboard_arrow_down_rounded,
+                                                color: Colors.black,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  Consumer<SourceFromState>(
+                                    builder: (context, sourceFromState, child) {
+                                      subTaskSourceFromValue = sourceFromState.value ?? 'Source From';
+
+                                      return TextButton(
+                                        onPressed: () {
+                                          sourceFromPopupMenu(context, sourceFromState);
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              subTaskSourceFromValue,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            const Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Icon(
+                                                Icons.keyboard_arrow_down_rounded,
+                                                color: Colors.black,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  Consumer<CategoryState>(
+                                    builder: (context, categoryState, child) {
+                                      subTaskCategoryValue = categoryState.value ?? 'Category';
+                                      subTaskCategoryInt = categoryState.selectedIndex.toString();
+
+                                      return TextButton(
+                                        onPressed: () {
+                                          categoryPopupMenu(context, categoryState);
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              subTaskCategoryValue,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            const Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Icon(
+                                                Icons.keyboard_arrow_down_rounded,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 400,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    height: 40,
+                    width: 140,
+                    padding:
+                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        createSubTask(context,
+                            subTaskBeneficiary: subTaskBeneficiary,
+                            subTaskPriority: subTaskPriorityValue,
+                            subTaskDueDate: subTaskDueDate,
+                            subTaskSourceFrom: subTaskSourceFromValue,
+                            subTaskAssignTo: subTaskAssignToValue,
+                            subTaskCategoryName: subTaskCategoryValue,
+                            subTaskCategory: subTaskCategoryInt);
+                        Navigator.of(context).pop();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: AppColor.loginF,
+                        backgroundColor: Colors.lightBlue.shade50,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              5), // Rounded corners
+                        ),
+                      ),
+                      child: const Text(
+                        'Create',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 40,
+                    width: 140,
+                    padding:
+                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: AppColor.loginF,
+                        backgroundColor: Colors.lightBlue.shade50,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              5), // Rounded corners
+                        ),
+                      ),
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.redAccent),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
 

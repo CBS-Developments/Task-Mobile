@@ -36,6 +36,9 @@ void assignToPopupMenu(BuildContext context, AssignToState assignToState) {
     'Shahiru',
     'Dinethri',
     'Damith',
+    'Sulakshana',
+    'Samadhi',
+    'Sanjana',
     // Add your "Assign To" items here
   ];
 
