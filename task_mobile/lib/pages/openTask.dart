@@ -292,22 +292,22 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
   void handleCategoryNavigation() {
     switch (widget.task.category) {
       case "0":
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TaxationMainTask()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const TaxationMainTask()));
         break;
       case "1":
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TalentMain()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const TalentMain()));
         break;
       case "2":
-        Navigator.push(context, MaterialPageRoute(builder: (context) => FinanceMain()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const FinanceMain()));
         break;
       case "3":
-        Navigator.push(context, MaterialPageRoute(builder: (context) => AuditMain()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const AuditMain()));
         break;
       case "4":
-        Navigator.push(context, MaterialPageRoute(builder: (context) => SecretarialMain()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const SecretarialMain()));
         break;
       case "5":
-        Navigator.push(context, MaterialPageRoute(builder: (context) => DevelopmentMain()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const DevelopmentMain()));
         break;
       default:
         snackBar(context, "Unknown Category", Colors.red);
@@ -578,31 +578,50 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align children to the start and end of the row
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SelectableText(
-                    widget.task.taskTitle,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold
-                    ),
-                  ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align children to the start and end of the row
                     children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.edit, color: Colors.black, size: 20),
+                      SelectableText(
+                        widget.task.taskTitle,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold
+                        ),
                       ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.delete, color: Colors.red, size: 20),
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.edit, color: Colors.black, size: 20),
+                          ),
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.delete, color: Colors.red, size: 20),
+                          ),
+                        ],
                       ),
+
                     ],
                   ),
+                  SelectableText(
+                    widget.task.taskId,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+
+
                 ],
               ),
+
             ),
           ),
         ],
