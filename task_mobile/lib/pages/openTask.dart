@@ -680,12 +680,12 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                           'Start',
                                           style: TextStyle(
                                               fontSize: 14,
-                                              color: AppColor.drawerLight),
+                                            color: AppColor.tealLog,),
                                         ),
                                       ),
                                       Icon(
                                         Icons.arrow_forward,
-                                        color: AppColor.drawerLight,
+                                        color: AppColor.tealLog,
                                         size: 15,
                                       ),
                                       Padding(
@@ -698,7 +698,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                           'Due',
                                           style: TextStyle(
                                               fontSize: 14,
-                                              color: AppColor.drawerLight),
+                                            color: AppColor.tealLog,),
                                         ),
                                       ),
                                     ],
@@ -710,7 +710,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                       'Company',
                                       style: TextStyle(
                                           fontSize: 14,
-                                          color: AppColor.drawerLight),
+                                        color: AppColor.tealLog,),
                                     ),
                                   ),
                                   Padding(
@@ -720,7 +720,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                       'Assign To',
                                       style: TextStyle(
                                           fontSize: 14,
-                                          color: AppColor.drawerLight),
+                                        color: AppColor.tealLog,),
                                     ),
                                   ),
                                   Padding(
@@ -730,7 +730,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                       'Priority',
                                       style: TextStyle(
                                           fontSize: 14,
-                                          color: AppColor.drawerLight),
+                                        color: AppColor.tealLog,),
                                     ),
                                   ),
                                   Padding(
@@ -740,7 +740,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                       'Status',
                                       style: TextStyle(
                                           fontSize: 14,
-                                          color: AppColor.drawerLight),
+                                        color: AppColor.tealLog,),
                                     ),
                                   ),
                                   Padding(
@@ -750,7 +750,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                       'Created By',
                                       style: TextStyle(
                                           fontSize: 14,
-                                          color: AppColor.drawerLight),
+                                        color: AppColor.tealLog,),
                                     ),
                                   ),
 
@@ -916,7 +916,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                         child: const Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Text(
-                            'Add Sub Task',
+                            'Create Sub Task',
                             style: TextStyle(
                                 fontSize: 14, color: Colors.green),
                           ),
