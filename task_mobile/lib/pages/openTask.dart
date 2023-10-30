@@ -761,7 +761,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                               thickness: 2,
                             ),
                             SizedBox(
-                              height: 160,
+                              height: 328,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -808,7 +808,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        left: 18, bottom: 8),
+                                        left: 18, bottom: 8, top: 4),
                                     child: Text(
                                       widget.task.company,
                                       style: const TextStyle(
@@ -819,7 +819,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        left: 18, bottom: 8),
+                                        left: 18, bottom: 8, top: 4),
                                     child: Text(
                                       widget.task.assignTo,
                                       style: const TextStyle(
@@ -830,7 +830,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        left: 18, bottom: 8),
+                                        left: 18, bottom: 8, top: 4),
                                     child: Text(
                                       widget.task.taskTypeName,
                                       style: const TextStyle(
@@ -841,7 +841,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        left: 18, bottom: 8),
+                                        left: 18, bottom: 8, top: 4),
                                     child: Text(
                                       widget.task.taskStatusName,
                                       style: const TextStyle(
@@ -852,7 +852,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        left: 18, bottom: 8),
+                                        left: 18, bottom: 8, top: 4),
                                     child: Text(
                                       widget.task.taskCreateBy,
                                       style: const TextStyle(
