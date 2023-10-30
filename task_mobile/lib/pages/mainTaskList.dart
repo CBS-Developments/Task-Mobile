@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_mobile/pages/openTask.dart';
 import 'dart:convert';
 
 import 'createMainTask.dart';
@@ -118,11 +119,29 @@ class _MainTaskListState extends State<MainTaskList> {
                   elevation: 2.0,
                   margin: EdgeInsets.all(10.0),
                   child: ListTile(
-                    title: Text(
-                      task.taskTitle,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
+                    title: Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OpenTaskPage(task: task,
+                                userRoleForDelete: userRole,
+                                userName: userName,
+                                firstName: firstName,
+                                lastName: lastName,),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          task.taskTitle,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
                     subtitle: Row(
