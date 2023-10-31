@@ -23,14 +23,18 @@ class CreateMainTask extends StatefulWidget {
   final String firstName;
   final String lastName;
 
-  const CreateMainTask({Key? key, required this.username, required this.firstName, required this.lastName}) : super(key: key);
+  const CreateMainTask(
+      {Key? key,
+      required this.username,
+      required this.firstName,
+      required this.lastName})
+      : super(key: key);
 
   @override
   State<CreateMainTask> createState() => _CreateMainTaskState();
 }
 
 class _CreateMainTaskState extends State<CreateMainTask> {
-
   String userName = "";
   String firstName = "";
   String lastName = "";
@@ -57,8 +61,8 @@ class _CreateMainTaskState extends State<CreateMainTask> {
 
   String generatedTaskId() {
     final random = Random();
-    int min = 1;                  // Smallest 9-digit number
-    int max = 999999999;          // Largest 9-digit number
+    int min = 1; // Smallest 9-digit number
+    int max = 999999999; // Largest 9-digit number
     int randomNumber = min + random.nextInt(max - min + 1);
     return randomNumber.toString().padLeft(9, '0');
   }
@@ -66,17 +70,17 @@ class _CreateMainTaskState extends State<CreateMainTask> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
-
   Future<void> createMainTask(
-      BuildContext context, {
-        required beneficiary,
-        required priority,
-        required due_date,
-        required sourceFrom,
-        required assignTo,
-        required categoryName,
-        required category,
-      }) async {
+    BuildContext context, {
+    required beneficiary,
+    required priority,
+    required due_date,
+    required sourceFrom,
+    required assignTo,
+    required categoryName,
+    required category,
+    required createBy,
+  }) async {
     // Validate input fields
     if (titleController.text.trim().isEmpty ||
         descriptionController.text.isEmpty) {
@@ -89,21 +93,26 @@ class _CreateMainTaskState extends State<CreateMainTask> {
     // If all validations pass, proceed with the registration
     var url = "http://dev.workspace.cbs.lk/mainTaskCreate.php";
 
-    String firstLetterFirstName = widget.firstName.isNotEmpty ? widget.firstName[0] : '';
-    String firstLetterLastName = widget.lastName.isNotEmpty ? widget.lastName[0] : '';
+    String firstLetterFirstName =
+        widget.firstName.isNotEmpty ? widget.firstName[0] : '';
+    String firstLetterLastName =
+        widget.lastName.isNotEmpty ? widget.lastName[0] : '';
     String geCategory = categoryName.substring(categoryName.length - 3);
-    String taskID = getCurrentMonth() + firstLetterFirstName + firstLetterLastName + geCategory + generatedTaskId();
-
+    String taskID = getCurrentMonth() +
+        firstLetterFirstName +
+        firstLetterLastName +
+        geCategory +
+        generatedTaskId();
 
     var data = {
       "task_id": taskID,
-      "task_title":  titleController.text,
+      "task_title": titleController.text,
       "task_type": '0',
       "task_type_name": priority,
       "due_date": due_date,
       "task_description": descriptionController.text,
       "task_create_by_id": widget.username,
-      "task_create_by": '${widget.firstName} ${widget.lastName}',
+      "task_create_by": createBy,
       "task_create_date": getCurrentDate(),
       "task_create_month": getCurrentMonth(),
       "task_created_timestamp": getCurrentDateTime(),
@@ -137,7 +146,6 @@ class _CreateMainTaskState extends State<CreateMainTask> {
       "category": category,
     };
 
-
     http.Response res = await http.post(
       Uri.parse(url),
       body: data,
@@ -151,10 +159,10 @@ class _CreateMainTaskState extends State<CreateMainTask> {
     if (res.statusCode.toString() == "200") {
       if (jsonDecode(res.body) == "true") {
         if (!mounted) return;
-        showSuccessSnackBar(context);// Show the success SnackBar
+        showSuccessSnackBar(context); // Show the success SnackBar
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>  MainTaskList()),
+          MaterialPageRoute(builder: (context) => MainTaskList()),
         );
       } else {
         if (!mounted) return;
@@ -173,7 +181,6 @@ class _CreateMainTaskState extends State<CreateMainTask> {
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
-
 
   void selectDate(
       BuildContext context, TextEditingController controller) async {
@@ -236,7 +243,9 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
-                    const SizedBox(height: 15,),
+                    const SizedBox(
+                      height: 15,
+                    ),
                     Row(
                       children: [
                         Expanded(
@@ -285,8 +294,9 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 15,),
-
+                    const SizedBox(
+                      height: 15,
+                    ),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Padding(
@@ -304,72 +314,78 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                                      padding: const EdgeInsets.only(
+                                          top: 10, left: 12, bottom: 20),
                                       child: Text(
                                         'Beneficiary',
                                         style: TextStyle(
                                           fontSize:
-                                          14, // Updated font size to 14
+                                              14, // Updated font size to 14
                                           fontWeight: FontWeight.bold,
                                           color: AppColor.tealLog,
                                         ),
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                                      padding: const EdgeInsets.only(
+                                          top: 10, left: 12, bottom: 20),
                                       child: Text(
                                         'Due Date',
                                         style: TextStyle(
                                           fontSize:
-                                          14, // Updated font size to 14
+                                              14, // Updated font size to 14
                                           fontWeight: FontWeight.bold,
                                           color: AppColor.tealLog,
                                         ),
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                                      padding: const EdgeInsets.only(
+                                          top: 10, left: 12, bottom: 20),
                                       child: Text(
                                         'Assign To',
                                         style: TextStyle(
                                           fontSize:
-                                          14, // Updated font size to 14
+                                              14, // Updated font size to 14
                                           fontWeight: FontWeight.bold,
                                           color: AppColor.tealLog,
                                         ),
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                                      padding: const EdgeInsets.only(
+                                          top: 10, left: 12, bottom: 20),
                                       child: Text(
                                         'Priority',
                                         style: TextStyle(
                                           fontSize:
-                                          14, // Updated font size to 14
+                                              14, // Updated font size to 14
                                           fontWeight: FontWeight.bold,
                                           color: AppColor.tealLog,
                                         ),
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                                      padding: const EdgeInsets.only(
+                                          top: 10, left: 12, bottom: 20),
                                       child: Text(
                                         'Source From', // Updated text here
                                         style: TextStyle(
                                           fontSize:
-                                          14, // Updated font size to 14
+                                              14, // Updated font size to 14
                                           fontWeight: FontWeight.bold,
                                           color: AppColor.tealLog,
                                         ),
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 10, left: 12, bottom: 20),
+                                      padding: const EdgeInsets.only(
+                                          top: 10, left: 12, bottom: 20),
                                       child: Text(
                                         'Task Category',
                                         style: TextStyle(
                                           fontSize:
-                                          14, // Updated font size to 14
+                                              14, // Updated font size to 14
                                           fontWeight: FontWeight.bold,
                                           color: AppColor.tealLog,
                                         ),
@@ -381,17 +397,19 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                               const VerticalDivider(
                                 thickness: 2,
                               ),
-
-                               Column(
+                              Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Consumer<BeneficiaryState>(
-                                    builder: (context, beneficiaryState, child) {
-                                      beneficiary = beneficiaryState.value ?? 'DefaultBeneficiary'; // Set beneficiaryValue based on state
+                                    builder:
+                                        (context, beneficiaryState, child) {
+                                      beneficiary = beneficiaryState.value ??
+                                          'DefaultBeneficiary'; // Set beneficiaryValue based on state
 
                                       return TextButton(
                                         onPressed: () {
-                                          beneficiaryPopupMenu(context, beneficiaryState);
+                                          beneficiaryPopupMenu(
+                                              context, beneficiaryState);
                                         },
                                         child: Row(
                                           children: [
@@ -406,7 +424,8 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                                             const Padding(
                                               padding: EdgeInsets.all(8.0),
                                               child: Icon(
-                                                Icons.keyboard_arrow_down_rounded,
+                                                Icons
+                                                    .keyboard_arrow_down_rounded,
                                                 color: Colors.black,
                                               ),
                                             )
@@ -415,16 +434,16 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                                       );
                                     },
                                   ),
-
                                   Consumer<DueDateState>(
                                     builder: (context, dueDateState, child) {
-                                      dueDate = dueDateState.selectedDate != null
-                                          ? DateFormat('yyyy-MM-dd').format(dueDateState.selectedDate!)
-                                          : 'Due date';
+                                      dueDate =
+                                          dueDateState.selectedDate != null
+                                              ? DateFormat('yyyy-MM-dd').format(
+                                                  dueDateState.selectedDate!)
+                                              : 'Due date';
 
                                       return TextButton(
                                         onPressed: () {
-
                                           showDatePicker(
                                             context: context,
                                             initialDate: DateTime.now(),
@@ -432,7 +451,8 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                                             lastDate: DateTime(2030),
                                           ).then((pickedDate) {
                                             if (pickedDate != null) {
-                                              dueDateState.selectedDate = pickedDate;
+                                              dueDateState.selectedDate =
+                                                  pickedDate;
                                               print(dueDateState.selectedDate);
                                             }
                                           });
@@ -451,7 +471,8 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                                             const Padding(
                                               padding: EdgeInsets.all(8.0),
                                               child: Icon(
-                                                Icons.keyboard_arrow_down_rounded,
+                                                Icons
+                                                    .keyboard_arrow_down_rounded,
                                                 color: Colors.black,
                                               ),
                                             )
@@ -462,11 +483,13 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                                   ),
                                   Consumer<AssignToState>(
                                     builder: (context, assignToState, child) {
-                                      assignToValue = assignToState.value ?? 'Assign To';
+                                      assignToValue =
+                                          assignToState.value ?? 'Assign To';
 
                                       return TextButton(
                                         onPressed: () {
-                                          assignToPopupMenu(context, assignToState);
+                                          assignToPopupMenu(
+                                              context, assignToState);
                                         },
                                         child: Row(
                                           children: [
@@ -481,7 +504,8 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                                             const Padding(
                                               padding: EdgeInsets.all(8.0),
                                               child: Icon(
-                                                Icons.keyboard_arrow_down_rounded,
+                                                Icons
+                                                    .keyboard_arrow_down_rounded,
                                                 color: Colors.black,
                                               ),
                                             )
@@ -492,11 +516,13 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                                   ),
                                   Consumer<PriorityState>(
                                     builder: (context, priorityState, child) {
-                                      priorityValue = priorityState.value ?? 'Priority';
+                                      priorityValue =
+                                          priorityState.value ?? 'Priority';
 
                                       return TextButton(
                                         onPressed: () {
-                                          priorityPopupMenu(context, priorityState);
+                                          priorityPopupMenu(
+                                              context, priorityState);
                                         },
                                         child: Row(
                                           children: [
@@ -511,7 +537,8 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                                             const Padding(
                                               padding: EdgeInsets.all(8.0),
                                               child: Icon(
-                                                Icons.keyboard_arrow_down_rounded,
+                                                Icons
+                                                    .keyboard_arrow_down_rounded,
                                                 color: Colors.black,
                                               ),
                                             )
@@ -522,11 +549,13 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                                   ),
                                   Consumer<SourceFromState>(
                                     builder: (context, sourceFromState, child) {
-                                      sourceFromValue = sourceFromState.value ?? 'Source From';
+                                      sourceFromValue = sourceFromState.value ??
+                                          'Source From';
 
                                       return TextButton(
                                         onPressed: () {
-                                          sourceFromPopupMenu(context, sourceFromState);
+                                          sourceFromPopupMenu(
+                                              context, sourceFromState);
                                         },
                                         child: Row(
                                           children: [
@@ -541,7 +570,8 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                                             const Padding(
                                               padding: EdgeInsets.all(8.0),
                                               child: Icon(
-                                                Icons.keyboard_arrow_down_rounded,
+                                                Icons
+                                                    .keyboard_arrow_down_rounded,
                                                 color: Colors.black,
                                               ),
                                             )
@@ -552,12 +582,15 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                                   ),
                                   Consumer<CategoryState>(
                                     builder: (context, categoryState, child) {
-                                      categoryValue = categoryState.value ?? 'Category';
-                                      categoryInt = categoryState.selectedIndex.toString();
+                                      categoryValue =
+                                          categoryState.value ?? 'Category';
+                                      categoryInt = categoryState.selectedIndex
+                                          .toString();
 
                                       return TextButton(
                                         onPressed: () {
-                                          categoryPopupMenu(context, categoryState);
+                                          categoryPopupMenu(
+                                              context, categoryState);
                                         },
                                         child: Row(
                                           children: [
@@ -572,7 +605,8 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                                             const Padding(
                                               padding: EdgeInsets.all(8.0),
                                               child: Icon(
-                                                Icons.keyboard_arrow_down_rounded,
+                                                Icons
+                                                    .keyboard_arrow_down_rounded,
                                                 color: Colors.black,
                                               ),
                                             ),
@@ -583,7 +617,6 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                                   ),
                                 ],
                               ),
-
                             ],
                           ),
                         ),
@@ -601,8 +634,7 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                   Container(
                     height: 40,
                     width: 140,
-                    padding:
-                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: ElevatedButton(
                       onPressed: () {
                         createMainTask(context,
@@ -610,14 +642,17 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                             priority: priorityValue,
                             due_date: dueDate,
                             sourceFrom: sourceFromValue,
-                            assignTo: assignToValue, categoryName: categoryValue, category: categoryInt);
+                            assignTo: assignToValue,
+                            categoryName: categoryValue,
+                            category: categoryInt,
+                            createBy: '${widget.firstName} ${widget.lastName}');
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: AppColor.loginF,
                         backgroundColor: Colors.lightBlue.shade50,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              5), // Rounded corners
+                          borderRadius:
+                              BorderRadius.circular(5), // Rounded corners
                         ),
                       ),
                       child: const Text(
@@ -631,8 +666,7 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                   Container(
                     height: 40,
                     width: 140,
-                    padding:
-                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -641,8 +675,8 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                         foregroundColor: AppColor.loginF,
                         backgroundColor: Colors.lightBlue.shade50,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              5), // Rounded corners
+                          borderRadius:
+                              BorderRadius.circular(5), // Rounded corners
                         ),
                       ),
                       child: const Text(
@@ -656,17 +690,13 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                 ],
               ),
             )
-
-           
-            
-
           ],
         ),
       ),
-
     );
   }
 }
+
 class DueDateState extends ChangeNotifier {
   DateTime? _selectedDate;
 
