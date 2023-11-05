@@ -564,11 +564,11 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Open Task',
+        title:  SelectableText(
+          widget.task.taskTitle,
           style: TextStyle(
             color: Colors.black,
-            fontSize: 22,
+            fontSize: 15,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -584,67 +584,64 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align children to the start and end of the row
-                    children: [
-                      SelectableText(
-                        widget.task.taskTitle,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align children to the start and end of the row
+                      children: [
+                        SelectableText(
+                          widget.task.taskId,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.black87,
+                          ),
                         ),
-                      ),
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const EditMainTask(
-                                          // currentTitle:
-                                          // widget.task.taskTitle,
-                                          // currentDescription: widget
-                                          //     .task.task_description,
-                                          // currentBeneficiary:
-                                          // widget.task.company,
-                                          // currentDueDate:
-                                          // widget.task.dueDate,
-                                          // currentAssignTo:
-                                          // widget.task.assignTo,
-                                          // currentPriority:
-                                          // widget.task.taskTypeName,
-                                          // currentSourceFrom:
-                                          // widget.task.sourceFrom,
-                                          // currentCategory:
-                                          // widget.task.category_name,
-                                          // taskID: widget.task.taskId,
-                                          // userName: userName,
-                                          // firstName: firstName,
+                        SizedBox(width: 80,),
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const EditMainTask(
+                                            // currentTitle:
+                                            // widget.task.taskTitle,
+                                            // currentDescription: widget
+                                            //     .task.task_description,
+                                            // currentBeneficiary:
+                                            // widget.task.company,
+                                            // currentDueDate:
+                                            // widget.task.dueDate,
+                                            // currentAssignTo:
+                                            // widget.task.assignTo,
+                                            // currentPriority:
+                                            // widget.task.taskTypeName,
+                                            // currentSourceFrom:
+                                            // widget.task.sourceFrom,
+                                            // currentCategory:
+                                            // widget.task.category_name,
+                                            // taskID: widget.task.taskId,
+                                            // userName: userName,
+                                            // firstName: firstName,
 
-                                        )),
-                              );
-                            },
-                            icon: const Icon(Icons.edit, color: Colors.black, size: 20),
-                          ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.delete, color: Colors.red, size: 20),
-                          ),
-                        ],
-                      ),
+                                          )),
+                                );
+                              },
+                              icon: const Icon(Icons.edit, color: Colors.black, size: 20),
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.delete, color: Colors.red, size: 20),
+                            ),
+                          ],
+                        ),
 
-                    ],
-                  ),
-                  SelectableText(
-                    widget.task.taskId,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.black87,
+                      ],
                     ),
                   ),
+
                   const SizedBox(
                     height: 15,
                   ),

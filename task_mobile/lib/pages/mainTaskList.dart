@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_mobile/pages/openTask.dart';
+import 'package:task_mobile/pages/subTaskList.dart';
 import 'dart:convert';
 
 import 'createMainTask.dart';
 import 'createSubTask.dart';
 
 class MainTaskList extends StatefulWidget {
-
-  // const MainTaskList({required Key key}) : super(key: key);
+  //const MainTaskList({required Key key}) : super(key: key);
 
   @override
   State<MainTaskList> createState() => _MainTaskListState();
@@ -200,35 +200,30 @@ class _MainTaskListState extends State<MainTaskList> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: SelectableText('$taskTitle',
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 18
           ),),
           content: SelectableText(
               'Task ID: ${task.taskId}\n\nAssign To: ${task.assignTo}\n\nTask Description: ${task.task_description}'), // Customize the content as needed
           actions: <Widget>[
-            // TextButton(
-            //   child: const Text(
-            //     'Create Sub Task',
-            //     style: TextStyle(color: Colors.teal),
-            //   ),
-            //   onPressed: () async {
-            //     SharedPreferences prefs = await SharedPreferences.getInstance();
-            //     prefs.setString('main_task_id', task.taskId);
-            //     prefs.setString('main_task_title', task.taskTitle);
-            //     prefs.setString('intent_from', "main_dashboard");
-            //     if (!mounted) return;
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //           builder: (context) =>  CreateSubTask(username: userName,
-            //             firstName: firstName,
-            //             lastName: lastName,
-            //             mainTaskId: task.taskId,
-            //             task: task, userRole: userRole,
-            //             )),
-            //     );
-            //   },
-            // ),
+              TextButton(
+              child: const Text(
+                'Sub Task',
+                style: TextStyle(color: Colors.teal),
+              ),
+              onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setString('main_task_id', task.taskId);
+                prefs.setString('main_task_title', task.taskTitle);
+                prefs.setString('intent_from', "main_dashboard");
+                if (!mounted) return;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>  SubTaskList(mainTaskId:  task.taskId)),
+                );
+              },
+            ),
             // TextButton(
             //   child: const Text(
             //     'Edit Main Task',
