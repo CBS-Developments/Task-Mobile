@@ -1,10 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../components/test.dart';
-
 
 class SubTaskList extends StatefulWidget {
   final String mainTaskId;
@@ -24,16 +21,19 @@ class _SubTaskListState extends State<SubTaskList> {
 
   List<Task> subTaskList = []; // Initialize subtask list
 
-
   @override
   void initState() {
     super.initState();
     print('mainTaskId passed: ${widget.mainTaskId}');
-    getSubTaskListByMainTaskId(widget.mainTaskId);
-    loadData();
+    loadDataAndFetchSubTasks();
   }
 
-  void loadData() async {
+  Future<void> loadDataAndFetchSubTasks() async {
+    await loadData(); // Wait for loadData to complete
+    await getSubTaskListByMainTaskId(widget.mainTaskId); // Wait for data retrieval
+  }
+
+  Future<void> loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       userName = prefs.getString('user_name') ?? "";
@@ -42,7 +42,7 @@ class _SubTaskListState extends State<SubTaskList> {
       phone = prefs.getString('phone') ?? "";
       userRole = prefs.getString('user_role') ?? "";
     });
-    print('User Role In Sub Table: $userRole');
+    print('User Role: $userRole');
   }
 
   Future<void> getSubTaskListByMainTaskId(String mainTaskId) async {
@@ -72,6 +72,7 @@ class _SubTaskListState extends State<SubTaskList> {
 
         subTaskList.sort((a, b) => b.dueDate.compareTo(a.dueDate));
       });
+      print("SubTaskList: $subTaskList");
     } else {
       throw Exception('Failed to load subtasks from API');
     }
@@ -146,7 +147,19 @@ class _SubTaskListState extends State<SubTaskList> {
                         IconButton(
                           icon: Icon(Icons.menu_open_rounded, color: Colors.teal),
                           onPressed: () {
-                            // _openInfoDialog(task, task.taskTitle);
+                            // Open subtask details here
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => OpenSubTaskNew(
+                            //       task: subTask,
+                            //       userRoleForDelete: userRole,
+                            //       userName: userName,
+                            //       firstName: firstName,
+                            //       lastName: lastName,
+                            //     ),
+                            //   ),
+                            // );
                           },
                         ),
                       ],
@@ -156,7 +169,6 @@ class _SubTaskListState extends State<SubTaskList> {
               },
             ),
           )
-
         ],
       ),
     );

@@ -220,7 +220,7 @@ class _MainTaskListState extends State<MainTaskList> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>  SubTaskList(mainTaskId:  task.taskId)),
+                      builder: (context) =>  SubTaskList(mainTaskId: task.taskId)),
                 );
               },
             ),
