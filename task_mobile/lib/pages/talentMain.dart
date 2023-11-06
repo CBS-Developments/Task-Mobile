@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'createMainTask.dart';
 import 'createSubTask.dart';
 import 'AllmainTaskList.dart';
+import 'openTask.dart';
 
 class TalentMain extends StatefulWidget {
   const TalentMain({Key? key}) : super(key: key);
@@ -51,7 +52,7 @@ class _TalentMainState extends State<TalentMain> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Taxation',
+          'Talent Management',
           style: TextStyle(
             color: Colors.black,
             fontSize: 22,
@@ -134,11 +135,29 @@ class _TalentMainState extends State<TalentMain> {
                   elevation: 2.0,
                   margin: EdgeInsets.all(10.0),
                   child: ListTile(
-                    title: Text(
-                      task.taskTitle,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
+                    title: Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OpenTaskPage(task: task,
+                                userRoleForDelete: userRole,
+                                userName: userName,
+                                firstName: firstName,
+                                lastName: lastName,),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          task.taskTitle,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
                     subtitle: Row(
@@ -157,16 +176,11 @@ class _TalentMainState extends State<TalentMain> {
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // IconButton(
-                        //   icon: Icon(Icons.edit, color: Colors.blue),
-                        //   onPressed: () {
-                        //
-                        //   },
-                        // ),
+                        // Add a new button to open a dialog
                         IconButton(
-                          icon: Icon(Icons.delete, color: Colors.red),
+                          icon: Icon(Icons.menu_open_rounded, color: Colors.teal),
                           onPressed: () {
-
+                            _openInfoDialog(task, task.taskTitle);
                           },
                         ),
                       ],
@@ -184,10 +198,8 @@ class _TalentMainState extends State<TalentMain> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const CreateMainTask(
-                username: '',
-                firstName: '',
-                lastName: '',
+              builder: (context) => CreateMainTask(
+                lastName: lastName, username: userName, firstName: firstName,
               ),
             ),
           );
@@ -197,7 +209,32 @@ class _TalentMainState extends State<TalentMain> {
       ),
     );
   }
-
+  void _openInfoDialog(MainTask task, var taskTitle) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: SelectableText('$taskTitle',
+            style: const TextStyle(
+                fontSize: 18
+            ),),
+          content: SelectableText(
+              'Task ID: ${task.taskId}\n\nAssign To: ${task.assignTo}\n\nTask Description: ${task.task_description}'), // Customize the content as needed
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: Colors.black),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
   Future<void> getTaskList() async {
     mainTaskList.clear();
     var data = {};
