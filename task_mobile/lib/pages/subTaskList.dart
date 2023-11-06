@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_mobile/pages/createSubTask.dart';
 
 class SubTaskList extends StatefulWidget {
   final String mainTaskId;
+  final MainTask task;
 
-  const SubTaskList({Key? key, required this.mainTaskId}) : super(key: key);
+  const SubTaskList({Key? key, required this.mainTaskId, required this.task}) : super(key: key);
 
   @override
   State<SubTaskList> createState() => _SubTaskListState();
@@ -82,11 +84,11 @@ class _SubTaskListState extends State<SubTaskList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Sub Tasks',
+        title: SelectableText(
+          widget.task.taskTitle,
           style: TextStyle(
             color: Colors.black,
-            fontSize: 22,
+            fontSize: 15,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -96,20 +98,6 @@ class _SubTaskListState extends State<SubTaskList> {
       ),
       body: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Text(
-                  'Sub Task Title',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                  ),
-                ),
-              ],
-            ),
-          ),
           Expanded(
             child: ListView.builder(
               itemCount: subTaskList.length,

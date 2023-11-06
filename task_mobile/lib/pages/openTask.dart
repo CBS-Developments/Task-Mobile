@@ -7,7 +7,7 @@ import 'package:task_mobile/pages/auditMain.dart';
 import 'package:task_mobile/pages/companySecretarialMain.dart';
 import 'package:task_mobile/pages/developmentMain.dart';
 import 'package:task_mobile/pages/financeMain.dart';
-import 'package:task_mobile/pages/mainTaskList.dart';
+import 'package:task_mobile/pages/AllmainTaskList.dart';
 import 'package:task_mobile/pages/talentMain.dart';
 import 'package:task_mobile/pages/taxationMain.dart';
 
