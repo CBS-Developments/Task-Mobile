@@ -52,7 +52,7 @@ class _DevelopmentMainState extends State<DevelopmentMain> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Taxation',
+          'Developments',
           style: TextStyle(
             color: Colors.black,
             fontSize: 22,
