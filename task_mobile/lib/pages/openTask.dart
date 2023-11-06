@@ -605,26 +605,26 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const EditMainTask(
-                                            // currentTitle:
-                                            // widget.task.taskTitle,
-                                            // currentDescription: widget
-                                            //     .task.task_description,
-                                            // currentBeneficiary:
-                                            // widget.task.company,
-                                            // currentDueDate:
-                                            // widget.task.dueDate,
-                                            // currentAssignTo:
-                                            // widget.task.assignTo,
-                                            // currentPriority:
-                                            // widget.task.taskTypeName,
-                                            // currentSourceFrom:
-                                            // widget.task.sourceFrom,
-                                            // currentCategory:
-                                            // widget.task.category_name,
-                                            // taskID: widget.task.taskId,
-                                            // userName: userName,
-                                            // firstName: firstName,
+                                           EditMainTask(
+                                            currentTitle:
+                                            widget.task.taskTitle,
+                                            currentDescription: widget
+                                                .task.task_description,
+                                            currentBeneficiary:
+                                            widget.task.company,
+                                            currentDueDate:
+                                            widget.task.dueDate,
+                                            currentAssignTo:
+                                            widget.task.assignTo,
+                                            currentPriority:
+                                            widget.task.taskTypeName,
+                                            currentSourceFrom:
+                                            widget.task.sourceFrom,
+                                            currentCategory:
+                                            widget.task.category_name,
+                                            taskID: widget.task.taskId,
+                                            userName: userName,
+                                            firstName: firstName,
 
                                           )),
                                 );
