@@ -3,18 +3,19 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'createMainTask.dart';
-import 'createSubTask.dart';
-import 'openTask.dart';
+import '../pages/createMainTask.dart';
+import '../pages/createSubTask.dart';
+import 'AllmainTaskList.dart';
+import '../pages/openTask.dart';
 
-class AuditMain extends StatefulWidget {
-  const AuditMain({Key? key}) : super(key: key);
+class TalentMain extends StatefulWidget {
+  const TalentMain({Key? key}) : super(key: key);
 
   @override
-  State<AuditMain> createState() => _AuditMainState();
+  State<TalentMain> createState() => _TalentMainState();
 }
 
-class _AuditMainState extends State<AuditMain> {
+class _TalentMainState extends State<TalentMain> {
 
 
   List<MainTask> mainTaskList = [];
@@ -51,7 +52,7 @@ class _AuditMainState extends State<AuditMain> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Audit & Assurance',
+          'Talent Management',
           style: TextStyle(
             color: Colors.black,
             fontSize: 22,
@@ -234,12 +235,11 @@ class _AuditMainState extends State<AuditMain> {
       },
     );
   }
-
   Future<void> getTaskList() async {
     mainTaskList.clear();
     var data = {};
 
-    const url = "http://dev.workspace.cbs.lk/mainTaskListAudit.php";
+    const url = "http://dev.workspace.cbs.lk/mainTaskListTalent.php";
     http.Response res = await http.post(
       Uri.parse(url),
       body: data,

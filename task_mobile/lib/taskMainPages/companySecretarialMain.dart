@@ -3,19 +3,19 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'createMainTask.dart';
-import 'createSubTask.dart';
+import '../pages/createMainTask.dart';
+import '../pages/createSubTask.dart';
 import 'AllmainTaskList.dart';
-import 'openTask.dart';
+import '../pages/openTask.dart';
 
-class DevelopmentMain extends StatefulWidget {
-  const DevelopmentMain({Key? key}) : super(key: key);
+class SecretarialMain extends StatefulWidget {
+  const SecretarialMain({Key? key}) : super(key: key);
 
   @override
-  State<DevelopmentMain> createState() => _DevelopmentMainState();
+  State<SecretarialMain> createState() => _SecretarialMainState();
 }
 
-class _DevelopmentMainState extends State<DevelopmentMain> {
+class _SecretarialMainState extends State<SecretarialMain> {
 
 
   List<MainTask> mainTaskList = [];
@@ -52,7 +52,7 @@ class _DevelopmentMainState extends State<DevelopmentMain> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Developments',
+          'Company Secretarial',
           style: TextStyle(
             color: Colors.black,
             fontSize: 22,
@@ -240,7 +240,7 @@ class _DevelopmentMainState extends State<DevelopmentMain> {
     mainTaskList.clear();
     var data = {};
 
-    const url = "http://dev.workspace.cbs.lk/mainTaskListDeveloment.php";
+    const url = "http://dev.workspace.cbs.lk/mainTaskListSecretarial.php";
     http.Response res = await http.post(
       Uri.parse(url),
       body: data,

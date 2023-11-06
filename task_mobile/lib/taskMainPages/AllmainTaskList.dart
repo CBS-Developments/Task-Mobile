@@ -1,25 +1,23 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_mobile/pages/openTask.dart';
+import 'package:task_mobile/pages/subTaskList.dart';
+import 'dart:convert';
 
-import 'createMainTask.dart';
-import 'createSubTask.dart';
-import 'AllmainTaskList.dart';
-import 'openTask.dart';
+import '../pages/createMainTask.dart';
+import '../pages/createSubTask.dart';
 
-class TalentMain extends StatefulWidget {
-  const TalentMain({Key? key}) : super(key: key);
+class MainTaskList extends StatefulWidget {
+  //const MainTaskList({required Key key}) : super(key: key);
 
   @override
-  State<TalentMain> createState() => _TalentMainState();
+  State<MainTaskList> createState() => _MainTaskListState();
 }
 
-class _TalentMainState extends State<TalentMain> {
-
+class _MainTaskListState extends State<MainTaskList> {
 
   List<MainTask> mainTaskList = [];
-  List<MainTask> searchResultAsMainTaskList = [];
   TextEditingController taskListController = TextEditingController();
   String userName = "";
   String firstName = "";
@@ -27,24 +25,10 @@ class _TalentMainState extends State<TalentMain> {
   String phone = "";
   String userRole = "";
 
-
   @override
   void initState() {
     super.initState();
     getTaskList();
-    loadData();
-  }
-
-  void loadData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      userName = prefs.getString('user_name') ?? "";
-      firstName = prefs.getString('first_name') ?? "";
-      lastName = prefs.getString('last_name') ?? "";
-      phone = prefs.getString('phone') ?? "";
-      userRole = prefs.getString('user_role') ?? "";
-    });
-    print('User Role In Table: $userRole');
   }
 
   @override
@@ -52,7 +36,7 @@ class _TalentMainState extends State<TalentMain> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Talent Management',
+          'All Tasks',
           style: TextStyle(
             color: Colors.black,
             fontSize: 22,
@@ -110,7 +94,7 @@ class _TalentMainState extends State<TalentMain> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey.shade400),
-                        borderRadius: BorderRadius.circular(5.0),
+                        //borderRadius: BorderRadius circular(5.0),
                       ),
                       fillColor: Colors.white,
                       filled: true,
@@ -190,7 +174,6 @@ class _TalentMainState extends State<TalentMain> {
               },
             ),
           ),
-
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -204,20 +187,22 @@ class _TalentMainState extends State<TalentMain> {
             ),
           );
         },
-        backgroundColor: Colors.teal, // Use the actual color, e.g., Colors.teal
+        backgroundColor: Colors.teal,
         child: const Icon(Icons.add),
       ),
     );
   }
+
+  // Method to open an info dialog
   void _openInfoDialog(MainTask task, var taskTitle) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: SelectableText('$taskTitle',
-            style: const TextStyle(
-                fontSize: 18
-            ),),
+          style: const TextStyle(
+            fontSize: 18
+          ),),
           content: SelectableText(
               'Task ID: ${task.taskId}\n\nAssign To: ${task.assignTo}\n\nTask Description: ${task.task_description}'), // Customize the content as needed
           actions: <Widget>[
@@ -235,11 +220,12 @@ class _TalentMainState extends State<TalentMain> {
       },
     );
   }
+
   Future<void> getTaskList() async {
     mainTaskList.clear();
     var data = {};
 
-    const url = "http://dev.workspace.cbs.lk/mainTaskListTalent.php";
+    const url = "http://dev.workspace.cbs.lk/mainTaskList.php";
     http.Response res = await http.post(
       Uri.parse(url),
       body: data,
@@ -255,19 +241,12 @@ class _TalentMainState extends State<TalentMain> {
         for (Map<String, dynamic> details in responseJson) {
           mainTaskList.add(MainTask.fromJson(details));
         }
-        mainTaskList.sort((a, b) =>
-            b.taskCreatedTimestamp.compareTo(a.taskCreatedTimestamp));
-
-        // Count tasks with taskStatus = 0
-        int pendingTaskCount = mainTaskList.where((task) => task.taskStatus == "0").length;
-        int inProgressTaskCount = mainTaskList.where((task) => task.taskStatus == "1").length;
-        int allTaskCount = mainTaskList.length;
-        print("Pending Task: $pendingTaskCount");
-        print("All Task: $allTaskCount");
-        print("In Progress Task: $inProgressTaskCount");
+        mainTaskList.sort(
+            (a, b) => b.taskCreatedTimestamp.compareTo(a.taskCreatedTimestamp));
       });
     } else {
       throw Exception('Failed to load jobs from API');
     }
   }
 }
+

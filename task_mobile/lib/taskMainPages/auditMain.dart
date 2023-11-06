@@ -3,19 +3,18 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'createMainTask.dart';
-import 'createSubTask.dart';
-import 'AllmainTaskList.dart';
-import 'openTask.dart';
+import '../pages/createMainTask.dart';
+import '../pages/createSubTask.dart';
+import '../pages/openTask.dart';
 
-class FinanceMain extends StatefulWidget {
-  const FinanceMain({Key? key}) : super(key: key);
+class AuditMain extends StatefulWidget {
+  const AuditMain({Key? key}) : super(key: key);
 
   @override
-  State<FinanceMain> createState() => _FinanceMainState();
+  State<AuditMain> createState() => _AuditMainState();
 }
 
-class _FinanceMainState extends State<FinanceMain> {
+class _AuditMainState extends State<AuditMain> {
 
 
   List<MainTask> mainTaskList = [];
@@ -52,7 +51,7 @@ class _FinanceMainState extends State<FinanceMain> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Finance & Accounting',
+          'Audit & Assurance',
           style: TextStyle(
             color: Colors.black,
             fontSize: 22,
@@ -240,7 +239,7 @@ class _FinanceMainState extends State<FinanceMain> {
     mainTaskList.clear();
     var data = {};
 
-    const url = "http://dev.workspace.cbs.lk/mainTaskListFinance.php";
+    const url = "http://dev.workspace.cbs.lk/mainTaskListAudit.php";
     http.Response res = await http.post(
       Uri.parse(url),
       body: data,

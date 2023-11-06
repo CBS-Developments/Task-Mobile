@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_mobile/pages/subTaskList.dart';
-import 'package:task_mobile/pages/talentMain.dart';
-import 'package:task_mobile/pages/taxationMain.dart';
+import 'package:task_mobile/taskMainPages/talentMain.dart';
+import 'package:task_mobile/taskMainPages/taxationMain.dart';
 
 import '../components/test.dart';
 import '../methods/colors.dart';
-import 'AllmainTaskList.dart';
-import 'auditMain.dart';
-import 'companySecretarialMain.dart';
+import '../taskMainPages/AllmainTaskList.dart';
+import '../taskMainPages/auditMain.dart';
+import '../taskMainPages/companySecretarialMain.dart';
 import 'createSubTask.dart';
-import 'developmentMain.dart';
+import '../taskMainPages/developmentMain.dart';
 import 'editSubTask.dart';
-import 'financeMain.dart';
+import '../taskMainPages/financeMain.dart';
 
 class OpenSubTaskPage extends StatefulWidget {
   final String userRoleForDelete;

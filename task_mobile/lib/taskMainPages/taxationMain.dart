@@ -3,20 +3,19 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'createMainTask.dart';
-import 'createSubTask.dart';
+import '../pages/createMainTask.dart';
+import '../pages/createSubTask.dart';
 import 'AllmainTaskList.dart';
-import 'openTask.dart';
+import '../pages/openTask.dart';
 
-class SecretarialMain extends StatefulWidget {
-  const SecretarialMain({Key? key}) : super(key: key);
+class TaxationMainTask extends StatefulWidget {
+  const TaxationMainTask({Key? key}) : super(key: key);
 
   @override
-  State<SecretarialMain> createState() => _SecretarialMainState();
+  State<TaxationMainTask> createState() => _TaxationMainTaskState();
 }
 
-class _SecretarialMainState extends State<SecretarialMain> {
-
+class _TaxationMainTaskState extends State<TaxationMainTask> {
 
   List<MainTask> mainTaskList = [];
   List<MainTask> searchResultAsMainTaskList = [];
@@ -52,7 +51,7 @@ class _SecretarialMainState extends State<SecretarialMain> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Company Secretarial',
+          'Taxation',
           style: TextStyle(
             color: Colors.black,
             fontSize: 22,
@@ -240,7 +239,7 @@ class _SecretarialMainState extends State<SecretarialMain> {
     mainTaskList.clear();
     var data = {};
 
-    const url = "http://dev.workspace.cbs.lk/mainTaskListSecretarial.php";
+    const url = "http://dev.workspace.cbs.lk/mainTaskListTaxation.php";
     http.Response res = await http.post(
       Uri.parse(url),
       body: data,
@@ -271,4 +270,5 @@ class _SecretarialMainState extends State<SecretarialMain> {
       throw Exception('Failed to load jobs from API');
     }
   }
+
 }
