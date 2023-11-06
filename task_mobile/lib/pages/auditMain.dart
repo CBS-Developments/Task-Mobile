@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'createMainTask.dart';
 import 'createSubTask.dart';
+import 'openTask.dart';
 
 class AuditMain extends StatefulWidget {
   const AuditMain({Key? key}) : super(key: key);
@@ -50,7 +51,7 @@ class _AuditMainState extends State<AuditMain> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Taxation',
+          'Audit & Assurance',
           style: TextStyle(
             color: Colors.black,
             fontSize: 22,
@@ -133,11 +134,29 @@ class _AuditMainState extends State<AuditMain> {
                   elevation: 2.0,
                   margin: EdgeInsets.all(10.0),
                   child: ListTile(
-                    title: Text(
-                      task.taskTitle,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
+                    title: Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OpenTaskPage(task: task,
+                                userRoleForDelete: userRole,
+                                userName: userName,
+                                firstName: firstName,
+                                lastName: lastName,),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          task.taskTitle,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
                     subtitle: Row(
@@ -156,16 +175,11 @@ class _AuditMainState extends State<AuditMain> {
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // IconButton(
-                        //   icon: Icon(Icons.edit, color: Colors.blue),
-                        //   onPressed: () {
-                        //
-                        //   },
-                        // ),
+                        // Add a new button to open a dialog
                         IconButton(
-                          icon: Icon(Icons.delete, color: Colors.red),
+                          icon: Icon(Icons.menu_open_rounded, color: Colors.teal),
                           onPressed: () {
-
+                            _openInfoDialog(task, task.taskTitle);
                           },
                         ),
                       ],
@@ -183,10 +197,8 @@ class _AuditMainState extends State<AuditMain> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const CreateMainTask(
-                username: '',
-                firstName: '',
-                lastName: '',
+              builder: (context) => CreateMainTask(
+                lastName: lastName, username: userName, firstName: firstName,
               ),
             ),
           );
@@ -194,6 +206,32 @@ class _AuditMainState extends State<AuditMain> {
         backgroundColor: Colors.teal, // Use the actual color, e.g., Colors.teal
         child: const Icon(Icons.add),
       ),
+    );
+  }
+  void _openInfoDialog(MainTask task, var taskTitle) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: SelectableText('$taskTitle',
+            style: const TextStyle(
+                fontSize: 18
+            ),),
+          content: SelectableText(
+              'Task ID: ${task.taskId}\n\nAssign To: ${task.assignTo}\n\nTask Description: ${task.task_description}'), // Customize the content as needed
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: Colors.black),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
