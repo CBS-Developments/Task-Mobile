@@ -8,6 +8,7 @@ import 'package:task_mobile/pages/companySecretarialMain.dart';
 import 'package:task_mobile/pages/developmentMain.dart';
 import 'package:task_mobile/pages/financeMain.dart';
 import 'package:task_mobile/pages/AllmainTaskList.dart';
+import 'package:task_mobile/pages/subTaskList.dart';
 import 'package:task_mobile/pages/talentMain.dart';
 import 'package:task_mobile/pages/taxationMain.dart';
 
@@ -596,9 +597,22 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                             color: Colors.black87,
                           ),
                         ),
-                        SizedBox(width: 80,),
+                        SizedBox(width: 35,),
                         Row(
                           children: [
+                            IconButton(onPressed: () async {
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                              prefs.setString('main_task_id', widget.task.taskId);
+                              prefs.setString('main_task_title', widget.task.taskTitle);
+                              prefs.setString('intent_from', "main_dashboard");
+                              if (!mounted) return;
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>  SubTaskList(mainTaskId: widget.task.taskId, task: widget.task,)),
+                              );
+                            },
+                              icon: const Icon(Icons.account_tree_rounded, color: Colors.black, size: 20),),
                             IconButton(
                               onPressed: () {
                                 Navigator.push(

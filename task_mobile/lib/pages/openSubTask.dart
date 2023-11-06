@@ -14,6 +14,7 @@ import 'auditMain.dart';
 import 'companySecretarialMain.dart';
 import 'createSubTask.dart';
 import 'developmentMain.dart';
+import 'editSubTask.dart';
 import 'financeMain.dart';
 
 class OpenSubTaskPage extends StatefulWidget {
@@ -589,33 +590,31 @@ class _OpenSubTaskPageState extends State<OpenSubTaskPage> {
                           children: [
                             IconButton(
                               onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) =>
-                                //           EditMainTask(
-                                //             currentTitle:
-                                //             widget.task.taskTitle,
-                                //             currentDescription: widget
-                                //                 .task.task_description,
-                                //             currentBeneficiary:
-                                //             widget.task.company,
-                                //             currentDueDate:
-                                //             widget.task.dueDate,
-                                //             currentAssignTo:
-                                //             widget.task.assignTo,
-                                //             currentPriority:
-                                //             widget.task.taskTypeName,
-                                //             currentSourceFrom:
-                                //             widget.task.sourceFrom,
-                                //             currentCategory:
-                                //             widget.task.category_name,
-                                //             taskID: widget.task.taskId,
-                                //             userName: userName,
-                                //             firstName: firstName,
-                                //
-                                //           )),
-                                // );
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            EditSubTaskPage(
+                                                currentTitle:
+                                                task.taskTitle,
+                                                currentDescription: task
+                                                    .taskDescription,
+                                                currentBeneficiary:
+                                                task.company,
+                                                currentDueDate:
+                                                task.dueDate,
+                                                currentAssignTo:
+                                                task.assignTo,
+                                                currentPriority:
+                                                task.taskTypeName,
+                                                currentSourceFrom:
+                                                task.sourceFrom,
+                                                currentCategory:
+                                                task.categoryName,
+                                                taskID: task.taskId,
+                                                userName: userName,
+                                                firstName: firstName
+                                            )));
                               },
                               icon: const Icon(Icons.edit, color: Colors.black, size: 20),
                             ),

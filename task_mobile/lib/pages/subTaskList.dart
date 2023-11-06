@@ -148,31 +148,31 @@ class _SubTaskListState extends State<SubTaskList> {
                         ),
                       ],
                     ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // Add a new button to open a dialog
-                        IconButton(
-                          icon: const Icon(Icons.menu_open_rounded,
-                              color: Colors.teal),
-                          onPressed: () {
-                            // Open subtask details here
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => OpenSubTaskNew(
-                            //       task: subTask,
-                            //       userRoleForDelete: userRole,
-                            //       userName: userName,
-                            //       firstName: firstName,
-                            //       lastName: lastName,
-                            //     ),
-                            //   ),
-                            // );
-                          },
-                        ),
-                      ],
-                    ),
+                    // trailing: Row(
+                    //   mainAxisSize: MainAxisSize.min,
+                    //   children: [
+                    //     // Add a new button to open a dialog
+                    //     // IconButton(
+                    //     //   icon: const Icon(Icons.menu_open_rounded,
+                    //     //       color: Colors.teal),
+                    //     //   onPressed: () {
+                    //     //     // Open subtask details here
+                    //     //     // Navigator.push(
+                    //     //     //   context,
+                    //     //     //   MaterialPageRoute(
+                    //     //     //     builder: (context) => OpenSubTaskNew(
+                    //     //     //       task: subTask,
+                    //     //     //       userRoleForDelete: userRole,
+                    //     //     //       userName: userName,
+                    //     //     //       firstName: firstName,
+                    //     //     //       lastName: lastName,
+                    //     //     //     ),
+                    //     //     //   ),
+                    //     //     // );
+                    //     //   },
+                    //     // ),
+                    //   ],
+                    // ),
                   ),
                 );
               },
