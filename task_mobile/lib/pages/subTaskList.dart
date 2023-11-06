@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_mobile/pages/createSubTask.dart';
+import 'package:task_mobile/pages/openSubTask.dart';
 
 class SubTaskList extends StatefulWidget {
   final String mainTaskId;
   final MainTask task;
 
-  const SubTaskList({Key? key, required this.mainTaskId, required this.task}) : super(key: key);
+  const SubTaskList({Key? key, required this.mainTaskId, required this.task})
+      : super(key: key);
 
   @override
   State<SubTaskList> createState() => _SubTaskListState();
@@ -26,13 +28,14 @@ class _SubTaskListState extends State<SubTaskList> {
   @override
   void initState() {
     super.initState();
-    print('mainTaskId passed: ${widget.mainTaskId}');
+    //print('mainTaskId passed: ${widget.mainTaskId}');
     loadDataAndFetchSubTasks();
   }
 
   Future<void> loadDataAndFetchSubTasks() async {
     await loadData(); // Wait for loadData to complete
-    await getSubTaskListByMainTaskId(widget.mainTaskId); // Wait for data retrieval
+    await getSubTaskListByMainTaskId(
+        widget.mainTaskId); // Wait for data retrieval
   }
 
   Future<void> loadData() async {
@@ -44,7 +47,7 @@ class _SubTaskListState extends State<SubTaskList> {
       phone = prefs.getString('phone') ?? "";
       userRole = prefs.getString('user_role') ?? "";
     });
-    print('User Role: $userRole');
+    //print('User Role: $userRole');
   }
 
   Future<void> getSubTaskListByMainTaskId(String mainTaskId) async {
@@ -68,13 +71,13 @@ class _SubTaskListState extends State<SubTaskList> {
       final responseJson = json.decode(res.body);
       setState(() {
         for (Map<String, dynamic> details
-        in responseJson.cast<Map<String, dynamic>>()) {
+            in responseJson.cast<Map<String, dynamic>>()) {
           subTaskList.add(Task.fromJson(details));
         }
 
         subTaskList.sort((a, b) => b.dueDate.compareTo(a.dueDate));
       });
-      print("SubTaskList: $subTaskList");
+      // print("SubTaskList: $subTaskList");
     } else {
       throw Exception('Failed to load subtasks from API');
     }
@@ -86,7 +89,7 @@ class _SubTaskListState extends State<SubTaskList> {
       appBar: AppBar(
         title: SelectableText(
           widget.task.taskTitle,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 15,
             fontWeight: FontWeight.bold,
@@ -105,26 +108,43 @@ class _SubTaskListState extends State<SubTaskList> {
                 Task subTask = subTaskList[index];
                 return Card(
                   elevation: 2.0,
-                  margin: EdgeInsets.all(10.0),
+                  margin: const EdgeInsets.all(10.0),
                   child: ListTile(
-                    title: Text(
-                      subTask.taskTitle,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
+                    title: Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OpenSubTaskPage(
+                                    task: subTask,
+                                    userRoleForDelete: userRole,
+                                    userName: userName,
+                                    firstName: firstName,
+                                    lastName: lastName,
+                                  )));
+                        },
+                        child: Text(
+                          subTask.taskTitle,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
                     subtitle: Row(
                       children: [
-                        Text(
+                        const Text(
                           'Due Date:',
                           style: TextStyle(fontSize: 12),
                         ),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         Text(
                           subTask.dueDate,
-                          style: TextStyle(fontSize: 12),
+                          style: const TextStyle(fontSize: 12),
                         ),
                       ],
                     ),
@@ -133,7 +153,8 @@ class _SubTaskListState extends State<SubTaskList> {
                       children: [
                         // Add a new button to open a dialog
                         IconButton(
-                          icon: Icon(Icons.menu_open_rounded, color: Colors.teal),
+                          icon: const Icon(Icons.menu_open_rounded,
+                              color: Colors.teal),
                           onPressed: () {
                             // Open subtask details here
                             // Navigator.push(
