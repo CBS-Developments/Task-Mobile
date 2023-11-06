@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_mobile/dashboards/dashadmin.dart';
 
 import '../methods/sizes.dart';
+import '../pages/loginPage.dart';
 import '../pages/taskMainDash.dart';
 
 class DashboardPageUser extends StatefulWidget {
@@ -100,44 +102,62 @@ class _DashboardPageUserState extends State<DashboardPageUser> {
             width: getPageWidth(context),
             height: getPageHeight(context),
             child: Center(
-              child: Container(
-                width: 350,
-                height: 700,
-                color: Colors.white,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(onPressed: () {}, icon: const Icon(Icons.menu_rounded)),
-                        const SizedBox(width: 60),
-                        const Text(
-                          'Workspace',
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.deepPurple,
-                          ),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  width: 350,
+                  height: 700,
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            IconButton(onPressed: () {}, icon: const Icon(Icons.menu_rounded)),
+                            const SizedBox(width: 60),
+                            const Text(
+                              'Workspace',
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.deepPurple,
+                              ),
+                            ),
+                            const SizedBox(width: 60),
+                            IconButton(onPressed: () async {
+                              final prefs = await SharedPreferences.getInstance();
+                              prefs.remove("login_state"); // Remove the "login_state" key
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) {
+                                  return const LoginPage();
+                                }),
+                              );
+                            },
+                                icon: const Icon(Icons.logout))
+                          ],
                         ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const Divider(),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(5.0),
-                      child: GridView.count(
-                        crossAxisCount: 2,
-                        shrinkWrap: true,
-                        children: List.generate(4, (index) {
-                          return _buildContainer(index, context);
-                        }),
                       ),
-                    ),
-                  ],
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Divider(),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(5.0),
+                        child: GridView.count(
+                          crossAxisCount: 2,
+                          shrinkWrap: true,
+                          children: List.generate(4, (index) {
+                            return _buildContainer(index, context);
+                          }),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
