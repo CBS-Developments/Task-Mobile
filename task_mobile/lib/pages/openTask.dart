@@ -652,7 +652,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                       child: Container(
                         height: 380,
                         width: 500,
-                        color: Colors.grey.shade300,
+                        color: Colors.grey.shade100,
                         child: Row(
                           children: [
                             SizedBox(
@@ -677,6 +677,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                           'Start',
                                           style: TextStyle(
                                               fontSize: 14,
+                                            fontWeight: FontWeight.bold,
                                             color: AppColor.tealLog,),
                                         ),
                                       ),
@@ -695,6 +696,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                           'Due',
                                           style: TextStyle(
                                               fontSize: 14,
+                                            fontWeight: FontWeight.bold,
                                             color: AppColor.tealLog,),
                                         ),
                                       ),
@@ -707,6 +709,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                       'Company',
                                       style: TextStyle(
                                           fontSize: 14,
+                                        fontWeight: FontWeight.bold,
                                         color: AppColor.tealLog,),
                                     ),
                                   ),
@@ -717,6 +720,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                       'Assign To',
                                       style: TextStyle(
                                           fontSize: 14,
+                                        fontWeight: FontWeight.bold,
                                         color: AppColor.tealLog,),
                                     ),
                                   ),
@@ -727,6 +731,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                       'Priority',
                                       style: TextStyle(
                                           fontSize: 14,
+                                        fontWeight: FontWeight.bold,
                                         color: AppColor.tealLog,),
                                     ),
                                   ),
@@ -737,6 +742,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                       'Status',
                                       style: TextStyle(
                                           fontSize: 14,
+                                        fontWeight: FontWeight.bold,
                                         color: AppColor.tealLog,),
                                     ),
                                   ),
@@ -747,6 +753,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                       'Created By',
                                       style: TextStyle(
                                           fontSize: 14,
+                                        fontWeight: FontWeight.bold,
                                         color: AppColor.tealLog,),
                                     ),
                                   ),

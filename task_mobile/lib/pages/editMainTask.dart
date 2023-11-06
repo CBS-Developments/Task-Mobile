@@ -154,7 +154,7 @@ class _EditMainTaskState extends State<EditMainTask> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: SelectableText(
             widget.currentTitle,
           style: TextStyle(
             color: Colors.black,
@@ -222,7 +222,7 @@ class _EditMainTaskState extends State<EditMainTask> {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Container(
-                      width: 500,
+                      width: 700,
                       height: 380,
                       color: Colors.grey.shade100,
                       child: Row(
