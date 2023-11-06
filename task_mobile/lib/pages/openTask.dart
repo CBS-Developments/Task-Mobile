@@ -632,7 +632,12 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                               icon: const Icon(Icons.edit, color: Colors.black, size: 20),
                             ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                showDeleteConfirmationDialog(
+                                    context,
+                                    widget.userRoleForDelete,
+                                    widget.task.taskId);
+                              },
                               icon: const Icon(Icons.delete, color: Colors.red, size: 20),
                             ),
                           ],
@@ -652,7 +657,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                       child: Container(
                         height: 380,
                         width: 500,
-                        color: Colors.grey.shade100,
+                        color: Colors.grey.shade300,
                         child: Row(
                           children: [
                             SizedBox(

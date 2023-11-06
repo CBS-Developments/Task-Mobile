@@ -224,7 +224,7 @@ class _EditMainTaskState extends State<EditMainTask> {
                     child: Container(
                       width: 700,
                       height: 380,
-                      color: Colors.grey.shade100,
+                      color: Colors.grey.shade300,
                       child: Row(
                         children: [
                           SizedBox(
