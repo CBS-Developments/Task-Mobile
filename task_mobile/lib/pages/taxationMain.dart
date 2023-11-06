@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'createMainTask.dart';
 import 'createSubTask.dart';
 import 'AllmainTaskList.dart';
+import 'openTask.dart';
 
 class TaxationMainTask extends StatefulWidget {
   const TaxationMainTask({Key? key}) : super(key: key);
@@ -133,11 +134,29 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
                   elevation: 2.0,
                   margin: EdgeInsets.all(10.0),
                   child: ListTile(
-                    title: Text(
-                      task.taskTitle,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
+                    title: Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OpenTaskPage(task: task,
+                                userRoleForDelete: userRole,
+                                userName: userName,
+                                firstName: firstName,
+                                lastName: lastName,),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          task.taskTitle,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
                     subtitle: Row(
@@ -158,9 +177,9 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
                       children: [
                         // Add a new button to open a dialog
                         IconButton(
-                          icon: Icon(Icons.info, color: Colors.blue),
+                          icon: Icon(Icons.menu_open_rounded, color: Colors.teal),
                           onPressed: () {
-                            _openInfoDialog(task);
+                            _openInfoDialog(task, task.taskTitle);
                           },
                         ),
                       ],
@@ -178,10 +197,8 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const CreateMainTask(
-                username: '',
-                firstName: '',
-                lastName: '',
+              builder: (context) => CreateMainTask(
+                lastName: lastName, username: userName, firstName: firstName,
               ),
             ),
           );
@@ -191,20 +208,26 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
       ),
     );
   }
-  void _openInfoDialog(MainTask task) {
+  void _openInfoDialog(MainTask task, var taskTitle) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Task Information'),
-          content: Text(
-              'Task ID: ${task.taskId}\nDescription: ${task.task_description}'), // Customize the content as needed
-          actions: [
+          title: SelectableText('$taskTitle',
+            style: const TextStyle(
+                fontSize: 18
+            ),),
+          content: SelectableText(
+              'Task ID: ${task.taskId}\n\nAssign To: ${task.assignTo}\n\nTask Description: ${task.task_description}'), // Customize the content as needed
+          actions: <Widget>[
             TextButton(
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: Colors.black),
+              ),
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
               },
-              child: Text('Close'),
             ),
           ],
         );
