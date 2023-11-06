@@ -190,28 +190,30 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
             child: Center(
               child: Container(
                 width: 350,
-                height: 700,
+                height: 800,
                 color: Colors.white,
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(5.0),
-                      child: GridView.count(
-                        crossAxisCount: 2,
-                        shrinkWrap: true,
-                        children: List.generate(6, (index) {
-                          return _buildContainer(index, context);
-                        }),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 30,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20, // Adjust the spacing between the GridView and Text Button
-                    ),
-                    _buildTextButton(context), // Add the Text Button here
-                  ],
+                      Container(
+                        padding: const EdgeInsets.all(5.0),
+                        child: GridView.count(
+                          crossAxisCount: 2,
+                          shrinkWrap: true,
+                          children: List.generate(6, (index) {
+                            return _buildContainer(index, context);
+                          }),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20, // Adjust the spacing between the GridView and Text Button
+                      ),
+                      _buildTextButton(context), // Add the Text Button here
+                    ],
+                  ),
                 ),
               ),
             ),
