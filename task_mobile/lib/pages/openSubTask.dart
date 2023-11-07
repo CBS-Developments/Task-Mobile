@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_mobile/pages/subTaskComment.dart';
 import 'package:task_mobile/pages/subTaskList.dart';
 import 'package:task_mobile/taskMainPages/talentMain.dart';
 import 'package:task_mobile/taskMainPages/taxationMain.dart';
@@ -564,367 +565,389 @@ class _OpenSubTaskPageState extends State<OpenSubTaskPage> {
         iconTheme: const IconThemeData(color: Colors.black),
         elevation: 1.0,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SelectableText(
-                          '${task.taskId}',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black87,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SelectableText(
+                            '${task.taskId}',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black87,
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 80,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            EditSubTaskPage(
-                                                currentTitle:
-                                                task.taskTitle,
-                                                currentDescription: task
-                                                    .taskDescription,
-                                                currentBeneficiary:
-                                                task.company,
-                                                currentDueDate:
-                                                task.dueDate,
-                                                currentAssignTo:
-                                                task.assignTo,
-                                                currentPriority:
-                                                task.taskTypeName,
-                                                currentSourceFrom:
-                                                task.sourceFrom,
-                                                currentCategory:
-                                                task.categoryName,
-                                                taskID: task.taskId,
-                                                userName: userName,
-                                                firstName: firstName
-                                            )));
-                              },
-                              icon: const Icon(Icons.edit, color: Colors.black, size: 20),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                showDeleteConfirmationDialog(
-                                    context,
-                                    widget.userRoleForDelete,
-                                    widget.task.taskId);
-                              },
-                              icon: const Icon(Icons.delete, color: Colors.red, size: 20),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SelectableText(
-                      'Description: ${task.taskDescription}',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black87,
+                          SizedBox(width: 80,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              EditSubTaskPage(
+                                                  currentTitle:
+                                                  task.taskTitle,
+                                                  currentDescription: task
+                                                      .taskDescription,
+                                                  currentBeneficiary:
+                                                  task.company,
+                                                  currentDueDate:
+                                                  task.dueDate,
+                                                  currentAssignTo:
+                                                  task.assignTo,
+                                                  currentPriority:
+                                                  task.taskTypeName,
+                                                  currentSourceFrom:
+                                                  task.sourceFrom,
+                                                  currentCategory:
+                                                  task.categoryName,
+                                                  taskID: task.taskId,
+                                                  userName: userName,
+                                                  firstName: firstName
+                                              )));
+                                },
+                                icon: const Icon(Icons.edit, color: Colors.black, size: 20),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  showDeleteConfirmationDialog(
+                                      context,
+                                      widget.userRoleForDelete,
+                                      widget.task.taskId);
+                                },
+                                icon: const Icon(Icons.delete, color: Colors.red, size: 20),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Padding(
+                    Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 300,
-                        width: 500,
-                        color: Colors.grey.shade300,
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 120,
-                              height: 320,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.calendar_month_rounded,
-                                        size: 15,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 4,
-                                            bottom: 8,
-                                            top: 10,
-                                            right: 4),
-                                        child: Text(
-                                          'Start',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                            color: AppColor.tealLog,),
-                                        ),
-                                      ),
-                                      Icon(
-                                        Icons.arrow_forward,
-                                        color: AppColor.tealLog,
-                                        size: 15,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 4,
-                                            bottom: 8,
-                                            top: 10,
-                                            right: 4),
-                                        child: Text(
-                                          'Due',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                            color: AppColor.tealLog,),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 18, bottom: 8,   top: 4,),
-                                    child: Text(
-                                      'Company',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColor.tealLog,),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 18, bottom: 8, top: 4,),
-                                    child: Text(
-                                      'Assign To',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColor.tealLog,),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 18, bottom: 8, top: 4,),
-                                    child: Text(
-                                      'Priority',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColor.tealLog,),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 18, bottom: 8, top: 4,),
-                                    child: Text(
-                                      'Status',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColor.tealLog,),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 18, bottom: 8, top: 4,),
-                                    child: Text(
-                                      'Created By',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColor.tealLog,),
-                                    ),
-                                  ),
+                      child: SelectableText(
+                        'Description: ${task.taskDescription}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
 
-                                ],
-                              ),
-                            ),
-                            const VerticalDivider(
-                              thickness: 2,
-                            ),
-                            SizedBox(
-                              height: 320,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.calendar_month_rounded,
-                                        size: 15,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 4,
-                                            bottom: 8,
-                                            top: 10,
-                                            right: 4),
-                                        child: Text(
-                                          task.taskCreateDate,
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 300,
+                          width: 500,
+                          color: Colors.grey.shade300,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 120,
+                                height: 320,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.calendar_month_rounded,
+                                          size: 15,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 4,
+                                              bottom: 8,
+                                              top: 10,
+                                              right: 4),
+                                          child: Text(
+                                            'Start',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              color: AppColor.tealLog,),
                                           ),
                                         ),
-                                      ),
-                                      const Icon(
-                                        Icons.arrow_forward,
-                                        color: Colors.black,
-                                        size: 15,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 4,
-                                            bottom: 8,
-                                            top: 10,
-                                            right: 4),
-                                        child: Text(
-                                          task.dueDate,
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
+                                        Icon(
+                                          Icons.arrow_forward,
+                                          color: AppColor.tealLog,
+                                          size: 15,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 4,
+                                              bottom: 8,
+                                              top: 10,
+                                              right: 4),
+                                          child: Text(
+                                            'Due',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              color: AppColor.tealLog,),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 18, bottom: 8, top: 4),
-                                    child: Text(
-                                      task.company,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 18, bottom: 8,   top: 4,),
+                                      child: Text(
+                                        'Company',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColor.tealLog,),
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 18, bottom: 8, top: 4),
-                                    child: Text(
-                                      task.assignTo,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 18, bottom: 8, top: 4,),
+                                      child: Text(
+                                        'Assign To',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColor.tealLog,),
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 18, bottom: 8, top: 4),
-                                    child: Text(
-                                      task.taskTypeName,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 18, bottom: 8, top: 4,),
+                                      child: Text(
+                                        'Priority',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColor.tealLog,),
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 18, bottom: 8, top: 4),
-                                    child: Text(
-                                      task.taskStatusName,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 18, bottom: 8, top: 4,),
+                                      child: Text(
+                                        'Status',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColor.tealLog,),
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 18, bottom: 8, top: 4),
-                                    child: Text(
-                                      task.taskCreateBy,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 18, bottom: 8, top: 4,),
+                                      child: Text(
+                                        'Created By',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColor.tealLog,),
                                       ),
                                     ),
-                                  ),
-                                ],
+
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                              const VerticalDivider(
+                                thickness: 2,
+                              ),
+                              SizedBox(
+                                height: 320,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.calendar_month_rounded,
+                                          size: 15,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 4,
+                                              bottom: 8,
+                                              top: 10,
+                                              right: 4),
+                                          child: Text(
+                                            task.taskCreateDate,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                        const Icon(
+                                          Icons.arrow_forward,
+                                          color: Colors.black,
+                                          size: 15,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 4,
+                                              bottom: 8,
+                                              top: 10,
+                                              right: 4),
+                                          child: Text(
+                                            task.dueDate,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 18, bottom: 8, top: 4),
+                                      child: Text(
+                                        task.company,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 18, bottom: 8, top: 4),
+                                      child: Text(
+                                        task.assignTo,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 18, bottom: 8, top: 4),
+                                      child: Text(
+                                        task.taskTypeName,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 18, bottom: 8, top: 4),
+                                      child: Text(
+                                        task.taskStatusName,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 18, bottom: 8, top: 4),
+                                      child: Text(
+                                        task.taskCreateBy,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+
                         ),
 
                       ),
-
                     ),
-                  ),
-                  SizedBox(
-                    width: 480,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            if (widget.task.taskStatus == '0') {
-                              markInProgressSubTask(widget.task.taskId);
-                              // Handle 'Mark In Progress' action
-                            } else if (widget.task.taskStatus == '1') {
-                              completeSubTask(widget.task.taskId);
-                              // Handle 'Mark As Complete' action
-                            }
-                            // Add a condition for 'Completed' here if needed
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              widget.task.taskStatus == '0'
-                                  ? 'Mark In Progress'
-                                  : widget.task.taskStatus == '1'
-                                  ? 'Mark As Complete'
-                                  : widget.task.taskStatus == '2'
-                                  ? 'Completed'
-                                  : 'Unknown Status', // Handle other status values
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: widget.task.taskStatus == '0'
-                                    ? Colors.blueAccent
+                    SizedBox(
+                      width: 480,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              if (widget.task.taskStatus == '0') {
+                                markInProgressSubTask(widget.task.taskId);
+                                // Handle 'Mark In Progress' action
+                              } else if (widget.task.taskStatus == '1') {
+                                completeSubTask(widget.task.taskId);
+                                // Handle 'Mark As Complete' action
+                              }
+                              // Add a condition for 'Completed' here if needed
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                widget.task.taskStatus == '0'
+                                    ? 'Mark In Progress'
                                     : widget.task.taskStatus == '1'
-                                    ? Colors.redAccent
-                                    : Colors.green, // Change color for the 'Completed' status
+                                    ? 'Mark As Complete'
+                                    : widget.task.taskStatus == '2'
+                                    ? 'Completed'
+                                    : 'Unknown Status', // Handle other status values
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: widget.task.taskStatus == '0'
+                                      ? Colors.blueAccent
+                                      : widget.task.taskStatus == '1'
+                                      ? Colors.redAccent
+                                      : Colors.green, // Change color for the 'Completed' status
+                                ),
                               ),
                             ),
                           ),
-                        ),
 
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
 
-                ],
+                  ],
+                ),
+
+
               ),
 
-            ),
+            )
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => SubTaskComment(
+                  userName: widget.userName,
+                  firstName: widget.firstName,
+                  lastName: widget.lastName,
+                  userRoleForDelete: widget.userRoleForDelete,
+                  task: widget.task,
 
-          )
-        ],
+                )
+            ),
+          );
+        },
+        backgroundColor: Colors.teal, // Use the actual color, e.g., Colors.teal
+        child: const Icon(Icons.comment),
       ),
     );
   }
