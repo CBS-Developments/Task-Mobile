@@ -334,140 +334,144 @@ class _CommentsPageState extends State<CommentsPage> {
                 ],
               ),
             ),
-            Container(
-              width: 460,
-              height: 550,
-              color: Colors.white,
-              child: FutureBuilder<List<comment>>(
-                future: getCommentList(widget.task.taskId),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List<comment>? data = snapshot.data;
-                    return ListView.builder(
-                      itemCount: data!.length,
-                      itemBuilder: (context, index) {
-                        return SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              ListTile(
-                                title: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment
-                                      .spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        SelectableText(
-                                          data[index].commnt,
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors
-                                                  .blueAccent),
-                                        ),
-                                        SizedBox(
-                                          height: 2,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              data[index]
-                                                  .commentCreatedTimestamp,
-                                              style: TextStyle(
-                                                  fontSize: 10,
-                                                  color:
-                                                  Colors.grey),
-                                            ),
-                                            Text(
-                                              '    by: ',
-                                              style: TextStyle(
-                                                  fontSize: 10,
-                                                  color:
-                                                  Colors.grey),
-                                            ),
-                                            Text(
-                                              data[index]
-                                                  .commentCreateBy,
-                                              style: TextStyle(
-                                                  fontSize: 10,
-                                                  color:
-                                                  Colors.grey),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    IconButton(
-                                        onPressed: () {
-                                          showDeleteCommentConfirmation(context, data[index].commentId, data[index].commentCreateBy, '${widget.firstName} ${widget.lastName}');
-                                        },
-                                        icon: Icon(
-                                          Icons.delete_rounded,
-                                          color: Colors.redAccent,
-                                          size: 16,
-                                        ))
-                                  ],
+            SingleChildScrollView(
+              child: Container(
+                width: 460,
+                height: 550,
+                color: Colors.white,
+                child: FutureBuilder<List<comment>>(
+                  future: getCommentList(widget.task.taskId),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<comment>? data = snapshot.data;
+                      return ListView.builder(
+                        itemCount: data!.length,
+                        itemBuilder: (context, index) {
+                          return SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  title: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          SelectableText(
+                                            data[index].commnt,
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors
+                                                    .blueAccent),
+                                          ),
+                                          SizedBox(
+                                            height: 2,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                data[index]
+                                                    .commentCreatedTimestamp,
+                                                style: TextStyle(
+                                                    fontSize: 10,
+                                                    color:
+                                                    Colors.grey),
+                                              ),
+                                              Text(
+                                                '    by: ',
+                                                style: TextStyle(
+                                                    fontSize: 10,
+                                                    color:
+                                                    Colors.grey),
+                                              ),
+                                              Text(
+                                                data[index]
+                                                    .commentCreateBy,
+                                                style: TextStyle(
+                                                    fontSize: 10,
+                                                    color:
+                                                    Colors.grey),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      IconButton(
+                                          onPressed: () {
+                                            showDeleteCommentConfirmation(context, data[index].commentId, data[index].commentCreateBy, '${widget.firstName} ${widget.lastName}');
+                                          },
+                                          icon: Icon(
+                                            Icons.delete_rounded,
+                                            color: Colors.redAccent,
+                                            size: 16,
+                                          ))
+                                    ],
+                                  ),
+                                  // You can add more ListTile properties as needed
                                 ),
-                                // You can add more ListTile properties as needed
-                              ),
-                              Divider()
-                              // Add dividers or spacing as needed between ListTiles
-                              // Example: Adds a divider between ListTiles
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  } else if (snapshot.hasError) {
-                    return const Text("-Empty-");
-                  }
-                  return const Text("Loading...");
-                },
+                                Divider()
+                                // Add dividers or spacing as needed between ListTiles
+                                // Example: Adds a divider between ListTiles
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    } else if (snapshot.hasError) {
+                      return const Text("-Empty-");
+                    }
+                    return const Text("Loading...");
+                  },
+                ),
               ),
             ),
-            Container(
-              width: 460,
-              height: 50,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: mainTaskCommentController,
-                      textAlignVertical: TextAlignVertical.bottom,
-                      maxLines:
-                      3, // Adjust the number of lines as needed
-                      decoration: InputDecoration(
-                        fillColor: Colors.grey.shade300,
-                        hintText: 'Write a Comment...',
-                        helperStyle: TextStyle(
-                            color: Colors.grey.shade700,
-                            fontSize: 14),
-                        filled: true,
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: SizedBox(
+                width: 460,
+                height: 50,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: mainTaskCommentController,
+                        textAlignVertical: TextAlignVertical.bottom,
+                        maxLines:
+                        3, // Adjust the number of lines as needed
+                        decoration: InputDecoration(
+                          fillColor: Colors.grey.shade300,
+                          hintText: 'Write a Comment...',
+                          helperStyle: TextStyle(
+                              color: Colors.grey.shade700,
+                              fontSize: 14),
+                          filled: true,
+                        ),
                       ),
                     ),
-                  ),
-                  const Icon(Icons
-                      .attach_file_outlined),
-                  const SizedBox(
-                      width:
-                      5),
-                  IconButton(
-                    tooltip: 'Add Comment',
-                    onPressed: () {
-                      createMainTaskComment(context,
-                          userName: widget.userName,
-                          taskID: widget.task.taskId,
-                          firstName: widget.firstName,
-                          lastName: widget.lastName);
-                      //   getCommentList(widget.task.taskId);
-                    },
-                    icon: const Icon(
-                      Icons.arrow_forward_ios_outlined,
-                      color: Colors.blue,
+                    const Icon(Icons.attach_file),
+                    const SizedBox(
+                        width:
+                        5),
+                    IconButton(
+                      tooltip: 'Add Comment',
+                      onPressed: () {
+                        createMainTaskComment(context,
+                            userName: widget.userName,
+                            taskID: widget.task.taskId,
+                            firstName: widget.firstName,
+                            lastName: widget.lastName);
+                        //   getCommentList(widget.task.taskId);
+                      },
+                      icon: const Icon(
+                        Icons.send_rounded,
+                        color: Colors.teal,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             )
           ],
