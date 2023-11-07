@@ -609,7 +609,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>  SubTaskList(mainTaskId: widget.task.taskId, task: widget.task,)),
+                                    builder: (context) =>  SubTaskList(mainTaskId: widget.task.taskId, task: widget.task, userRoleForDelete: widget.userRoleForDelete,)),
                               );
                             },
                               icon: const Icon(Icons.account_tree_rounded, color: Colors.black, size: 20),),

@@ -8,8 +8,9 @@ import 'package:task_mobile/pages/openSubTask.dart';
 class SubTaskList extends StatefulWidget {
   final String mainTaskId;
   final MainTask task;
+  final String userRoleForDelete;
 
-  const SubTaskList({Key? key, required this.mainTaskId, required this.task})
+  const SubTaskList({Key? key, required this.mainTaskId, required this.task, required this.userRoleForDelete})
       : super(key: key);
 
   @override
@@ -179,6 +180,25 @@ class _SubTaskListState extends State<SubTaskList> {
             ),
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CreateSubTask(
+                username: userName,
+                firstName: firstName,
+                lastName: lastName,
+                mainTaskId: widget.task.taskId,
+                task: widget.task,
+                userRole: widget.userRoleForDelete,
+              ),
+            ),
+          );
+        },
+        backgroundColor: Colors.teal, // Use the actual color, e.g., Colors.teal
+        child: const Icon(Icons.add),
       ),
     );
   }
