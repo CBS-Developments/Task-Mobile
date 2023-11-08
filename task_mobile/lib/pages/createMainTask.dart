@@ -626,68 +626,72 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                 ),
               ),
             ),
-            SizedBox(
-              width: 400,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    height: 40,
-                    width: 140,
-                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        createMainTask(context,
-                            beneficiary: beneficiary,
-                            priority: priorityValue,
-                            due_date: dueDate,
-                            sourceFrom: sourceFromValue,
-                            assignTo: assignToValue,
-                            categoryName: categoryValue,
-                            category: categoryInt,
-                            createBy: '${widget.firstName} ${widget.lastName}');
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: AppColor.loginF,
-                        backgroundColor: Colors.lightBlue.shade50,
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(5), // Rounded corners
-                        ),
-                      ),
-                      child: const Text(
-                        'Create',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
+            SingleChildScrollView(
+              child: SizedBox(
+                width: 400,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SingleChildScrollView(
+                      child: Container(
+                        height: 40,
+                        width: 140,
+                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            createMainTask(context,
+                                beneficiary: beneficiary,
+                                priority: priorityValue,
+                                due_date: dueDate,
+                                sourceFrom: sourceFromValue,
+                                assignTo: assignToValue,
+                                categoryName: categoryValue,
+                                category: categoryInt,
+                                createBy: '${widget.firstName} ${widget.lastName}');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: AppColor.loginF,
+                            backgroundColor: Colors.lightBlue.shade50,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(5), // Rounded corners
+                            ),
+                          ),
+                          child: const Text(
+                            'Create',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Container(
-                    height: 40,
-                    width: 140,
-                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: AppColor.loginF,
-                        backgroundColor: Colors.lightBlue.shade50,
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(5), // Rounded corners
+                    Container(
+                      height: 40,
+                      width: 140,
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: AppColor.loginF,
+                          backgroundColor: Colors.lightBlue.shade50,
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(5), // Rounded corners
+                          ),
+                        ),
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.redAccent),
                         ),
                       ),
-                      child: const Text(
-                        'Cancel',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.redAccent),
-                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             )
           ],
