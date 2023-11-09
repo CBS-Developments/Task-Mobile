@@ -3,10 +3,10 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:task_mobile/pages/subTaskComment.dart';
-import 'package:task_mobile/pages/subTaskList.dart';
-import 'package:task_mobile/taskMainPages/talentMain.dart';
-import 'package:task_mobile/taskMainPages/taxationMain.dart';
+import 'package:Workspace_Lite/pages/subTaskComment.dart';
+import 'package:Workspace_Lite/pages/subTaskList.dart';
+import 'package:Workspace_Lite/taskMainPages/talentMain.dart';
+import 'package:Workspace_Lite/taskMainPages/taxationMain.dart';
 
 import '../components/test.dart';
 import '../methods/colors.dart';

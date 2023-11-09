@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:task_mobile/components/textField.dart';
-import 'package:task_mobile/methods/sizes.dart';
+import 'package:Workspace_Lite/components/textField.dart';
+import 'package:Workspace_Lite/methods/sizes.dart';
 
 import '../components/test.dart';
 import '../methods/colors.dart';

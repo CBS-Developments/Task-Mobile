@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:task_mobile/pages/openTask.dart';
-import 'package:task_mobile/pages/subTaskList.dart';
+import 'package:Workspace_Lite/pages/openTask.dart';
+import 'package:Workspace_Lite/pages/subTaskList.dart';
 import 'dart:convert';
 
 import '../pages/createMainTask.dart';

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:task_mobile/methods/colors.dart';
-import 'package:task_mobile/taskMainPages/auditMain.dart';
-import 'package:task_mobile/taskMainPages/companySecretarialMain.dart';
-import 'package:task_mobile/pages/createMainTask.dart';
-import 'package:task_mobile/taskMainPages/developmentMain.dart';
-import 'package:task_mobile/taskMainPages/financeMain.dart';
-import 'package:task_mobile/taskMainPages/AllmainTaskList.dart';
-import 'package:task_mobile/taskMainPages/talentMain.dart';
-import 'package:task_mobile/taskMainPages/taxationMain.dart';
+import 'package:Workspace_Lite/methods/colors.dart';
+import 'package:Workspace_Lite/taskMainPages/auditMain.dart';
+import 'package:Workspace_Lite/taskMainPages/companySecretarialMain.dart';
+import 'package:Workspace_Lite/pages/createMainTask.dart';
+import 'package:Workspace_Lite/taskMainPages/developmentMain.dart';
+import 'package:Workspace_Lite/taskMainPages/financeMain.dart';
+import 'package:Workspace_Lite/taskMainPages/AllmainTaskList.dart';
+import 'package:Workspace_Lite/taskMainPages/talentMain.dart';
+import 'package:Workspace_Lite/taskMainPages/taxationMain.dart';
 
 import '../methods/sizes.dart';
 

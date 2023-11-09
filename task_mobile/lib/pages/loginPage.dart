@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:task_mobile/components/textField.dart';
-import 'package:task_mobile/methods/sizes.dart';
+import 'package:Workspace_Lite/components/textField.dart';
+import 'package:Workspace_Lite/methods/sizes.dart';
 import 'package:http/http.dart' as http;
-import 'package:task_mobile/dashboards/dashMain.dart';
+import 'package:Workspace_Lite/dashboards/dashMain.dart';
 
 import '../components/test.dart';
 import '../dashboards/dashUser.dart';
@@ -104,6 +104,7 @@ class _LoginPageState extends State<LoginPage> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  const SizedBox(height: 20,),
                   const Text(
                     'Workspace',
                     style: TextStyle(
@@ -117,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const Divider(),
                   const SizedBox(
-                    height: 150,
+                    height: 100,
                   ),
                   TextFieldLogin(
                     topic: 'Email Address',

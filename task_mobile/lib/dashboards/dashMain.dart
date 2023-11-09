@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:task_mobile/dashboards/dashUser.dart';
-import 'package:task_mobile/dashboards/dashadmin.dart';
+import 'package:Workspace_Lite/dashboards/dashadmin.dart';
+
+import 'dashUser.dart';
 
 
 class DashMain extends StatelessWidget {

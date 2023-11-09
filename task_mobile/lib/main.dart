@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:task_mobile/dashboards/dashMain.dart';
-import 'package:task_mobile/pages/createMainTask.dart';
-import 'package:task_mobile/pages/loginPage.dart';
+import 'package:Workspace_Lite/dashboards/dashMain.dart';
+import 'package:Workspace_Lite/pages/createMainTask.dart';
+import 'package:Workspace_Lite/pages/loginPage.dart';
 
 import 'createAccountPopUps/assignToPopUp.dart';
 import 'createAccountPopUps/beneficiaryPopUp.dart';

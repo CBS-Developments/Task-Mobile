@@ -4,8 +4,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:task_mobile/methods/colors.dart';
-import 'package:task_mobile/taskMainPages/AllmainTaskList.dart';
+import 'package:Workspace_Lite/methods/colors.dart';
+import 'package:Workspace_Lite/taskMainPages/AllmainTaskList.dart';
 
 import '../components/test.dart';
 import 'package:http/http.dart' as http;
