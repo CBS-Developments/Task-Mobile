@@ -1,4 +1,4 @@
-package com.example.task_mobile
+package com.cbs.task_mobile
 
 import io.flutter.embedding.android.FlutterActivity
 
