@@ -175,7 +175,13 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Add a new button to open a dialog
+                        // IconButton(
+                        //   icon: Icon(Icons.flag, color: Colors.yellow),
+                        //   onPressed: () {
+                        //     // Add the functionality for the new icon here
+                        //     // For example, you can implement a different action or open a different dialog
+                        //   },
+                        // ),
                         IconButton(
                           icon: Icon(Icons.menu_open_rounded, color: Colors.teal),
                           onPressed: () {

@@ -190,7 +190,7 @@ class _DashboardPageUserState extends State<DashboardPageUser> {
                             child: GridView.count(
                               crossAxisCount: 2,
                               shrinkWrap: true,
-                              children: List.generate(4, (index) {
+                              children: List.generate(1, (index) {
                                 return _buildContainer(index, context);
                               }),
                             ),
