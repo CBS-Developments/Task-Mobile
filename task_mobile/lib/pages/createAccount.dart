@@ -129,14 +129,14 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     height: 10,
                   ),
 
-                  TextFieldLogin(topic: 'First name', controller: firstNameController, hintText: '', suficon: Icon(Icons.person)),
-                  TextFieldLogin(topic: 'Last Name', controller: lastNameController, hintText: '', suficon: Icon(Icons.person)),
-                  TextFieldLogin(topic: 'Work Email Address', controller: emailController, hintText: '', suficon: Icon(Icons.email)),
-                  TextFieldLogin(topic: 'Phone', controller: mobileNumberController, hintText: '', suficon: Icon(Icons.phone)),
-                  TextFieldLogin(topic: 'Company name', controller: companyController, hintText: '', suficon: Icon(Icons.home_work)),
-                  TextFieldLogin(topic: 'Designation', controller: designationController, hintText: '', suficon: Icon(Icons.add)),
-                  TextFieldLogin(topic: 'Employee Id', controller: empIDController, hintText: '', suficon: Icon(Icons.numbers_rounded)),
-                  TextFieldLogin(topic: 'Password', controller: passwordController, hintText: '', suficon: Icon(Icons.remove_red_eye)),
+                  TextFieldLoginPassword(topic: 'First name', controller: firstNameController, hintText: '', suficon: Icon(Icons.person)),
+                  TextFieldLoginPassword(topic: 'Last Name', controller: lastNameController, hintText: '', suficon: Icon(Icons.person)),
+                  TextFieldLoginPassword(topic: 'Work Email Address', controller: emailController, hintText: '', suficon: Icon(Icons.email)),
+                  TextFieldLoginPassword(topic: 'Phone', controller: mobileNumberController, hintText: '', suficon: Icon(Icons.phone)),
+                  TextFieldLoginPassword(topic: 'Company name', controller: companyController, hintText: '', suficon: Icon(Icons.home_work)),
+                  TextFieldLoginPassword(topic: 'Designation', controller: designationController, hintText: '', suficon: Icon(Icons.add)),
+                  TextFieldLoginPassword(topic: 'Employee Id', controller: empIDController, hintText: '', suficon: Icon(Icons.numbers_rounded)),
+                  TextFieldLoginPassword(topic: 'Password', controller: passwordController, hintText: '', suficon: Icon(Icons.remove_red_eye)),
 
                   SizedBox(
                     height: 10,

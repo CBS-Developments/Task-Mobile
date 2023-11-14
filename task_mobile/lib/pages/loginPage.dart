@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:Workspace_Lite/dashboards/dashMain.dart';
 
 import '../components/test.dart';
+import '../components/textField_email.dart';
 import '../dashboards/dashUser.dart';
 import '../methods/colors.dart';
 import 'createAccount.dart';
@@ -130,9 +131,8 @@ class _LoginPageState extends State<LoginPage> {
                       login(context);
                     },
                   ),
-                  TextFieldLogin(
+                  TextFieldLoginPassword(
                     topic: 'Password',
-                    obscureText: true,
                     controller: passwordController,
                     hintText: '',
                     suficon: const Icon(Icons.remove_red_eye_rounded),
@@ -141,6 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                       login(context);
                     },
                   ),
+
                   Padding(
                     padding: const EdgeInsets.only(left: 5),
                     child: Row(

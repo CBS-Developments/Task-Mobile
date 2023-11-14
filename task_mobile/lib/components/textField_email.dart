@@ -1,16 +1,15 @@
-
 import 'package:flutter/material.dart';
 
-class TextFieldLoginPassword extends StatefulWidget {
+class TextFieldLogin extends StatelessWidget {
   final String topic;
   final String hintText;
   final TextEditingController controller;
   final Icon suficon;
   final VoidCallback? onPressed;
   final ValueChanged<String>? onSubmitted;
-  final bool obscureText;
+  final bool obscureText; // Add the obscureText property
 
-  const TextFieldLoginPassword({
+  const TextFieldLogin({
     Key? key,
     required this.topic,
     required this.controller,
@@ -20,13 +19,6 @@ class TextFieldLoginPassword extends StatefulWidget {
     this.onSubmitted,
     this.obscureText = false,
   }) : super(key: key);
-
-  @override
-  _TextFieldLoginPasswordState createState() => _TextFieldLoginPasswordState();
-}
-
-class _TextFieldLoginPasswordState extends State<TextFieldLoginPassword> {
-  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +33,7 @@ class _TextFieldLoginPasswordState extends State<TextFieldLoginPassword> {
           Padding(
             padding: const EdgeInsets.all(5),
             child: Text(
-              widget.topic,
+              topic,
               style: const TextStyle(fontSize: 14),
             ),
           ),
@@ -49,9 +41,9 @@ class _TextFieldLoginPasswordState extends State<TextFieldLoginPassword> {
             width: 290,
             height: 50,
             child: TextFormField(
-              controller: widget.controller,
-              onFieldSubmitted: widget.onSubmitted,
-              obscureText: _obscureText,
+              controller: controller,
+              onFieldSubmitted: onSubmitted,
+              obscureText: obscureText, // Set obscureText property
               decoration: InputDecoration(
                 alignLabelWithHint: true,
                 enabledBorder: const OutlineInputBorder(
@@ -60,23 +52,14 @@ class _TextFieldLoginPasswordState extends State<TextFieldLoginPassword> {
                 focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black, width: 1.0),
                 ),
-                hintText: widget.hintText,
-                suffixIcon: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
-                    if (widget.onPressed != null) {
-                      widget.onPressed!();
-                    }
-                  },
-                  child: widget.suficon,
-                ),
+                hintText: hintText,
+                suffixIcon: suficon,
                 contentPadding: const EdgeInsets.all(5.0),
               ),
             ),
           ),
-          if (widget.onPressed != null) const Text(''),
+          if (onPressed != null)
+            const Text(''),
         ],
       ),
     );
