@@ -162,7 +162,8 @@ class _CreateSubTaskState extends State<CreateSubTask> {
     if (res.statusCode.toString() == "200") {
       if (jsonDecode(res.body) == "true") {
         if (!mounted) return;
-        showSuccessSnackBar(context); // Show the success SnackBar
+        showSuccessSnackBar(context);
+        addLog(context, taskId: taskID, taskName: subTaskTitleController.text, createBy: subTaskCreateBy, createByID: widget.username);// Show the success SnackBar
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => OpenTaskPage(task: widget.task, userRoleForDelete:  widget.userRole, userName: widget.username,
@@ -178,6 +179,56 @@ class _CreateSubTaskState extends State<CreateSubTask> {
       snackBar(context, "Error", Colors.yellow);
     }
   }
+
+  Future<void> addLog(BuildContext context,{
+    required taskId,
+    required taskName,
+    required createBy,
+    required createByID,
+  }) async {
+
+    // If all validations pass, proceed with the registration
+    var url = "http://dev.workspace.cbs.lk/addLog.php";
+
+    var data = {
+      "log_id": getCurrentDateTime(),
+      "task_id": taskId,
+      "task_name": taskName,
+      "log_summary": 'Created Sub Task',
+      "log_type": 'Created',
+      "log_create_by": createBy,
+      "log_create_by_id": createByID,
+      "log_create_by_date": getCurrentDate(),
+      "log_create_by_month": getCurrentMonth(),
+      "log_create_by_year": '',
+      "log_created_by_timestamp": getCurrentDateTime(),
+    };
+
+
+    http.Response res = await http.post(
+      Uri.parse(url),
+      body: data,
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      encoding: Encoding.getByName("utf-8"),
+    );
+
+    if (res.statusCode.toString() == "200") {
+      if (jsonDecode(res.body) == "true") {
+        if (!mounted) return;
+        print('Log added!!');
+      } else {
+        if (!mounted) return;
+        snackBar(context, "Error", Colors.red);
+      }
+    } else {
+      if (!mounted) return;
+      snackBar(context, "Error", Colors.redAccent);
+    }
+  }
+
 
   void showSuccessSnackBar(BuildContext context) {
     final snackBar = SnackBar(
