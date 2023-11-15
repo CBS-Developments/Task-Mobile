@@ -63,6 +63,12 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
     return formattedDate;
   }
 
+  String getCurrentMonth() {
+    final now = DateTime.now();
+    final formattedDate = DateFormat('yy-MM').format(now);
+    return formattedDate;
+  }
+
   Future<void> retrieverData() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
