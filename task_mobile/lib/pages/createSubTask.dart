@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:Workspace_Lite/pages/subTaskList.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -15,6 +16,7 @@ import '../createAccountPopUps/sourceFromPopUp.dart';
 import '../methods/colors.dart';
 import '../methods/sizes.dart';
 import 'createMainTask.dart';
+import 'openTask.dart';
 
 class CreateSubTask extends StatefulWidget {
   final String username;
@@ -161,12 +163,12 @@ class _CreateSubTaskState extends State<CreateSubTask> {
       if (jsonDecode(res.body) == "true") {
         if (!mounted) return;
         showSuccessSnackBar(context); // Show the success SnackBar
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => OpenTaskNew(task: widget.task, userRoleForDelete:  widget.userRole, userName: widget.username,
-        //     firstName: widget.firstName,
-        //     lastName:  widget.lastName,)),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => OpenTaskPage(task: widget.task, userRoleForDelete:  widget.userRole, userName: widget.username,
+            firstName: widget.firstName,
+            lastName:  widget.lastName,)),
+        );
       } else {
         if (!mounted) return;
         snackBar(context, "Error", Colors.red);
