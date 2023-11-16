@@ -47,6 +47,16 @@ class _FinanceMainState extends State<FinanceMain> {
     print('User Role In Table: $userRole');
   }
 
+  Color? _getColorForTaskTypeName(String taskTypeName) {
+    Map<String, Color> colorMap = {
+      'Top Urgent': Colors.red,
+      'Medium': Colors.blue,
+      'Regular': Colors.green,
+      'Low': Colors.yellow,
+    };
+    return colorMap.containsKey(taskTypeName) ? colorMap[taskTypeName] : Colors.grey;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -176,7 +186,12 @@ class _FinanceMainState extends State<FinanceMain> {
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Add a new button to open a dialog
+                        IconButton(
+                          icon: Icon(Icons.flag, color: _getColorForTaskTypeName(task.taskTypeName)),
+                          onPressed: () {
+                            // Handle onPressed action for the flag button
+                          },
+                        ),// Add a new button to open a dialog
                         IconButton(
                           icon: Icon(Icons.menu_open_rounded, color: Colors.teal),
                           onPressed: () {
