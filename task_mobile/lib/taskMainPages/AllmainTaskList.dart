@@ -16,7 +16,6 @@ class MainTaskList extends StatefulWidget {
 }
 
 class _MainTaskListState extends State<MainTaskList> {
-
   List<MainTask> mainTaskList = [];
   TextEditingController taskListController = TextEditingController();
   String userName = "";
@@ -126,11 +125,13 @@ class _MainTaskListState extends State<MainTaskList> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => OpenTaskPage(task: task,
+                              builder: (context) => OpenTaskPage(
+                                task: task,
                                 userRoleForDelete: userRole,
                                 userName: userName,
                                 firstName: firstName,
-                                lastName: lastName,),
+                                lastName: lastName,
+                              ),
                             ),
                           );
                         },
@@ -162,7 +163,8 @@ class _MainTaskListState extends State<MainTaskList> {
                       children: [
                         // Add a new button to open a dialog
                         IconButton(
-                          icon: Icon(Icons.menu_open_rounded, color: Colors.teal),
+                          icon:
+                              Icon(Icons.menu_open_rounded, color: Colors.teal),
                           onPressed: () {
                             _openInfoDialog(task, task.taskTitle);
                           },
@@ -182,7 +184,9 @@ class _MainTaskListState extends State<MainTaskList> {
             context,
             MaterialPageRoute(
               builder: (context) => CreateMainTask(
-                lastName: lastName, username: userName, firstName: firstName,
+                lastName: lastName,
+                username: userName,
+                firstName: firstName,
               ),
             ),
           );
@@ -199,10 +203,10 @@ class _MainTaskListState extends State<MainTaskList> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: SelectableText('$taskTitle',
-          style: const TextStyle(
-            fontSize: 18
-          ),),
+          title: SelectableText(
+            '$taskTitle',
+            style: const TextStyle(fontSize: 18),
+          ),
           content: SelectableText(
               'Task ID: ${task.taskId}\n\nAssign To: ${task.assignTo}\n\nTask Description: ${task.task_description}'), // Customize the content as needed
           actions: <Widget>[
@@ -249,4 +253,3 @@ class _MainTaskListState extends State<MainTaskList> {
     }
   }
 }
-
