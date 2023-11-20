@@ -128,7 +128,7 @@ class _TalentMainState extends State<TalentMain> {
                       ),
                       fillColor: Colors.white,
                       filled: true,
-                      hintText: 'Search',
+                      hintText: 'Search By Id',
                       hintStyle: TextStyle(
                         color: Colors.grey[500],
                         fontSize: 16,

@@ -127,7 +127,7 @@ class _AuditMainState extends State<AuditMain> {
                       ),
                       fillColor: Colors.white,
                       filled: true,
-                      hintText: 'Search',
+                      hintText: 'Search By Id',
                       hintStyle: TextStyle(
                         color: Colors.grey[500],
                         fontSize: 16,
