@@ -345,7 +345,7 @@ class _SubTaskCommentState extends State<SubTaskComment> {
       appBar: AppBar(
         title: SelectableText(
           widget.task.taskTitle,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 15,
             fontWeight: FontWeight.bold,
@@ -400,11 +400,11 @@ class _SubTaskCommentState extends State<SubTaskComment> {
                                         children: [
                                           SelectableText(
                                             data[index].commnt,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 14,
                                                 color: Colors.blueAccent),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 2,
                                           ),
                                           Row(
@@ -412,11 +412,11 @@ class _SubTaskCommentState extends State<SubTaskComment> {
                                               Text(
                                                 data[index]
                                                     .commentCreatedTimestamp,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontSize: 10,
                                                     color: Colors.grey),
                                               ),
-                                              Text(
+                                              const Text(
                                                 '    by: ',
                                                 style: TextStyle(
                                                     fontSize: 10,
@@ -424,7 +424,7 @@ class _SubTaskCommentState extends State<SubTaskComment> {
                                               ),
                                               Text(
                                                 data[index].commentCreateBy,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontSize: 10,
                                                     color: Colors.grey),
                                               ),
@@ -440,7 +440,7 @@ class _SubTaskCommentState extends State<SubTaskComment> {
                                                 data[index].commentCreateBy,
                                                 '${widget.firstName} ${widget.lastName}');
                                           },
-                                          icon: Icon(
+                                          icon: const Icon(
                                             Icons.delete_rounded,
                                             color: Colors.redAccent,
                                             size: 16,
@@ -449,7 +449,7 @@ class _SubTaskCommentState extends State<SubTaskComment> {
                                   ),
                                   // You can add more ListTile properties as needed
                                 ),
-                                Divider()
+                                const Divider()
                                 // Add dividers or spacing as needed between ListTiles
                                 // Example: Adds a divider between ListTiles
                               ],
