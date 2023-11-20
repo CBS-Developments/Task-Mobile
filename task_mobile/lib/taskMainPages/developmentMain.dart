@@ -110,6 +110,9 @@ class _DevelopmentMainState extends State<DevelopmentMain> {
                   padding: const EdgeInsets.all(4),
                   child: TextField(
                     controller: taskListController,
+                    onChanged: (taskId) {
+                      _searchTaskById(taskId);
+                    },
                     textAlign: TextAlign.start,
                     textAlignVertical: TextAlignVertical.bottom,
                     decoration: InputDecoration(
@@ -224,6 +227,24 @@ class _DevelopmentMainState extends State<DevelopmentMain> {
       ),
     );
   }
+
+  void _searchTaskById(String taskId) {
+    if (taskId.isEmpty) {
+      // Reset the task list to its original state
+      getTaskList();
+    } else {
+      // Filter the mainTaskList based on the entered task ID
+      List<MainTask> filteredTasks = mainTaskList
+          .where((task) => task.taskId.toString().contains(taskId))
+          .toList();
+
+      setState(() {
+        // Update the mainTaskList with the filtered tasks
+        mainTaskList = filteredTasks;
+      });
+    }
+  }
+
   void _openInfoDialog(MainTask task, var taskTitle) {
     showDialog(
       context: context,
