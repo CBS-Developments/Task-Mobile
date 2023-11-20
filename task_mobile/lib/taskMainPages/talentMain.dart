@@ -21,6 +21,7 @@ class _TalentMainState extends State<TalentMain> {
   List<MainTask> mainTaskList = [];
   List<MainTask> searchResultAsMainTaskList = [];
   TextEditingController taskListController = TextEditingController();
+  TextEditingController taskListController1 = TextEditingController();
   String userName = "";
   String firstName = "";
   String lastName = "";
@@ -106,7 +107,7 @@ class _TalentMainState extends State<TalentMain> {
               children: [
                 Container(
                   width: 320,
-                  height: 55,
+                  height: 50,
                   padding: const EdgeInsets.all(4),
                   child: TextField(
                     controller: taskListController,
@@ -136,6 +137,36 @@ class _TalentMainState extends State<TalentMain> {
                   ),
                 ),
                 const Divider(),
+                Container(
+                  width: 320,
+                  height: 50,
+                  padding: const EdgeInsets.only(top: 1),
+                  child: TextField(
+                    controller: taskListController1,
+                    onChanged: (taskTitle) {
+                      _searchTaskByName(taskTitle);
+                    },
+                    textAlign: TextAlign.start,
+                    textAlignVertical: TextAlignVertical.bottom,
+                    decoration: InputDecoration(
+                      suffixIcon: const Icon(Icons.search, color: Colors.grey),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey.shade200),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey.shade400),
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: 'Search By Name',
+                      hintStyle: TextStyle(
+                        color: Colors.grey[500],
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -226,6 +257,23 @@ class _TalentMainState extends State<TalentMain> {
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  void _searchTaskByName(String taskTitle) {
+    if (taskTitle.isEmpty) {
+      // Reset the task list to its original state
+      getTaskList();
+    } else {
+      // Filter the mainTaskList based on the entered task ID
+      List<MainTask> filteredTasks = mainTaskList
+          .where((task) => task.taskTitle.toString().contains(taskTitle))
+          .toList();
+
+      setState(() {
+        // Update the mainTaskList with the filtered tasks
+        mainTaskList = filteredTasks;
+      });
+    }
   }
 
   void _searchTaskById(String taskId) {
