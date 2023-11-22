@@ -294,7 +294,7 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                 child: Column(
                   children: [
                     const SizedBox(
-                      height: 15,
+                      height: 10,
                     ),
                     Row(
                       children: [
