@@ -65,13 +65,13 @@ class _FinanceMainState extends State<FinanceMain> {
         title: const Text(
           'Finance & Accounting',
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: Colors.teal,
+        iconTheme: const IconThemeData(color: Colors.white),
         elevation: 1.0,
       ),
       body: Column(

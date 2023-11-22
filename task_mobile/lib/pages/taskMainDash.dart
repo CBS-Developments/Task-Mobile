@@ -126,8 +126,8 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
           borderRadius: BorderRadius.circular(10.0),
         ),
         elevation: 2.0,
-        color: Colors.white,
-        textColor: Colors.black,
+        color: Colors.grey[200],
+        textColor: Colors.teal,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -149,20 +149,28 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>  MainTaskList()),
+          MaterialPageRoute(builder: (context) => MainTaskList()),
         );
-
       },
-      child: const Text(
+      style: TextButton.styleFrom(
+        backgroundColor: Colors.grey[200], // Set the background color
+        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0), // Set padding
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0), // Set border radius
+        ),
+        elevation: 2.0,
+      ),
+      child: Text(
         'All Tasks',
         style: TextStyle(
-          color: Colors.teal,
+          color: Colors.teal, // Set text color
           fontSize: 16.0,
           fontWeight: FontWeight.bold,
         ),
       ),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -171,13 +179,13 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
         title: const Text(
           'Workspace',
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: Colors.teal,
+        iconTheme: const IconThemeData(color: Colors.white),
         elevation: 1.0,
       ),
 

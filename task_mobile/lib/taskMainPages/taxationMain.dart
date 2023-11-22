@@ -64,13 +64,13 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
         title: const Text(
           'Taxation',
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: Colors.teal,
+        iconTheme: const IconThemeData(color: Colors.white),
         elevation: 1.0,
       ),
       body: Column(
