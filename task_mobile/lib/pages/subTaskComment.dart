@@ -374,9 +374,10 @@ class _SubTaskCommentState extends State<SubTaskComment> {
               ),
             ),
             SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
               child: Container(
                 width: 460,
-                height: 550,
+                height: 525,
                 color: Colors.white,
                 child: FutureBuilder<List<comment>>(
                   future: getCommentList(widget.task.taskId),

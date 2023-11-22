@@ -941,6 +941,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                     mainTaskId: widget.task.taskId,
                                     task: widget.task,
                                     userRole: widget.userRoleForDelete,
+                                    createBy: widget.task.taskCreateBy,
                                   ),
                                 ));
                           },

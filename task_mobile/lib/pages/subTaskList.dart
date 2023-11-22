@@ -193,6 +193,7 @@ class _SubTaskListState extends State<SubTaskList> {
                 mainTaskId: widget.task.taskId,
                 task: widget.task,
                 userRole: widget.userRoleForDelete,
+                createBy: widget.task.taskCreateBy,
               ),
             ),
           );

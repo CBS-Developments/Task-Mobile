@@ -24,6 +24,7 @@ class CreateSubTask extends StatefulWidget {
   final String firstName;
   final String lastName;
   final String mainTaskId;
+  final String createBy;
   final MainTask task;
 
   const CreateSubTask(
@@ -33,7 +34,7 @@ class CreateSubTask extends StatefulWidget {
       required this.firstName,
       required this.lastName,
       required this.mainTaskId,
-      required this.task})
+      required this.task, required this.createBy})
       : super(key: key);
 
   @override
@@ -55,7 +56,7 @@ class _CreateSubTaskState extends State<CreateSubTask> {
 
   String getCurrentMonth() {
     final now = DateTime.now();
-    final formattedDate = DateFormat('yyyy-MM').format(now);
+    final formattedDate = DateFormat('yy-MM').format(now);
     return formattedDate;
   }
 
