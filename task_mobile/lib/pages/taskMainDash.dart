@@ -169,7 +169,7 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Tasks',
+          'Workspace',
           style: TextStyle(
             color: Colors.black,
             fontSize: 22,
