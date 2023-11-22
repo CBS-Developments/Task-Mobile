@@ -127,7 +127,7 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
         ),
         elevation: 2.0,
         color: Colors.grey[200],
-        textColor: Colors.teal,
+        textColor: Colors.teal[700],
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -163,7 +163,7 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
       child: Text(
         'All Tasks',
         style: TextStyle(
-          color: Colors.teal, // Set text color
+          color: Colors.teal[700], // Set text color
           fontSize: 16.0,
           fontWeight: FontWeight.bold,
         ),

@@ -103,20 +103,20 @@ class _DashboardPageUserState extends State<DashboardPageUser> {
           borderRadius: BorderRadius.circular(10.0),
         ),
         elevation: 2.0,
-        color: Colors.white,
+        color: Colors.grey[200],
         textColor: Colors.black,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
               widget.imagePaths[index],
-              width: 130.0,
-              height: 100.0,
+              width: 150.0,
+              height: 130.0,
             ),
             const SizedBox(height: 10.0),
             Text(
               widget.containerTexts[index],
-              style: const TextStyle(fontSize: 14.0),
+              style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -154,12 +154,12 @@ class _DashboardPageUserState extends State<DashboardPageUser> {
                                 icon: const Icon(Icons.menu_rounded),
                               ),
                               const SizedBox(width: 60),
-                              const Text(
+                               Text(
                                 'Workspace',
                                 style: TextStyle(
                                   fontSize: 25,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.deepPurple,
+                                  color: Colors.teal[800],
                                 ),
                               ),
                               const SizedBox(width: 60),
@@ -183,13 +183,14 @@ class _DashboardPageUserState extends State<DashboardPageUser> {
                           ),
                           const Divider(),
                           const SizedBox(
-                            height: 30,
+                            height: 50,
                           ),
                           Container(
                             padding: const EdgeInsets.all(5.0),
                             child: GridView.count(
-                              crossAxisCount: 2,
+                              crossAxisCount: 1,
                               shrinkWrap: true,
+                              childAspectRatio: 1.8,
                               children: List.generate(1, (index) {
                                 return _buildContainer(index, context);
                               }),
