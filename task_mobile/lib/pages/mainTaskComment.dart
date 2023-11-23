@@ -499,7 +499,7 @@ class _CommentsPageState extends State<CommentsPage> {
                         ),
                       ),
                     ),
-                    const Icon(Icons.attach_file),
+                    //const Icon(Icons.attach_file),
                     const SizedBox(width: 5),
                     IconButton(
                       tooltip: 'Add Comment',
@@ -512,9 +512,9 @@ class _CommentsPageState extends State<CommentsPage> {
                             taskName: widget.task.taskTitle);
                         //   getCommentList(widget.task.taskId);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.send_rounded,
-                        color: Colors.teal,
+                        color: Colors.green[900],
                       ),
                     ),
                   ],

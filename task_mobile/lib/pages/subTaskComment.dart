@@ -475,7 +475,7 @@ class _SubTaskCommentState extends State<SubTaskComment> {
                         ),
                       ),
                     ),
-                    const Icon(Icons.attach_file),
+                   // const Icon(Icons.attach_file),
                     const SizedBox(width: 5),
                     IconButton(
                       tooltip: 'Add Comment',
@@ -488,9 +488,9 @@ class _SubTaskCommentState extends State<SubTaskComment> {
                             taskName: widget.task.taskTitle);
                         //   getCommentList(widget.task.taskId);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.send_rounded,
-                        color: Colors.teal,
+                        color: Colors.green[900],
                       ),
                     ),
                   ],
