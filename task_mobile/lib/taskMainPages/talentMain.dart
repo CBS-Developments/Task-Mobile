@@ -324,7 +324,7 @@ class _TalentMainState extends State<TalentMain> {
                 fontSize: 18
             ),),
           content: SelectableText(
-              'Task ID: ${task.taskId}\n\nAssign To: ${task.assignTo}\n\nTask Description: ${task.task_description}'), // Customize the content as needed
+              'Task ID: ${task.taskId}\n\nAssign To: ${task.assignTo}\n\nDescription: ${task.task_description}'), // Customize the content as needed
           actions: <Widget>[
             TextButton(
               child: const Text(
