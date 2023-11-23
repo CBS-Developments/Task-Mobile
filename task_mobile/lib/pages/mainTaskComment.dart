@@ -100,13 +100,13 @@ class _CommentsPageState extends State<CommentsPage> {
   }
 
   Future<bool> createMainTaskComment(
-      BuildContext context, {
-        required userName,
-        required taskID,
-        required taskName,
-        required firstName,
-        required lastName,
-      }) async {
+    BuildContext context, {
+    required userName,
+    required taskID,
+    required taskName,
+    required firstName,
+    required lastName,
+  }) async {
     // Validate input fields
     if (mainTaskCommentController.text.trim().isEmpty) {
       // Show an error message if the combined fields are empty
@@ -151,18 +151,22 @@ class _CommentsPageState extends State<CommentsPage> {
         if (!mounted) return true;
         mainTaskCommentController.clear();
         snackBar(context, "Comment Added Successfully", Colors.green);
-        addLog(context, taskId: taskID, taskName: taskName, createBy: firstName + ' ' + lastName, createByID: userName);
+        addLog(context,
+            taskId: taskID,
+            taskName: taskName,
+            createBy: firstName + ' ' + lastName,
+            createByID: userName);
 
         Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => OpenTaskPage(
-                task: widget.task,
-                userRoleForDelete: widget.userRoleForDelete,
-                userName: widget.userName,
-                firstName: widget.firstName,
-                lastName: widget.lastName,
-              )),
+                    task: widget.task,
+                    userRoleForDelete: widget.userRoleForDelete,
+                    userName: widget.userName,
+                    firstName: widget.firstName,
+                    lastName: widget.lastName,
+                  )),
         );
       }
     } else {
@@ -173,11 +177,11 @@ class _CommentsPageState extends State<CommentsPage> {
   }
 
   void showDeleteCommentConfirmation(
-      BuildContext context,
-      String commentID,
-      String createBy,
-      String nameNowUser,
-      ) {
+    BuildContext context,
+    String commentID,
+    String createBy,
+    String nameNowUser,
+  ) {
     print('Now user: $nameNowUser');
     if (createBy == nameNowUser) {
       print(createBy);
@@ -186,7 +190,8 @@ class _CommentsPageState extends State<CommentsPage> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Confirm Delete'),
-            content: const Text('Are you sure you want to delete this Comment?'),
+            content:
+                const Text('Are you sure you want to delete this Comment?'),
             actions: <Widget>[
               TextButton(
                 child: const Text('Cancel'),
@@ -230,8 +235,8 @@ class _CommentsPageState extends State<CommentsPage> {
   }
 
   Future<bool> deleteComment(
-      String commentId,
-      ) async {
+    String commentId,
+  ) async {
     // Prepare the data to be sent to the PHP script.
     var data = {
       "comment_id": commentId,
@@ -267,12 +272,12 @@ class _CommentsPageState extends State<CommentsPage> {
             context,
             MaterialPageRoute(
                 builder: (context) => OpenTaskPage(
-                  task: widget.task,
-                  userRoleForDelete: widget.userRoleForDelete,
-                  userName: widget.userName,
-                  firstName: widget.firstName,
-                  lastName: widget.lastName,
-                )),
+                      task: widget.task,
+                      userRoleForDelete: widget.userRoleForDelete,
+                      userName: widget.userName,
+                      firstName: widget.firstName,
+                      lastName: widget.lastName,
+                    )),
           );
           return true; // PHP code was successful.
         } else {
@@ -289,13 +294,13 @@ class _CommentsPageState extends State<CommentsPage> {
     }
   }
 
-  Future<void> addLog(BuildContext context,{
+  Future<void> addLog(
+    BuildContext context, {
     required taskId,
     required taskName,
     required createBy,
     required createByID,
   }) async {
-
     // If all validations pass, proceed with the registration
     var url = "http://dev.workspace.cbs.lk/addLog.php";
 
@@ -312,7 +317,6 @@ class _CommentsPageState extends State<CommentsPage> {
       "log_create_by_year": '',
       "log_created_by_timestamp": getCurrentDateTime(),
     };
-
 
     http.Response res = await http.post(
       Uri.parse(url),
@@ -361,7 +365,7 @@ class _CommentsPageState extends State<CommentsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  SelectableText(
+        title: SelectableText(
           widget.task.taskTitle,
           style: TextStyle(
             color: Colors.black,
@@ -417,7 +421,8 @@ class _CommentsPageState extends State<CommentsPage> {
                                     ),
                                   ),
                                   subtitle: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(height: 2),
                                       Row(
@@ -442,7 +447,11 @@ class _CommentsPageState extends State<CommentsPage> {
                                   ),
                                   trailing: IconButton(
                                     onPressed: () {
-                                      showDeleteCommentConfirmation(context, data[index].commentId, data[index].commentCreateBy, '${widget.firstName} ${widget.lastName}');
+                                      showDeleteCommentConfirmation(
+                                          context,
+                                          data[index].commentId,
+                                          data[index].commentCreateBy,
+                                          '${widget.firstName} ${widget.lastName}');
                                     },
                                     icon: Icon(
                                       Icons.delete_rounded,
@@ -480,22 +489,18 @@ class _CommentsPageState extends State<CommentsPage> {
                       child: TextField(
                         controller: mainTaskCommentController,
                         textAlignVertical: TextAlignVertical.bottom,
-                        maxLines:
-                        3, // Adjust the number of lines as needed
+                        maxLines: 3, // Adjust the number of lines as needed
                         decoration: InputDecoration(
                           fillColor: Colors.grey.shade300,
                           hintText: 'Write a Comment...',
                           helperStyle: TextStyle(
-                              color: Colors.grey.shade700,
-                              fontSize: 14),
+                              color: Colors.grey.shade700, fontSize: 14),
                           filled: true,
                         ),
                       ),
                     ),
                     const Icon(Icons.attach_file),
-                    const SizedBox(
-                        width:
-                        5),
+                    const SizedBox(width: 5),
                     IconButton(
                       tooltip: 'Add Comment',
                       onPressed: () {

@@ -374,7 +374,6 @@ class _SubTaskCommentState extends State<SubTaskComment> {
               ),
             ),
             SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
               child: Container(
                 width: 460,
                 height: 525,
@@ -391,62 +390,51 @@ class _SubTaskCommentState extends State<SubTaskComment> {
                             child: Column(
                               children: [
                                 ListTile(
-                                  title: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                  title: SelectableText(
+                                    data[index].commnt,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.blueAccent,
+                                    ),
+                                  ),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
                                     children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                      SizedBox(height: 2),
+                                      Row(
                                         children: [
-                                          SelectableText(
-                                            data[index].commnt,
-                                            style: const TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.blueAccent),
+                                          Text(
+                                            data[index].commentCreatedTimestamp,
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.grey,
+                                            ),
                                           ),
-                                          const SizedBox(
-                                            height: 2,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                data[index]
-                                                    .commentCreatedTimestamp,
-                                                style: const TextStyle(
-                                                    fontSize: 10,
-                                                    color: Colors.grey),
-                                              ),
-                                              const Text(
-                                                '    by: ',
-                                                style: TextStyle(
-                                                    fontSize: 10,
-                                                    color: Colors.grey),
-                                              ),
-                                              Text(
-                                                data[index].commentCreateBy,
-                                                style: const TextStyle(
-                                                    fontSize: 10,
-                                                    color: Colors.grey),
-                                              ),
-                                            ],
+                                          Text(
+                                            '    by: ${data[index].commentCreateBy}',
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.grey,
+                                            ),
                                           ),
                                         ],
                                       ),
-                                      IconButton(
-                                          onPressed: () {
-                                            showDeleteCommentConfirmation(
-                                                context,
-                                                data[index].commentId,
-                                                data[index].commentCreateBy,
-                                                '${widget.firstName} ${widget.lastName}');
-                                          },
-                                          icon: const Icon(
-                                            Icons.delete_rounded,
-                                            color: Colors.redAccent,
-                                            size: 16,
-                                          ))
                                     ],
+                                  ),
+                                  trailing: IconButton(
+                                    onPressed: () {
+                                      showDeleteCommentConfirmation(
+                                          context,
+                                          data[index].commentId,
+                                          data[index].commentCreateBy,
+                                          '${widget.firstName} ${widget.lastName}');
+                                    },
+                                    icon: Icon(
+                                      Icons.delete_rounded,
+                                      color: Colors.redAccent,
+                                      size: 16,
+                                    ),
                                   ),
                                   // You can add more ListTile properties as needed
                                 ),
