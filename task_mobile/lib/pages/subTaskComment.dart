@@ -392,7 +392,7 @@ class _SubTaskCommentState extends State<SubTaskComment> {
                                 ListTile(
                                   title: SelectableText(
                                     data[index].commnt,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 14,
                                       color: Colors.blueAccent,
                                     ),
@@ -401,19 +401,19 @@ class _SubTaskCommentState extends State<SubTaskComment> {
                                     crossAxisAlignment:
                                     CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(height: 2),
+                                      const SizedBox(height: 2),
                                       Row(
                                         children: [
                                           Text(
                                             data[index].commentCreatedTimestamp,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 10,
                                               color: Colors.grey,
                                             ),
                                           ),
                                           Text(
                                             '    by: ${data[index].commentCreateBy}',
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 10,
                                               color: Colors.grey,
                                             ),
@@ -430,7 +430,7 @@ class _SubTaskCommentState extends State<SubTaskComment> {
                                           data[index].commentCreateBy,
                                           '${widget.firstName} ${widget.lastName}');
                                     },
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.delete_rounded,
                                       color: Colors.redAccent,
                                       size: 16,
