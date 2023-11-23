@@ -75,8 +75,8 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Row(
               children: [
                 Text(
@@ -176,7 +176,7 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
                 MainTask task = mainTaskList[index];
                 return Card(
                   elevation: 2.0,
-                  margin: EdgeInsets.all(10.0),
+                  margin: const EdgeInsets.all(10.0),
                   child: ListTile(
                     title: Align(
                       alignment: Alignment.centerLeft,
@@ -210,7 +210,7 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
                           Row(
                             children: [
                               Icon(Icons.double_arrow, size: 15, color: Colors.green[800],),
-                              SizedBox(width: 5,),
+                              const SizedBox(width: 5,),
                               Text(
                                 '${task.taskStatusName}...',
                                 style: const TextStyle(
@@ -220,7 +220,7 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 5,),
+                          const SizedBox(height: 5,),
                         ],
                       ),
                     ),
