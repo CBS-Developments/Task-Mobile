@@ -39,6 +39,16 @@ class _SubTaskListState extends State<SubTaskList> {
         widget.mainTaskId); // Wait for data retrieval
   }
 
+  Color? _getColorForTaskTypeName(String taskTypeName) {
+    Map<String, Color> colorMap = {
+      'Top Urgent': Colors.red,
+      'Medium': Colors.blue,
+      'Regular': Colors.green,
+      'Low': Colors.yellow,
+    };
+    return colorMap.containsKey(taskTypeName) ? colorMap[taskTypeName] : Colors.grey;
+  }
+
   Future<void> loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -113,27 +123,48 @@ class _SubTaskListState extends State<SubTaskList> {
                   child: ListTile(
                     title: Align(
                       alignment: Alignment.centerLeft,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
                                   builder: (context) => OpenSubTaskPage(
                                     task: subTask,
                                     userRoleForDelete: userRole,
                                     userName: userName,
                                     firstName: firstName,
                                     lastName: lastName,
-                                  )));
-                        },
-                        child: Text(
-                          subTask.taskTitle,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              subTask.taskTitle,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                        ),
+                          Row(
+                            children: [
+                              Icon(Icons.double_arrow, size: 15, color: Colors.green[800]),
+                              SizedBox(width: 5),
+                              Text(
+                                '${subTask.taskStatusName}...',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 5),
+                        ],
                       ),
                     ),
                     subtitle: Row(
@@ -149,32 +180,14 @@ class _SubTaskListState extends State<SubTaskList> {
                         ),
                       ],
                     ),
-                    // trailing: Row(
-                    //   mainAxisSize: MainAxisSize.min,
-                    //   children: [
-                    //     // Add a new button to open a dialog
-                    //     // IconButton(
-                    //     //   icon: const Icon(Icons.menu_open_rounded,
-                    //     //       color: Colors.teal),
-                    //     //   onPressed: () {
-                    //     //     // Open subtask details here
-                    //     //     // Navigator.push(
-                    //     //     //   context,
-                    //     //     //   MaterialPageRoute(
-                    //     //     //     builder: (context) => OpenSubTaskNew(
-                    //     //     //       task: subTask,
-                    //     //     //       userRoleForDelete: userRole,
-                    //     //     //       userName: userName,
-                    //     //     //       firstName: firstName,
-                    //     //     //       lastName: lastName,
-                    //     //     //     ),
-                    //     //     //   ),
-                    //     //     // );
-                    //     //   },
-                    //     // ),
-                    //   ],
-                    // ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.flag, color: _getColorForTaskTypeName(subTask.taskTypeName)),
+                      onPressed: () {
+                        // Handle onPressed action for the flag button
+                      },
+                    ),
                   ),
+
                 );
               },
             ),
