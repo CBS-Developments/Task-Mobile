@@ -181,27 +181,48 @@ class _TalentMainState extends State<TalentMain> {
                   child: ListTile(
                     title: Align(
                       alignment: Alignment.centerLeft,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => OpenTaskPage(task: task,
-                                userRoleForDelete: userRole,
-                                userName: userName,
-                                firstName: firstName,
-                                lastName: lastName,),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => OpenTaskPage(
+                                    task: task,
+                                    userRoleForDelete: userRole,
+                                    userName: userName,
+                                    firstName: firstName,
+                                    lastName: lastName,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              task.taskTitle,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          );
-                        },
-                        child: Text(
-                          task.taskTitle,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
                           ),
-                        ),
+                          Row(
+                            children: [
+                              Icon(Icons.double_arrow, size: 15, color: Colors.green[800],),
+                              SizedBox(width: 5,),
+                              Text(
+                                '${task.taskStatusName}...',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 5,),
+                        ],
                       ),
                     ),
                     subtitle: Row(
@@ -225,9 +246,9 @@ class _TalentMainState extends State<TalentMain> {
                           onPressed: () {
                             // Handle onPressed action for the flag button
                           },
-                        ),// Add a new button to open a dialog
+                        ),
                         IconButton(
-                          icon: Icon(Icons.menu_open_rounded, color: Colors.teal),
+                          icon: Icon(Icons.menu_open_rounded, color: Colors.green[800]),
                           onPressed: () {
                             _openInfoDialog(task, task.taskTitle);
                           },
