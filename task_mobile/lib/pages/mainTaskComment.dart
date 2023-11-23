@@ -392,6 +392,7 @@ class _CommentsPageState extends State<CommentsPage> {
               ),
             ),
             SingleChildScrollView(
+              //scrollDirection: Axis.horizontal,
               child: Container(
                 width: 460,
                 height: 550,
@@ -408,67 +409,50 @@ class _CommentsPageState extends State<CommentsPage> {
                             child: Column(
                               children: [
                                 ListTile(
-                                  title: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment
-                                        .spaceBetween,
+                                  title: SelectableText(
+                                    data[index].commnt,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.blueAccent,
+                                    ),
+                                  ),
+                                  subtitle: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                      SizedBox(height: 2),
+                                      Row(
                                         children: [
-                                          SelectableText(
-                                            data[index].commnt,
+                                          Text(
+                                            data[index].commentCreatedTimestamp,
                                             style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors
-                                                    .blueAccent),
+                                              fontSize: 10,
+                                              color: Colors.grey,
+                                            ),
                                           ),
-                                          SizedBox(
-                                            height: 2,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                data[index]
-                                                    .commentCreatedTimestamp,
-                                                style: TextStyle(
-                                                    fontSize: 10,
-                                                    color:
-                                                    Colors.grey),
-                                              ),
-                                              Text(
-                                                '    by: ',
-                                                style: TextStyle(
-                                                    fontSize: 10,
-                                                    color:
-                                                    Colors.grey),
-                                              ),
-                                              Text(
-                                                data[index]
-                                                    .commentCreateBy,
-                                                style: TextStyle(
-                                                    fontSize: 10,
-                                                    color:
-                                                    Colors.grey),
-                                              ),
-                                            ],
+                                          Text(
+                                            '    by: ${data[index].commentCreateBy}',
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.grey,
+                                            ),
                                           ),
                                         ],
                                       ),
-                                      IconButton(
-                                          onPressed: () {
-                                            showDeleteCommentConfirmation(context, data[index].commentId, data[index].commentCreateBy, '${widget.firstName} ${widget.lastName}');
-                                          },
-                                          icon: Icon(
-                                            Icons.delete_rounded,
-                                            color: Colors.redAccent,
-                                            size: 16,
-                                          ))
                                     ],
+                                  ),
+                                  trailing: IconButton(
+                                    onPressed: () {
+                                      showDeleteCommentConfirmation(context, data[index].commentId, data[index].commentCreateBy, '${widget.firstName} ${widget.lastName}');
+                                    },
+                                    icon: Icon(
+                                      Icons.delete_rounded,
+                                      color: Colors.redAccent,
+                                      size: 16,
+                                    ),
                                   ),
                                   // You can add more ListTile properties as needed
                                 ),
+
                                 Divider()
                                 // Add dividers or spacing as needed between ListTiles
                                 // Example: Adds a divider between ListTiles
