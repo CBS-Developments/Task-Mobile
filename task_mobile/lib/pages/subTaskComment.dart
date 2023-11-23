@@ -392,9 +392,9 @@ class _SubTaskCommentState extends State<SubTaskComment> {
                                 ListTile(
                                   title: SelectableText(
                                     data[index].commnt,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 14,
-                                      color: Colors.blueAccent,
+                                      color: Colors.blue[800],
                                     ),
                                   ),
                                   subtitle: Column(

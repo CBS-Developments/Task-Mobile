@@ -417,7 +417,7 @@ class _CommentsPageState extends State<CommentsPage> {
                                     data[index].commnt,
                                     style: TextStyle(
                                       fontSize: 14,
-                                      color: Colors.blueAccent,
+                                      color: Colors.blue[800],
                                     ),
                                   ),
                                   subtitle: Column(
