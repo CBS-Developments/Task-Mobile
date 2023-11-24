@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:Workspace_Lite/dashboards/dashadmin.dart';
 
-import 'dashUser.dart';
-
+import 'package:Workspace_Lite/dashboards/dashUser.dart';
 
 class DashMain extends StatelessWidget {
   const DashMain({super.key});
@@ -26,7 +25,7 @@ class DashMain extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Show a loading indicator while fetching user_role
-          return const CircularProgressIndicator();
+          return CircularProgressIndicator();
         } else if (snapshot.hasError) {
           // Handle error if there's an issue fetching user_role
           return Text('Error: ${snapshot.error}');
@@ -40,7 +39,7 @@ class DashMain extends StatelessWidget {
 
           } else if (userRole == 1) {
             print('user_role: $userRole'); // Print user_role
-            return const DashboardPageAdmin(); // Navigate to PageTwo
+            return DashboardPageAdmin(); // Navigate to PageTwo
           } else {
             return Text('Invalid user_role'); // Handle other cases
           }
