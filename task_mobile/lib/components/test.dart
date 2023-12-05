@@ -301,3 +301,51 @@ Future<void> selectDate(
 void setState(Null Function() param0) {
 }
 
+class TaskLog {
+  // int id;
+  String logId;
+  String logSummary;
+  String taskId;
+  String taskName;
+  String logType;
+  String logDetails;
+  String logCreateBy;
+  String logCreateById;
+  String logCreateByDate;
+  String logCreateByMonth;
+  String logCreateByYear;
+  String logCreateByTimestamp;
+
+  TaskLog({
+    // this.id,
+    required this.logId,
+    required this.logSummary,
+    required this.taskId,
+    required this.taskName,
+    required this.logType,
+    required this.logDetails,
+    required this.logCreateBy,
+    required this.logCreateById,
+    required this.logCreateByDate,
+    required this.logCreateByMonth,
+    required this.logCreateByYear,
+    required this.logCreateByTimestamp,
+  });
+
+  factory TaskLog.fromJson(Map<String, dynamic> json) {
+    return TaskLog(
+      // id: json['id'],
+        logId: json['log_id']??'',
+        logSummary: json['log_summary']??'',
+        taskId: json['task_id']??'',
+        taskName: json['task_name']??'',
+        logType: json['log_type'],
+        logDetails: json['log_details']??'',
+        logCreateBy: json['log_create_by']??'',
+        logCreateById: json['log_create_by_id']??'',
+        logCreateByDate: json['log_create_by_date']??'',
+        logCreateByMonth: json['log_create_by_month']??'',
+        logCreateByYear: json['log_create_by_year'] ?? '2023',
+        logCreateByTimestamp: json['log_create_by_timestamp']??'');
+  }
+}

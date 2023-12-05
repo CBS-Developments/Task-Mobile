@@ -1,3 +1,4 @@
+import 'package:Workspace_Lite/pages/taskLog.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -6,10 +7,9 @@ import '../pages/loginPage.dart';
 import '../pages/taskMainDash.dart';
 
 class DashboardPageUser extends StatefulWidget {
-  // ... (no changes here)
   final List<String> containerTexts = [
     'Tasks',
-    'Email',
+    'Log',
     'Chat',
     'Calendar',
   ];
@@ -68,7 +68,10 @@ class _DashboardPageUserState extends State<DashboardPageUser> {
   }
 
   void _handleContainer1Pressed(BuildContext context) {
-    // Add your code for handling the second container button press here.
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => TaskLogPage()),
+    );
   }
 
   void _handleContainer2Pressed(BuildContext context) {
@@ -191,7 +194,7 @@ class _DashboardPageUserState extends State<DashboardPageUser> {
                               crossAxisCount: 1,
                               shrinkWrap: true,
                               childAspectRatio: 1.8,
-                              children: List.generate(1, (index) {
+                              children: List.generate(2, (index) {
                                 return _buildContainer(index, context);
                               }),
                             ),
