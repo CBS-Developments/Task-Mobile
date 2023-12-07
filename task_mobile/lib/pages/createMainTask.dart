@@ -159,7 +159,11 @@ class _CreateMainTaskState extends State<CreateMainTask> {
       if (jsonDecode(res.body) == "true") {
         if (!mounted) return;
         showSuccessSnackBar(context);
-        addLog(context, taskId: taskID, taskName: titleController.text, createBy: createBy, createByID: widget.username);// Show the success SnackBar
+        addLog(context,
+            taskId: taskID,
+            taskName: titleController.text,
+            createBy: createBy,
+            createByID: widget.username); // Show the success SnackBar
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => MainTaskList()),
@@ -174,13 +178,13 @@ class _CreateMainTaskState extends State<CreateMainTask> {
     }
   }
 
-  Future<void> addLog(BuildContext context,{
+  Future<void> addLog(
+    BuildContext context, {
     required taskId,
     required taskName,
     required createBy,
     required createByID,
   }) async {
-
     // If all validations pass, proceed with the registration
     var url = "http://dev.workspace.cbs.lk/addLog.php";
 
@@ -197,7 +201,6 @@ class _CreateMainTaskState extends State<CreateMainTask> {
       "log_create_by_year": '',
       "log_created_by_timestamp": getCurrentDateTime(),
     };
-
 
     http.Response res = await http.post(
       Uri.parse(url),
@@ -222,7 +225,6 @@ class _CreateMainTaskState extends State<CreateMainTask> {
       snackBar(context, "Error", Colors.redAccent);
     }
   }
-
 
   void showSuccessSnackBar(BuildContext context) {
     final snackBar = const SnackBar(
@@ -697,7 +699,8 @@ class _CreateMainTaskState extends State<CreateMainTask> {
                                 assignTo: assignToValue,
                                 categoryName: categoryValue,
                                 category: categoryInt,
-                                createBy: '${widget.firstName} ${widget.lastName}');
+                                createBy:
+                                    '${widget.firstName} ${widget.lastName}');
                           },
                           style: ElevatedButton.styleFrom(
                             foregroundColor: AppColor.loginF,

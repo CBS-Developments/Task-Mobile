@@ -11,6 +11,7 @@ import 'package:Workspace_Lite/taskMainPages/talentMain.dart';
 import 'package:Workspace_Lite/taskMainPages/taxationMain.dart';
 
 import '../methods/sizes.dart';
+import 'createMainTaskNew.dart';
 
 class TaskMainDashboard extends StatefulWidget {
 
@@ -234,10 +235,7 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => CreateMainTask(
-                    username: userName,
-                    firstName: firstName,
-                    lastName: lastName)),
+                builder: (context) => CreateMainTaskPage()),
           );
         },
         backgroundColor: AppColor.tealLog,

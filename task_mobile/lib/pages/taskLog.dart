@@ -33,7 +33,6 @@ class _TaskLogPageState extends State<TaskLogPage> {
     'Sanjana',
   ];
 
-
   @override
   void initState() {
     super.initState();
@@ -91,19 +90,23 @@ class _TaskLogPageState extends State<TaskLogPage> {
         selectedUser = '-- Select User --';
       });
 
-      _fetchTodayLogs(); // Fetch logs for the selected date
+      await _fetchTodayLogs(); // Await here to ensure selectedDate is updated before fetching logs
       _filterLogs(); // Filter logs based on both date and user
     }
   }
 
   Future<void> _fetchTodayLogs() async {
-    List<TaskLog> todayLogs = await getLogList(selectedDate);
-    List<TaskLog> filteredLogs = filterTaskLog(todayLogs, selectedDate);
+    try {
+      List<TaskLog> todayLogs = await getLogList(selectedDate);
+      List<TaskLog> filteredLogs = filterTaskLog(todayLogs, selectedDate);
 
-    setState(() {
-      logList = filteredLogs;
-      filteredLogList = logList; // Initialize filteredLogList with all logs
-    });
+      setState(() {
+        logList = filteredLogs;
+        filteredLogList = logList; // Initialize filteredLogList with all logs
+      });
+    } catch (e) {
+      print('Error fetching logs: $e');
+    }
   }
 
   // Added to filter logs based on selected user
@@ -114,9 +117,8 @@ class _TaskLogPageState extends State<TaskLogPage> {
         filteredLogList = logList;
       } else {
         // Filter logs based on selected user
-        filteredLogList = logList
-            .where((log) => log.logCreateBy == selectedUser)
-            .toList();
+        filteredLogList =
+            logList.where((log) => log.logCreateBy == selectedUser).toList();
       }
 
       // Check if 'All' is selected from the dropdown, fetch all logs for the selected date
@@ -126,7 +128,6 @@ class _TaskLogPageState extends State<TaskLogPage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,24 +135,16 @@ class _TaskLogPageState extends State<TaskLogPage> {
         elevation: 1,
         backgroundColor: Colors.white,
         foregroundColor: AppColor.tealLog,
-        title: Center(
-          child: Text(
-            'Task Log',
-            style: TextStyle(
-              color: AppColor.tealLog,
-              fontSize: 20,
-            ),
+        title: Text(
+          'Task Log',
+          style: TextStyle(
+            color: AppColor.tealLog,
+            fontSize: 20,
           ),
         ),
       ),
       body: Row(
         children: [
-          // Expanded(
-          //   flex: 1,
-          //   child: Column(
-          //     children: [],
-          //   ),
-          // ),
           Expanded(
             flex: 4,
             child: Container(
@@ -171,25 +164,21 @@ class _TaskLogPageState extends State<TaskLogPage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
-                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                _selectDate(context);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                primary: AppColor.tealLog,
-                              ),
-                              child: Text("Select Date"),
-                            ),
-                          ],
+                        ElevatedButton(
+                          onPressed: () {
+                            _selectDate(context);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: AppColor.tealLog,
+                          ),
+                          child: Text("Select Date"),
                         ),
                         Text(
                           "Selected Date: ${DateFormat('yyyy-MM-dd').format(selectedDate)}",
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -211,6 +200,10 @@ class _TaskLogPageState extends State<TaskLogPage> {
                             child: Text(value),
                           );
                         }).toList(),
+                        style: TextStyle(
+                          // Add style for the dropdown text color
+                          color: AppColor.tealLog,
+                        ),
                       ),
                     ],
                   ),
@@ -226,19 +219,29 @@ class _TaskLogPageState extends State<TaskLogPage> {
                         : ListView.builder(
                       itemCount: filteredLogList.length,
                       itemBuilder: (context, index) {
-                        bool isDeleted = filteredLogList[index].logSummary.toLowerCase() == 'deleted';
+                        bool isDeleted = filteredLogList[index]
+                            .logSummary
+                            .toLowerCase() ==
+                            'deleted';
                         return Card(
                           color: Colors.grey[200],
                           elevation: 3,
-                          margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                          margin: EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 16),
                           child: ListTile(
-                              title: Text(
-                                '${filteredLogList[index].logCreateBy} ${filteredLogList[index].logSummary} ${filteredLogList[index].logType} : ${filteredLogList[index].taskName} | ${filteredLogList[index].logDetails} ',
-                                style: TextStyle(color: isDeleted ? Colors.red : null),
+                            title: Text(
+                              '${filteredLogList[index].logCreateBy} ${filteredLogList[index].logSummary} ${filteredLogList[index].logType} : ${filteredLogList[index].taskName} | ${filteredLogList[index].logDetails} ',
+                              style: TextStyle(
+                                  color: isDeleted ? Colors.red : null,
+                              fontSize: 14),
+                            ),
+                            subtitle: Text(
+                              filteredLogList[index].logId,
+                              style: TextStyle(
+                                fontSize: 10
                               ),
-                              subtitle: Text(filteredLogList[index].logId,
-                                // style: TextStyle(color: isDeleted ? Colors.red : null),),
-                              )
+                              // style: TextStyle(color: isDeleted ? Colors.red : null),),
+                            ),
                           ),
                         );
                       },
