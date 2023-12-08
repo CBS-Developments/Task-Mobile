@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:Workspace_Lite/pages/createSubtaskNew.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -1090,15 +1091,13 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => CreateSubTask(
-                                    username: widget.userName,
+                                  builder: (context) => CreateSubTaskPage(mainTaskDetails: widget.task, username: widget.userName,
                                     firstName: widget.firstName,
                                     lastName: widget.lastName,
                                     mainTaskId: widget.task.taskId,
                                     task: widget.task,
                                     userRole: widget.userRoleForDelete,
-                                    createBy: widget.task.taskCreateBy,
-                                  ),
+                                    createBy: widget.task.taskCreateBy,)
                                 ));
                           },
                           child: const Padding(
