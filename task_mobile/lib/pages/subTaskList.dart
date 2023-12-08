@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:Workspace_Lite/pages/createSubtaskNew.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,11 +7,16 @@ import 'package:Workspace_Lite/pages/createSubTask.dart';
 import 'package:Workspace_Lite/pages/openSubTask.dart';
 
 class SubTaskList extends StatefulWidget {
+  final MainTask mainTaskDetails;
   final String mainTaskId;
   final MainTask task;
   final String userRoleForDelete;
 
-  const SubTaskList({Key? key, required this.mainTaskId, required this.task, required this.userRoleForDelete})
+  const SubTaskList(
+      {Key? key,
+      required this.mainTaskId,
+      required this.task,
+      required this.userRoleForDelete, required this.mainTaskDetails})
       : super(key: key);
 
   @override
@@ -46,7 +52,9 @@ class _SubTaskListState extends State<SubTaskList> {
       'Regular': Colors.green,
       'Low': Colors.yellow,
     };
-    return colorMap.containsKey(taskTypeName) ? colorMap[taskTypeName] : Colors.grey;
+    return colorMap.containsKey(taskTypeName)
+        ? colorMap[taskTypeName]
+        : Colors.grey;
   }
 
   Future<void> loadData() async {
@@ -152,7 +160,8 @@ class _SubTaskListState extends State<SubTaskList> {
                           ),
                           Row(
                             children: [
-                              Icon(Icons.double_arrow, size: 15, color: Colors.green[800]),
+                              Icon(Icons.double_arrow,
+                                  size: 15, color: Colors.green[800]),
                               SizedBox(width: 5),
                               Text(
                                 '${subTask.taskStatusName}...',
@@ -181,13 +190,14 @@ class _SubTaskListState extends State<SubTaskList> {
                       ],
                     ),
                     trailing: IconButton(
-                      icon: Icon(Icons.flag, color: _getColorForTaskTypeName(subTask.taskTypeName)),
+                      icon: Icon(Icons.flag,
+                          color:
+                              _getColorForTaskTypeName(subTask.taskTypeName)),
                       onPressed: () {
                         // Handle onPressed action for the flag button
                       },
                     ),
                   ),
-
                 );
               },
             ),
@@ -199,16 +209,13 @@ class _SubTaskListState extends State<SubTaskList> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => CreateSubTask(
-                username: userName,
-                firstName: firstName,
-                lastName: lastName,
-                mainTaskId: widget.task.taskId,
-                task: widget.task,
-                userRole: widget.userRoleForDelete,
-                createBy: widget.task.taskCreateBy,
-              ),
-            ),
+                builder: (context) => CreateSubTaskPage(mainTaskDetails: widget.task, username: userName,
+                  firstName: firstName,
+                  lastName: lastName,
+                  mainTaskId: widget.task.taskId,
+                  task: widget.task,
+                  userRole: widget.userRoleForDelete,
+                  createBy: widget.task.taskCreateBy,)),
           );
         },
         backgroundColor: Colors.teal, // Use the actual color, e.g., Colors.teal

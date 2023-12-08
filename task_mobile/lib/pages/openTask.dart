@@ -42,7 +42,6 @@ class OpenTaskPage extends StatefulWidget {
 }
 
 class _OpenTaskPageState extends State<OpenTaskPage> {
-
   String userName = '';
 
   String firstName = '';
@@ -81,13 +80,13 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
     print('User Name: $userName');
   }
 
-  Future<void> addLog(BuildContext context,{
+  Future<void> addLog(
+    BuildContext context, {
     required taskId,
     required taskName,
     required createBy,
     required createByID,
   }) async {
-
     // If all validations pass, proceed with the registration
     var url = "http://dev.workspace.cbs.lk/addLog.php";
 
@@ -105,7 +104,6 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
       "log_created_by_timestamp": getCurrentDateTime(),
     };
 
-
     http.Response res = await http.post(
       Uri.parse(url),
       body: data,
@@ -130,13 +128,13 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
     }
   }
 
-  Future<void> addLogStatus(BuildContext context,{
+  Future<void> addLogStatus(
+    BuildContext context, {
     required taskId,
     required taskName,
     required createBy,
     required createByID,
   }) async {
-
     // If all validations pass, proceed with the registration
     var url = "http://dev.workspace.cbs.lk/addLog.php";
 
@@ -154,7 +152,6 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
       "log_created_by_timestamp": getCurrentDateTime(),
     };
 
-
     http.Response res = await http.post(
       Uri.parse(url),
       body: data,
@@ -179,13 +176,13 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
     }
   }
 
-  Future<void> addLogStatusComplete(BuildContext context,{
+  Future<void> addLogStatusComplete(
+    BuildContext context, {
     required taskId,
     required taskName,
     required createBy,
     required createByID,
   }) async {
-
     // If all validations pass, proceed with the registration
     var url = "http://dev.workspace.cbs.lk/addLog.php";
 
@@ -203,7 +200,6 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
       "log_created_by_timestamp": getCurrentDateTime(),
     };
 
-
     http.Response res = await http.post(
       Uri.parse(url),
       body: data,
@@ -228,12 +224,11 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
     }
   }
 
-
   void showDeleteConfirmationDialog(
-      BuildContext context,
-      String userRole,
-      String taskId,
-      ) {
+    BuildContext context,
+    String userRole,
+    String taskId,
+  ) {
     print('User Role in showDeleteConfirmationDialog: $userRole');
     if (userRole == '1') {
       print(userRole);
@@ -285,8 +280,8 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
   }
 
   Future<bool> deleteMainTask(
-      String taskID,
-      ) async {
+    String taskID,
+  ) async {
     // Prepare the data to be sent to the PHP script.
     var data = {
       "task_id": taskID,
@@ -342,11 +337,11 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
   }
 
   Future<bool> markInProgressMainTask(
-      String taskName,
-      String userName,
-      String firstName,
-      String taskID,
-      ) async {
+    String taskName,
+    String userName,
+    String firstName,
+    String taskID,
+  ) async {
     // Prepare the data to be sent to the PHP script.
     var data = {
       "task_id": taskID,
@@ -379,7 +374,11 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
 
         if (responseBody == "true") {
           print('Successful');
-          addLogStatus(context, taskId: taskID, taskName: taskName, createBy: firstName, createByID: userName);
+          addLogStatus(context,
+              taskId: taskID,
+              taskName: taskName,
+              createBy: firstName,
+              createByID: userName);
           // Handle success and navigation based on the category.
           handleCategoryNavigation();
           snackBar(
@@ -401,11 +400,11 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
   }
 
   Future<bool> markAsCompletedMainTask(
-      String taskName,
-      String userName,
-      String firstName,
-      String taskID,
-      ) async {
+    String taskName,
+    String userName,
+    String firstName,
+    String taskID,
+  ) async {
     // Prepare the data to be sent to the PHP script.
     var data = {
       "task_id": taskID,
@@ -438,7 +437,11 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
 
         if (responseBody == "true") {
           print('Successful');
-          addLogStatusComplete(context, taskId: taskID, taskName: taskName, createBy: firstName, createByID: userName);
+          addLogStatusComplete(context,
+              taskId: taskID,
+              taskName: taskName,
+              createBy: firstName,
+              createByID: userName);
           // Handle success and navigation based on the category.
           handleCategoryNavigation();
           snackBar(context, "Main Marked Completed successful!", Colors.green);
@@ -457,34 +460,40 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
       return false; // An error occurred.
     }
   }
+
   void handleCategoryNavigation() {
     switch (widget.task.category) {
       case "0":
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const TaxationMainTask()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const TaxationMainTask()));
         break;
       case "1":
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const TalentMain()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const TalentMain()));
         break;
       case "2":
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const FinanceMain()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const FinanceMain()));
         break;
       case "3":
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const AuditMain()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const AuditMain()));
         break;
       case "4":
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const SecretarialMain()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const SecretarialMain()));
         break;
       case "5":
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const DevelopmentMain()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const DevelopmentMain()));
         break;
       default:
         snackBar(context, "Unknown Category", Colors.red);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => MainTaskList()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MainTaskList()));
         break;
     }
   }
-
-
 
   Future<List<comment>> getCommentList(String taskId) async {
     comments
@@ -519,12 +528,12 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
   }
 
   Future<bool> createMainTaskComment(
-      BuildContext context, {
-        required userName,
-        required taskID,
-        required firstName,
-        required lastName,
-      }) async {
+    BuildContext context, {
+    required userName,
+    required taskID,
+    required firstName,
+    required lastName,
+  }) async {
     // Validate input fields
     if (mainTaskCommentController.text.trim().isEmpty) {
       // Show an error message if the combined fields are empty
@@ -574,12 +583,12 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
           context,
           MaterialPageRoute(
               builder: (context) => OpenTaskPage(
-                task: widget.task,
-                userRoleForDelete: widget.userRoleForDelete,
-                userName: widget.userName,
-                firstName: widget.firstName,
-                lastName: widget.lastName,
-              )),
+                    task: widget.task,
+                    userRoleForDelete: widget.userRoleForDelete,
+                    userName: widget.userName,
+                    firstName: widget.firstName,
+                    lastName: widget.lastName,
+                  )),
         );
       }
     } else {
@@ -590,11 +599,11 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
   }
 
   void showDeleteCommentConfirmation(
-      BuildContext context,
-      String commentID,
-      String createBy,
-      String nameNowUser,
-      ) {
+    BuildContext context,
+    String commentID,
+    String createBy,
+    String nameNowUser,
+  ) {
     print('Now user: $nameNowUser');
     if (createBy == nameNowUser) {
       print(createBy);
@@ -603,7 +612,8 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Confirm Delete'),
-            content: const Text('Are you sure you want to delete this Comment?'),
+            content:
+                const Text('Are you sure you want to delete this Comment?'),
             actions: <Widget>[
               TextButton(
                 child: const Text('Cancel'),
@@ -647,8 +657,8 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
   }
 
   Future<bool> deleteComment(
-      String commentId,
-      ) async {
+    String commentId,
+  ) async {
     // Prepare the data to be sent to the PHP script.
     var data = {
       "comment_id": commentId,
@@ -684,12 +694,12 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
             context,
             MaterialPageRoute(
                 builder: (context) => OpenTaskPage(
-                  task: widget.task,
-                  userRoleForDelete: widget.userRoleForDelete,
-                  userName: widget.userName,
-                  firstName: widget.firstName,
-                  lastName: widget.lastName,
-                )),
+                      task: widget.task,
+                      userRoleForDelete: widget.userRoleForDelete,
+                      userName: widget.userName,
+                      firstName: widget.firstName,
+                      lastName: widget.lastName,
+                    )),
           );
           return true; // PHP code was successful.
         } else {
@@ -729,7 +739,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  SelectableText(
+        title: SelectableText(
           widget.task.taskTitle,
           style: TextStyle(
             color: Colors.black,
@@ -753,7 +763,8 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align children to the start and end of the row
+                        mainAxisAlignment: MainAxisAlignment
+                            .spaceBetween, // Align children to the start and end of the row
                         children: [
                           SelectableText(
                             widget.task.taskId,
@@ -762,53 +773,67 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                               color: Colors.black87,
                             ),
                           ),
-                          SizedBox(width: 35,),
+                          SizedBox(
+                            width: 35,
+                          ),
                           Row(
                             children: [
-                              IconButton(onPressed: () async {
-                                SharedPreferences prefs = await SharedPreferences.getInstance();
-                                prefs.setString('main_task_id', widget.task.taskId);
-                                prefs.setString('main_task_title', widget.task.taskTitle);
-                                prefs.setString('intent_from', "main_dashboard");
-                                if (!mounted) return;
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>  SubTaskList(mainTaskId: widget.task.taskId, task: widget.task, userRoleForDelete: widget.userRoleForDelete,)),
-                                );
-                              },
-                                icon: const Icon(Icons.account_tree_rounded, color: Colors.black, size: 20),),
+                              IconButton(
+                                onPressed: () async {
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  prefs.setString(
+                                      'main_task_id', widget.task.taskId);
+                                  prefs.setString(
+                                      'main_task_title', widget.task.taskTitle);
+                                  prefs.setString(
+                                      'intent_from', "main_dashboard");
+                                  if (!mounted) return;
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SubTaskList(
+                                              mainTaskId: widget.task.taskId,
+                                              task: widget.task,
+                                              userRoleForDelete:
+                                                  widget.userRoleForDelete,
+                                              mainTaskDetails: widget.task,
+                                            )),
+                                  );
+                                },
+                                icon: const Icon(Icons.account_tree_rounded,
+                                    color: Colors.black, size: 20),
+                              ),
                               IconButton(
                                 onPressed: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                             EditMainTask(
+                                        builder: (context) => EditMainTask(
                                               currentTitle:
-                                              widget.task.taskTitle,
-                                              currentDescription: widget
-                                                  .task.task_description,
+                                                  widget.task.taskTitle,
+                                              currentDescription:
+                                                  widget.task.task_description,
                                               currentBeneficiary:
-                                              widget.task.company,
+                                                  widget.task.company,
                                               currentDueDate:
-                                              widget.task.dueDate,
+                                                  widget.task.dueDate,
                                               currentAssignTo:
-                                              widget.task.assignTo,
+                                                  widget.task.assignTo,
                                               currentPriority:
-                                              widget.task.taskTypeName,
+                                                  widget.task.taskTypeName,
                                               currentSourceFrom:
-                                              widget.task.sourceFrom,
+                                                  widget.task.sourceFrom,
                                               currentCategory:
-                                              widget.task.category_name,
+                                                  widget.task.category_name,
                                               taskID: widget.task.taskId,
                                               userName: userName,
                                               firstName: firstName,
-
                                             )),
                                   );
                                 },
-                                icon: const Icon(Icons.edit, color: Colors.black, size: 20),
+                                icon: const Icon(Icons.edit,
+                                    color: Colors.black, size: 20),
                               ),
                               IconButton(
                                 onPressed: () {
@@ -817,15 +842,14 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                       widget.userRoleForDelete,
                                       widget.task.taskId);
                                 },
-                                icon: const Icon(Icons.delete, color: Colors.red, size: 20),
+                                icon: const Icon(Icons.delete,
+                                    color: Colors.red, size: 20),
                               ),
                             ],
                           ),
-
                         ],
                       ),
                     ),
-
                     const SizedBox(
                       height: 15,
                     ),
@@ -860,9 +884,10 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                           child: Text(
                                             'Start',
                                             style: TextStyle(
-                                                fontSize: 14,
+                                              fontSize: 14,
                                               fontWeight: FontWeight.bold,
-                                              color: AppColor.tealLog,),
+                                              color: AppColor.tealLog,
+                                            ),
                                           ),
                                         ),
                                         Icon(
@@ -879,69 +904,89 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                           child: Text(
                                             'Due',
                                             style: TextStyle(
-                                                fontSize: 14,
+                                              fontSize: 14,
                                               fontWeight: FontWeight.bold,
-                                              color: AppColor.tealLog,),
+                                              color: AppColor.tealLog,
+                                            ),
                                           ),
                                         ),
                                       ],
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(
-                                          left: 18, bottom: 8,   top: 4,),
+                                        left: 18,
+                                        bottom: 8,
+                                        top: 4,
+                                      ),
                                       child: Text(
                                         'Company',
                                         style: TextStyle(
-                                            fontSize: 14,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.bold,
-                                          color: AppColor.tealLog,),
+                                          color: AppColor.tealLog,
+                                        ),
                                       ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(
-                                          left: 18, bottom: 8, top: 4,),
+                                        left: 18,
+                                        bottom: 8,
+                                        top: 4,
+                                      ),
                                       child: Text(
                                         'Assign To',
                                         style: TextStyle(
-                                            fontSize: 14,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.bold,
-                                          color: AppColor.tealLog,),
+                                          color: AppColor.tealLog,
+                                        ),
                                       ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(
-                                          left: 18, bottom: 8, top: 4,),
+                                        left: 18,
+                                        bottom: 8,
+                                        top: 4,
+                                      ),
                                       child: Text(
                                         'Priority',
                                         style: TextStyle(
-                                            fontSize: 14,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.bold,
-                                          color: AppColor.tealLog,),
+                                          color: AppColor.tealLog,
+                                        ),
                                       ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(
-                                          left: 18, bottom: 8, top: 4,),
+                                        left: 18,
+                                        bottom: 8,
+                                        top: 4,
+                                      ),
                                       child: Text(
                                         'Status',
                                         style: TextStyle(
-                                            fontSize: 14,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.bold,
-                                          color: AppColor.tealLog,),
+                                          color: AppColor.tealLog,
+                                        ),
                                       ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(
-                                          left: 18, bottom: 8, top: 4,),
+                                        left: 18,
+                                        bottom: 8,
+                                        top: 4,
+                                      ),
                                       child: Text(
                                         'Created By',
                                         style: TextStyle(
-                                            fontSize: 14,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.bold,
-                                          color: AppColor.tealLog,),
+                                          color: AppColor.tealLog,
+                                        ),
                                       ),
                                     ),
-
                                   ],
                                 ),
                               ),
@@ -1055,7 +1100,6 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                             ],
                           ),
                         ),
-
                       ),
                     ),
                     Row(
@@ -1064,10 +1108,18 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                         TextButton(
                           onPressed: () {
                             if (widget.task.taskStatus == '0') {
-                              markInProgressMainTask(widget.task.taskTitle,widget.userName,widget.firstName, widget.task.taskId);
+                              markInProgressMainTask(
+                                  widget.task.taskTitle,
+                                  widget.userName,
+                                  widget.firstName,
+                                  widget.task.taskId);
                               // Handle 'Mark In Progress' action
                             } else if (widget.task.taskStatus == '1') {
-                              markAsCompletedMainTask(widget.task.taskTitle,widget.userName,widget.firstName, widget.task.taskId);
+                              markAsCompletedMainTask(
+                                  widget.task.taskTitle,
+                                  widget.userName,
+                                  widget.firstName,
+                                  widget.task.taskId);
                               // Handle 'Mark As Complete' action
                             }
                           },
@@ -1091,30 +1143,30 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => CreateSubTaskPage(mainTaskDetails: widget.task, username: widget.userName,
-                                    firstName: widget.firstName,
-                                    lastName: widget.lastName,
-                                    mainTaskId: widget.task.taskId,
-                                    task: widget.task,
-                                    userRole: widget.userRoleForDelete,
-                                    createBy: widget.task.taskCreateBy,)
-                                ));
+                                    builder: (context) => CreateSubTaskPage(
+                                          mainTaskDetails: widget.task,
+                                          username: widget.userName,
+                                          firstName: widget.firstName,
+                                          lastName: widget.lastName,
+                                          mainTaskId: widget.task.taskId,
+                                          task: widget.task,
+                                          userRole: widget.userRoleForDelete,
+                                          createBy: widget.task.taskCreateBy,
+                                        )));
                           },
                           child: const Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Text(
                               'Create Sub Task',
-                              style: TextStyle(
-                                  fontSize: 14, color: Colors.green),
+                              style:
+                                  TextStyle(fontSize: 14, color: Colors.green),
                             ),
                           ),
                         ),
                       ],
                     ),
-
                   ],
                 ),
-
               ),
             ),
           ],
@@ -1125,22 +1177,18 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => CommentsPage(
-                  userName: widget.userName,
-                  firstName: widget.firstName,
-                  lastName: widget.lastName,
-                  userRoleForDelete: widget.userRoleForDelete,
-                  task: widget.task,
-
-              )
-            ),
+                builder: (context) => CommentsPage(
+                      userName: widget.userName,
+                      firstName: widget.firstName,
+                      lastName: widget.lastName,
+                      userRoleForDelete: widget.userRoleForDelete,
+                      task: widget.task,
+                    )),
           );
         },
         backgroundColor: Colors.teal, // Use the actual color, e.g., Colors.teal
         child: const Icon(Icons.comment),
       ),
-
-
     );
   }
 }
