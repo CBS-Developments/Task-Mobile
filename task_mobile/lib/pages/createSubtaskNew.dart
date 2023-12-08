@@ -252,11 +252,17 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        foregroundColor: AppColor.tealLog,
-        title: Text(
-          '${widget.mainTaskDetails.taskTitle} ',
+        title:  SelectableText(
+          widget.mainTaskDetails.taskTitle,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
         ),
+        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.black),
+        elevation: 1.0,
       ),
       body: Row(
         children: [
@@ -374,7 +380,7 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                                 hintText:
                                                     '${widget.mainTaskDetails.company}',
                                                 hintStyle:
-                                                    TextStyle(fontSize: 16),
+                                                    TextStyle(fontSize: 15),
                                                 enabledBorder:
                                                     UnderlineInputBorder(
                                                   borderSide: BorderSide(
@@ -428,13 +434,6 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                       ),
                                     ],
                                   ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 18.0),
                                 ),
                               ),
                             ],
@@ -548,7 +547,6 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                   ),
                                 ),
                               ),
-                              Expanded(flex: 2, child: Container()),
                             ],
                           ),
                           Row(
@@ -663,7 +661,7 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                   ),
                                 ),
                               ),
-                              Expanded(flex: 2, child: Container())
+
                             ],
                           ),
                           Row(
@@ -780,7 +778,6 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                   ),
                                 ),
                               ),
-                              Expanded(flex: 2, child: Container())
                             ],
                           ),
                           Row(
@@ -895,7 +892,6 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                   ),
                                 ),
                               ),
-                              Expanded(flex: 2, child: Container())
                             ],
                           ),
                           SizedBox(
