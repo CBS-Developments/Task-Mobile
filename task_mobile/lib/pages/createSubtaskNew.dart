@@ -637,7 +637,7 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                                   width: MediaQuery.of(context)
                                                           .size
                                                           .width *
-                                                      0.15,
+                                                      0.55,
                                                   child: ListView(
                                                     children: options
                                                         .map((String option) =>
@@ -754,7 +754,7 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                                   width: MediaQuery.of(context)
                                                           .size
                                                           .width *
-                                                      0.35,
+                                                      0.45,
                                                   child: ListView(
                                                     children: options
                                                         .map((String option) =>
@@ -868,7 +868,7 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                                   width: MediaQuery.of(context)
                                                           .size
                                                           .width *
-                                                      0.25,
+                                                      0.55,
                                                   child: ListView(
                                                     children: options
                                                         .map((String option) =>
