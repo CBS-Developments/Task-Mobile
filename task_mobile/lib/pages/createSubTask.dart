@@ -169,7 +169,7 @@ class _CreateSubTaskState extends State<CreateSubTask> {
           context,
           MaterialPageRoute(builder: (context) => OpenTaskPage(task: widget.task, userRoleForDelete:  widget.userRole, userName: widget.username,
             firstName: widget.firstName,
-            lastName:  widget.lastName,)),
+            lastName:  widget.lastName, taskDetails: widget.task,)),
         );
       } else {
         if (!mounted) return;

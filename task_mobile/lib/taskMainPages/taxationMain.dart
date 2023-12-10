@@ -194,7 +194,7 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
                                     userRoleForDelete: userRole,
                                     userName: userName,
                                     firstName: firstName,
-                                    lastName: lastName,
+                                    lastName: lastName, taskDetails: task,
                                   ),
                                 ),
                               );

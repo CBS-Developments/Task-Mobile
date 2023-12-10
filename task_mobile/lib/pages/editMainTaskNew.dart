@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:Workspace_Lite/pages/openTask.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -12,44 +11,29 @@ import '../methods/colors.dart';
 import '../methods/sizes.dart';
 import 'createSubTask.dart';
 
-class CreateSubTaskPage extends StatefulWidget {
+class EditMainTaskPage extends StatefulWidget {
   final MainTask mainTaskDetails;
-  final String username;
-  final String userRole;
-  final String firstName;
-  final String lastName;
-  final String mainTaskId;
-  final String createBy;
-  final MainTask task;
-  const CreateSubTaskPage(
-      {super.key,
-      required this.mainTaskDetails,
-      required this.username,
-      required this.userRole,
-      required this.firstName,
-      required this.lastName,
-      required this.mainTaskId,
-      required this.createBy,
-      required this.task});
+  const EditMainTaskPage({super.key, required this.mainTaskDetails});
 
   @override
-  State<CreateSubTaskPage> createState() => _CreateSubTaskPageState();
+  State<EditMainTaskPage> createState() => _EditMainTaskPageState();
 }
 
-class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
+class _EditMainTaskPageState extends State<EditMainTaskPage> {
+
   String userName = "";
   String firstName = "";
   String lastName = "";
   String phone = "";
   String userRole = "";
-  String userRoleForDelete = "";
+
+
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   String priority = '';
   String dueDate = '';
-  String sourceFrom =
-      ''; // Set a default value that exists in the dropdown items
+  String sourceFrom = ''; // Set a default value that exists in the dropdown items
   String assignTo = ''; // Default value from the items list
   String beneficiary = ''; // Default value from the items list
   String categoryName = ''; // Default value from the items list
@@ -57,6 +41,7 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
   int selectedIndex = -1; // Default index value // Default index value
 
   List<String> selectedAssignTo = [];
+
 
   List<String> categoryNames = [
     'Taxation - TAS',
@@ -68,8 +53,7 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
     // Add your category items here
   ];
 
-  List<String> beneficiaries = [
-    'Beneficiary',
+  List<String> beneficiaries = ['Beneficiary',
     'A W M Riza',
     'Academy of Digital Business Pvt. Ltd',
     'Ajay Hathiramani',
@@ -171,8 +155,7 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
     'Thingerbits Pvt. Ltd',
     'Tikiri Banda & Sons/Dr. Bandara',
     'Univiser (Pvt) Ltd',
-    'UP Weerasinghe Properties Pvt. Ltd'
-  ];
+    'UP Weerasinghe Properties Pvt. Ltd'];
 
   String getCurrentDateTime() {
     final now = DateTime.now();
@@ -212,7 +195,9 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
     assignTo = widget.mainTaskDetails.assignTo;
     categoryName = widget.mainTaskDetails.category_name;
     category = widget.mainTaskDetails.category;
-    // titleController.text = "Default Text";
+    titleController.text =  widget.mainTaskDetails.taskTitle;
+    descriptionController.text =  widget.mainTaskDetails.task_description;
+    dueDate = widget.mainTaskDetails.dueDate;
   }
 
   void loadData() async {
@@ -224,7 +209,7 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
       phone = prefs.getString('phone') ?? "";
       userRole = prefs.getString('user_role') ?? "";
       print(
-          'Data loaded in create main task > userName: $userName > userRole: $userRole');
+          'Data laded in create main task > userName: $userName > userRole: $userRole');
     });
   }
 
@@ -238,8 +223,7 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
 
     if (picked != null && picked != DateTime.now()) {
       // Define the desired date format
-      final DateFormat formatter =
-          DateFormat('yyyy-MM-dd'); // Example format: yyyy-MM-dd
+      final DateFormat formatter = DateFormat('yyyy-MM-dd'); // Example format: yyyy-MM-dd
 
       setState(() {
         // Format the picked date using the defined format
@@ -264,7 +248,9 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
         iconTheme: const IconThemeData(color: Colors.black),
         elevation: 1.0,
       ),
-      body: Row(
+
+      body:
+      Row(
         children: [
           Expanded(
             flex: 4,
@@ -283,8 +269,7 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                           BoxShadow(
                             color: Colors.grey, // Shadow color
                             blurRadius: 5, // Spread radius
-                            offset:
-                                Offset(0, 3), // Offset in x and y directions
+                            offset: Offset(0, 3), // Offset in x and y directions
                           ),
                         ],
                       ),
@@ -299,9 +284,8 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                               keyboardType: TextInputType.multiline,
                               maxLines: null,
                               controller: titleController,
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 border: OutlineInputBorder(),
-                                labelText: 'Task Title',
                                 hintText: 'Task Title',
                               ),
                               style: const TextStyle(
@@ -310,6 +294,7 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                               ),
                             ),
                           ),
+
                           Container(
                             margin: EdgeInsets.all(8),
                             padding: EdgeInsets.symmetric(horizontal: 10),
@@ -318,9 +303,9 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                               keyboardType: TextInputType.multiline,
                               maxLines: null,
                               controller: descriptionController,
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 border: OutlineInputBorder(),
-                                labelText: 'Description',
+                                // labelText: 'Description',
                                 hintText: 'Description',
                               ),
                               style: const TextStyle(
@@ -329,34 +314,27 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                               ),
                             ),
                           ),
+
+
+
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
                                 flex: 3,
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 18, vertical: 5),
+                                  padding:  EdgeInsets.symmetric(horizontal: 18, vertical: 5),
                                   child: Row(
                                     children: [
-                                      Text(
-                                        "Beneficiary:  ",
-                                        style: TextStyle(
-                                            color: AppColor.tealLog,
-                                            fontSize: 15),
-                                      ),
+                                      Text("Beneficiary:  ",style: TextStyle(color: AppColor.appDarkBlue,fontSize: 15),),
                                       Expanded(
                                         child: Autocomplete<String>(
-                                          optionsBuilder: (TextEditingValue
-                                              textEditingValue) {
-                                            return beneficiaries
-                                                .where((String option) {
-                                              return option
-                                                  .toLowerCase()
-                                                  .contains(
-                                                    textEditingValue.text
-                                                        .toLowerCase(),
-                                                  );
+                                          optionsBuilder: (TextEditingValue textEditingValue) {
+                                            return beneficiaries.where((String option) {
+                                              return option.toLowerCase().contains(
+                                                textEditingValue.text.toLowerCase(),
+                                              );
                                             });
                                           },
                                           onSelected: (String value) {
@@ -364,12 +342,7 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                               beneficiary = value;
                                             });
                                           },
-                                          fieldViewBuilder: (BuildContext
-                                                  context,
-                                              TextEditingController
-                                                  textEditingController,
-                                              FocusNode focusNode,
-                                              VoidCallback onFieldSubmitted) {
+                                          fieldViewBuilder: (BuildContext context, TextEditingController textEditingController, FocusNode focusNode, VoidCallback onFieldSubmitted) {
                                             return TextField(
                                               controller: textEditingController,
                                               focusNode: focusNode,
@@ -377,53 +350,37 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                                 // Perform search or filtering here
                                               },
                                               decoration: InputDecoration(
-                                                hintText:
-                                                    '${widget.mainTaskDetails.company}',
-                                                hintStyle:
-                                                    TextStyle(fontSize: 15),
-                                                enabledBorder:
-                                                    UnderlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: Colors
-                                                          .teal), // Normal border color
+                                                hintText: '${widget.mainTaskDetails.company}',
+                                                hintStyle: TextStyle(fontSize: 15),
+                                                enabledBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(color: Colors.lightBlueAccent), // Normal border color
                                                 ),
-                                                focusedBorder:
-                                                    UnderlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: AppColor
-                                                          .tealLog), // Focus color
+                                                focusedBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(color: AppColor.appDarkBlue), // Focus color
                                                 ),
                                               ),
                                             );
                                           },
                                           optionsViewBuilder: (
-                                            BuildContext context,
-                                            AutocompleteOnSelected<String>
-                                                onSelected,
-                                            Iterable<String> options,
-                                          ) {
+                                              BuildContext context,
+                                              AutocompleteOnSelected<String> onSelected,
+                                              Iterable<String> options,
+                                              ) {
                                             return Align(
                                               alignment: Alignment.topLeft,
                                               child: Material(
                                                 elevation: 4.0,
                                                 child: Container(
-                                                  constraints: BoxConstraints(
-                                                      maxHeight: 200),
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.55,
+                                                  constraints: BoxConstraints(maxHeight: 200),
+                                                  width: MediaQuery.of(context).size.width*0.55,
                                                   child: ListView(
                                                     children: options
-                                                        .map((String option) =>
-                                                            ListTile(
-                                                              title:
-                                                                  Text(option),
-                                                              onTap: () {
-                                                                onSelected(
-                                                                    option);
-                                                              },
-                                                            ))
+                                                        .map((String option) => ListTile(
+                                                      title: Text(option),
+                                                      onTap: () {
+                                                        onSelected(option);
+                                                      },
+                                                    ))
                                                         .toList(),
                                                   ),
                                                 ),
@@ -436,8 +393,11 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                   ),
                                 ),
                               ),
+
+
                             ],
                           ),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -448,7 +408,7 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                   child: Row(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      Text("Due Date:  ",style: TextStyle(color: AppColor.tealLog,fontSize: 15),),
+                                      Text("Due Date:  ",style: TextStyle(color: AppColor.appDarkBlue,fontSize: 15),),
                                       TextButton(
                                         onPressed: () {
                                           _selectDate(context);
@@ -456,11 +416,11 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                         child: Row(
                                           children: [
                                             Text(
-                                              dueDate.isEmpty ? 'Select Date' : dueDate,style: TextStyle(fontSize: 15,color: Colors.black87),
+                                              dueDate.isEmpty ? 'Select Date' : '$dueDate',style: TextStyle(fontSize: 15,color: Colors.black87),
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.all(5.0),
-                                              child: Icon(Icons.calendar_month_rounded,color: Colors.black87,size: 15,),
+                                              child: Icon(Icons.calendar_month_rounded,color: Colors.black87,size: 16,),
                                             )
                                           ],
                                         ),
@@ -474,22 +434,21 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
 
                             ],
                           ),
+
+
+
+
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
-                                flex: 3,
+                                flex:3,
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 18, vertical: 5),
+                                  padding:  EdgeInsets.symmetric(horizontal: 18, vertical: 5),
                                   child: MultiSelectFormField(
                                     autovalidate: AutovalidateMode.always,
-                                    title: Text(
-                                      'Assign To: ',
-                                      style: TextStyle(
-                                          color: AppColor.tealLog,
-                                          fontSize: 15),
-                                    ),
+                                    title: Text('Assign To: ',style: TextStyle(color: AppColor.appDarkBlue,fontSize: 15),),
                                     dataSource: [
                                       {
                                         "display": "Deshika",
@@ -530,8 +489,7 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                       // Add other items as needed
                                     ],
                                     textField: 'display',
-                                    hintWidget: Text(
-                                        '${widget.mainTaskDetails.assignTo}'),
+                                    hintWidget: Text('${widget.mainTaskDetails.assignTo}'),
                                     valueField: 'value',
                                     okButtonLabel: 'OK',
                                     cancelButtonLabel: 'CANCEL',
@@ -539,8 +497,7 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                     onSaved: (value) {
                                       if (value == null) return;
                                       setState(() {
-                                        selectedAssignTo = value.cast<
-                                            String>(); // Ensure the value is a list of strings
+                                        selectedAssignTo = value.cast<String>(); // Ensure the value is a list of strings
                                         assignTo = selectedAssignTo.toString();
                                       });
                                     },
@@ -549,38 +506,24 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                               ),
                             ],
                           ),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
                                 flex: 3,
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 18, vertical: 5),
+                                  padding:  EdgeInsets.symmetric(horizontal: 18, vertical: 5),
                                   child: Row(
                                     children: [
-                                      Text(
-                                        "Priority:  ",
-                                        style: TextStyle(
-                                            color: AppColor.tealLog,
-                                            fontSize: 18),
-                                      ),
+                                      Text("Priority:  ",style: TextStyle(color: AppColor.appDarkBlue,fontSize: 15),),
                                       Expanded(
                                         child: Autocomplete<String>(
-                                          optionsBuilder: (TextEditingValue
-                                              textEditingValue) {
-                                            return [
-                                              'Top Urgent',
-                                              'Medium',
-                                              'Regular',
-                                              'Low'
-                                            ].where((String option) {
-                                              return option
-                                                  .toLowerCase()
-                                                  .contains(
-                                                    textEditingValue.text
-                                                        .toLowerCase(),
-                                                  );
+                                          optionsBuilder: (TextEditingValue textEditingValue) {
+                                            return ['Top Urgent', 'Medium', 'Regular', 'Low'].where((String option) {
+                                              return option.toLowerCase().contains(
+                                                textEditingValue.text.toLowerCase(),
+                                              );
                                             });
                                           },
                                           onSelected: (String value) {
@@ -589,12 +532,11 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                             });
                                           },
                                           fieldViewBuilder: (
-                                            BuildContext context,
-                                            TextEditingController
-                                                textEditingController,
-                                            FocusNode focusNode,
-                                            VoidCallback onFieldSubmitted,
-                                          ) {
+                                              BuildContext context,
+                                              TextEditingController textEditingController,
+                                              FocusNode focusNode,
+                                              VoidCallback onFieldSubmitted,
+                                              ) {
                                             return TextField(
                                               controller: textEditingController,
                                               focusNode: focusNode,
@@ -602,53 +544,37 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                                 // Perform search or filtering here
                                               },
                                               decoration: InputDecoration(
-                                                hintText:
-                                                    '${widget.mainTaskDetails.taskTypeName}',
-                                                hintStyle:
-                                                    TextStyle(fontSize: 16),
-                                                enabledBorder:
-                                                    UnderlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: Colors
-                                                          .lightBlueAccent), // Normal border color
+                                                hintText: '${widget.mainTaskDetails.taskTypeName}',
+                                                hintStyle: TextStyle(fontSize: 15),
+                                                enabledBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(color: Colors.lightBlueAccent), // Normal border color
                                                 ),
-                                                focusedBorder:
-                                                    UnderlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: AppColor
-                                                          .tealLog), // Focus color
+                                                focusedBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(color: AppColor.appDarkBlue), // Focus color
                                                 ),
                                               ),
                                             );
                                           },
                                           optionsViewBuilder: (
-                                            BuildContext context,
-                                            AutocompleteOnSelected<String>
-                                                onSelected,
-                                            Iterable<String> options,
-                                          ) {
+                                              BuildContext context,
+                                              AutocompleteOnSelected<String> onSelected,
+                                              Iterable<String> options,
+                                              ) {
                                             return Align(
                                               alignment: Alignment.topLeft,
                                               child: Material(
                                                 elevation: 4.0,
                                                 child: Container(
-                                                  constraints: BoxConstraints(
-                                                      maxHeight: 200),
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.55,
+                                                  constraints: BoxConstraints(maxHeight: 200),
+                                                  width: MediaQuery.of(context).size.width*0.45,
                                                   child: ListView(
                                                     children: options
-                                                        .map((String option) =>
-                                                            ListTile(
-                                                              title:
-                                                                  Text(option),
-                                                              onTap: () {
-                                                                onSelected(
-                                                                    option);
-                                                              },
-                                                            ))
+                                                        .map((String option) => ListTile(
+                                                      title: Text(option),
+                                                      onTap: () {
+                                                        onSelected(option);
+                                                      },
+                                                    ))
                                                         .toList(),
                                                   ),
                                                 ),
@@ -664,40 +590,29 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
 
                             ],
                           ),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
                                 flex: 3,
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 18, vertical: 5),
+                                  padding:  EdgeInsets.symmetric(horizontal: 18, vertical: 5),
                                   child: Row(
                                     children: [
-                                      Text(
-                                        "Source From:  ",
-                                        style: TextStyle(
-                                            color: AppColor.tealLog,
-                                            fontSize: 18),
-                                      ),
+                                      Text("Source From:  ",style: TextStyle(color: AppColor.appDarkBlue,fontSize: 15),),
                                       Expanded(
                                         child: Autocomplete<String>(
-                                          optionsBuilder: (TextEditingValue
-                                              textEditingValue) {
-                                            return [
-                                              'Skype',
+                                          optionsBuilder: (TextEditingValue textEditingValue) {
+                                            return ['Skype',
                                               'Corporate Email',
                                               'Emojot Email',
                                               'On Call',
                                               'Company Chat',
-                                              'Other',
-                                            ].where((String option) {
-                                              return option
-                                                  .toLowerCase()
-                                                  .contains(
-                                                    textEditingValue.text
-                                                        .toLowerCase(),
-                                                  );
+                                              'Other',].where((String option) {
+                                              return option.toLowerCase().contains(
+                                                textEditingValue.text.toLowerCase(),
+                                              );
                                             });
                                           },
                                           onSelected: (String value) {
@@ -706,12 +621,11 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                             });
                                           },
                                           fieldViewBuilder: (
-                                            BuildContext context,
-                                            TextEditingController
-                                                textEditingController,
-                                            FocusNode focusNode,
-                                            VoidCallback onFieldSubmitted,
-                                          ) {
+                                              BuildContext context,
+                                              TextEditingController textEditingController,
+                                              FocusNode focusNode,
+                                              VoidCallback onFieldSubmitted,
+                                              ) {
                                             return TextField(
                                               controller: textEditingController,
                                               focusNode: focusNode,
@@ -719,53 +633,37 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                                 // Perform search or filtering here
                                               },
                                               decoration: InputDecoration(
-                                                hintText:
-                                                    '${widget.mainTaskDetails.sourceFrom}',
-                                                hintStyle:
-                                                    TextStyle(fontSize: 16),
-                                                enabledBorder:
-                                                    UnderlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: Colors
-                                                          .lightBlueAccent), // Normal border color
+                                                hintText: '${widget.mainTaskDetails.sourceFrom}',
+                                                hintStyle: TextStyle(fontSize: 15),
+                                                enabledBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(color: Colors.lightBlueAccent), // Normal border color
                                                 ),
-                                                focusedBorder:
-                                                    UnderlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: AppColor
-                                                          .tealLog), // Focus color
+                                                focusedBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(color: AppColor.appDarkBlue), // Focus color
                                                 ),
                                               ),
                                             );
                                           },
                                           optionsViewBuilder: (
-                                            BuildContext context,
-                                            AutocompleteOnSelected<String>
-                                                onSelected,
-                                            Iterable<String> options,
-                                          ) {
+                                              BuildContext context,
+                                              AutocompleteOnSelected<String> onSelected,
+                                              Iterable<String> options,
+                                              ) {
                                             return Align(
                                               alignment: Alignment.topLeft,
                                               child: Material(
                                                 elevation: 4.0,
                                                 child: Container(
-                                                  constraints: BoxConstraints(
-                                                      maxHeight: 200),
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.45,
+                                                  constraints: BoxConstraints(maxHeight: 200),
+                                                  width: MediaQuery.of(context).size.width*0.45,
                                                   child: ListView(
                                                     children: options
-                                                        .map((String option) =>
-                                                            ListTile(
-                                                              title:
-                                                                  Text(option),
-                                                              onTap: () {
-                                                                onSelected(
-                                                                    option);
-                                                              },
-                                                            ))
+                                                        .map((String option) => ListTile(
+                                                      title: Text(option),
+                                                      onTap: () {
+                                                        onSelected(option);
+                                                      },
+                                                    ))
                                                         .toList(),
                                                   ),
                                                 ),
@@ -780,52 +678,41 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                               ),
                             ],
                           ),
+
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
                                 flex: 3,
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 18, vertical: 5),
+                                  padding:  EdgeInsets.symmetric(horizontal: 18, vertical: 5),
                                   child: Row(
                                     children: [
-                                      Text(
-                                        "Category:  ",
-                                        style: TextStyle(
-                                            color: AppColor.tealLog,
-                                            fontSize: 18),
-                                      ),
+                                      Text("Category:  ",style: TextStyle(color: AppColor.appDarkBlue,fontSize: 15),),
+
                                       Expanded(
                                         child: Autocomplete<String>(
-                                          optionsBuilder: (TextEditingValue
-                                              textEditingValue) {
-                                            return categoryNames
-                                                .where((String option) {
-                                              return option
-                                                  .toLowerCase()
-                                                  .contains(
-                                                    textEditingValue.text
-                                                        .toLowerCase(),
-                                                  );
+                                          optionsBuilder: (TextEditingValue textEditingValue) {
+                                            return categoryNames.where((String option) {
+                                              return option.toLowerCase().contains(
+                                                textEditingValue.text.toLowerCase(),
+                                              );
                                             });
                                           },
                                           onSelected: (String value) {
                                             setState(() {
                                               categoryName = value;
-                                              selectedIndex =
-                                                  categoryNames.indexOf(value);
-                                              category = selectedIndex
-                                                  .toString(); // Convert selectedIndex to string
+                                              selectedIndex = categoryNames.indexOf(value);
+                                              category = selectedIndex.toString(); // Convert selectedIndex to string
                                             });
                                           },
                                           fieldViewBuilder: (
-                                            BuildContext context,
-                                            TextEditingController
-                                                textEditingController,
-                                            FocusNode focusNode,
-                                            VoidCallback onFieldSubmitted,
-                                          ) {
+                                              BuildContext context,
+                                              TextEditingController textEditingController,
+                                              FocusNode focusNode,
+                                              VoidCallback onFieldSubmitted,
+                                              ) {
                                             return TextField(
                                               controller: textEditingController,
                                               focusNode: focusNode,
@@ -833,53 +720,37 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                                 // Perform search or filtering here
                                               },
                                               decoration: InputDecoration(
-                                                hintText:
-                                                    '${widget.mainTaskDetails.category_name}',
-                                                hintStyle:
-                                                    TextStyle(fontSize: 16),
-                                                enabledBorder:
-                                                    UnderlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: Colors
-                                                          .lightBlueAccent), // Normal border color
+                                                hintText: '${widget.mainTaskDetails.category_name}',
+                                                hintStyle: TextStyle(fontSize: 15),
+                                                enabledBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(color: Colors.lightBlueAccent), // Normal border color
                                                 ),
-                                                focusedBorder:
-                                                    UnderlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                      color: AppColor
-                                                          .tealLog), // Focus color
+                                                focusedBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(color: AppColor.appDarkBlue), // Focus color
                                                 ),
                                               ),
                                             );
                                           },
                                           optionsViewBuilder: (
-                                            BuildContext context,
-                                            AutocompleteOnSelected<String>
-                                                onSelected,
-                                            Iterable<String> options,
-                                          ) {
+                                              BuildContext context,
+                                              AutocompleteOnSelected<String> onSelected,
+                                              Iterable<String> options,
+                                              ) {
                                             return Align(
                                               alignment: Alignment.topLeft,
                                               child: Material(
                                                 elevation: 4.0,
                                                 child: Container(
-                                                  constraints: BoxConstraints(
-                                                      maxHeight: 100),
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.55,
+                                                  constraints: BoxConstraints(maxHeight: 100),
+                                                  width: MediaQuery.of(context).size.width*0.55,
                                                   child: ListView(
                                                     children: options
-                                                        .map((String option) =>
-                                                            ListTile(
-                                                              title:
-                                                                  Text(option),
-                                                              onTap: () {
-                                                                onSelected(
-                                                                    option);
-                                                              },
-                                                            ))
+                                                        .map((String option) => ListTile(
+                                                      title: Text(option),
+                                                      onTap: () {
+                                                        onSelected(option);
+                                                      },
+                                                    ))
                                                         .toList(),
                                                   ),
                                                 ),
@@ -892,11 +763,12 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                   ),
                                 ),
                               ),
+
                             ],
                           ),
-                          SizedBox(
-                            height: 40,
-                          ),
+
+                          SizedBox(height: 40,),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -904,21 +776,18 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                 height: 40,
                                 width: 140,
                                 padding:
-                                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    createSubTask();
+                                    editMainTask();
                                     print('Title:${titleController.text}');
-                                    print(
-                                        'Description:${descriptionController.text}');
+                                    print('Description:${descriptionController.text}');
                                     print('Selected Priority:${priority}');
                                     print('Selected Due Date:${dueDate}');
                                     print('Selected Source From:${sourceFrom}');
                                     print('Selected Assign To:${assignTo}');
-                                    print(
-                                        'Selected Beneficiary:${beneficiary}');
-                                    print(
-                                        'Selected Category Name:${categoryName}');
+                                    print('Selected Beneficiary:${beneficiary}');
+                                    print('Selected Category Name:${categoryName}');
                                     print('Selected Category:${category}');
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -930,7 +799,7 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                     ),
                                   ),
                                   child: const Text(
-                                    'Create',
+                                    'Save',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -941,7 +810,7 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                                 height: 40,
                                 width: 140,
                                 padding:
-                                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                 child: ElevatedButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
@@ -964,9 +833,13 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
                               ),
                             ],
                           ),
-                          SizedBox(
-                            height: 20,
-                          ),
+
+                          SizedBox(height: 20,),
+
+
+
+
+
                         ],
                       ),
                     ),
@@ -975,128 +848,86 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
               ),
             ),
           ),
+
         ],
       ),
     );
   }
 
-  Future<void> createSubTask() async {
-    if (titleController.text.trim().isEmpty ||
-        descriptionController.text.isEmpty) {
-      // Show an error message if any of the required fields are empty
-      snackBar(context, "Please fill in all required fields", Colors.red);
-      return;
-    }
-
-    // Other validation logic can be added here
-    // If all validations pass, proceed with the registration
-    var url = "http://dev.workspace.cbs.lk/subTaskCreate.php";
-
-    String logType = 'Sub Task';
-    String logSummary = 'Created';
-    String logDetails = 'Due Date: $dueDate';
-    String firstLetterFirstName = firstName.isNotEmpty ? firstName[0] : '';
-    String firstLetterLastName = lastName.isNotEmpty ? lastName[0] : '';
-    String geCategory = categoryName.substring(categoryName.length - 3);
-    String taskID = getCurrentMonth() +
-        firstLetterFirstName +
-        firstLetterLastName +
-        geCategory +
-        generatedTaskId();
-
+  Future<bool> editMainTask() async {
+    String logType ='Main Task';
+    String logSummary ='Edited';
+    String logDetails ='';
     var data = {
-      "main_task_id": widget.mainTaskDetails.taskId,
-      "task_id": taskID,
+      "task_id": widget.mainTaskDetails.taskId,
       "task_title": titleController.text,
-      "task_type": '0',
       "task_type_name": priority,
-      "due_date": dueDate,
       "task_description": descriptionController.text,
-      "task_create_by_id": userName,
-      "task_create_by": '$firstName $lastName',
-      "task_create_date": getCurrentDate(),
-      "task_create_month": getCurrentMonth(),
-      "task_created_timestamp": getCurrentDateTime(),
-      "task_status": "0",
-      "task_status_name": "Pending",
-      "task_reopen_by": "",
-      "task_reopen_by_id": "",
-      "task_reopen_date": "",
-      "task_reopen_timestamp": "0",
-      "task_finished_by": "",
-      "task_finished_by_id": "",
-      "task_finished_by_date": "",
-      "task_finished_by_timestamp": "0",
-      "task_edit_by": "",
-      "task_edit_by_id": "",
-      "task_edit_by_date": "",
-      "task_edit_by_timestamp": "0",
-      "task_delete_by": "",
-      "task_delete_by_id": "",
-      "task_delete_by_date": "",
-      "task_delete_by_timestamp": "0",
-      "source_from": sourceFrom,
-      "assign_to": assignTo,
+      "task_status_name": widget.mainTaskDetails.taskStatusName,
+      "action_taken_by_id": userName,
+      "action_taken_by": firstName,
+      "action_taken_date": getCurrentDate(),
+      "action_taken_timestamp": getCurrentDate(),
+      "task_edit_by": userName,
+      "task_edit_by_id": firstName,
+      "task_edit_by_date": getCurrentDate(),
+      "task_edit_by_timestamp": getCurrentDate(),
       "company": beneficiary,
-      "document_number": '',
-      "watch_list": '0',
-      "action_taken_by_id": "",
-      "action_taken_by": "",
-      "action_taken_date": "",
-      "action_taken_timestamp": "0",
+      "due_date": dueDate,
+      "assign_to": assignTo,
+      "source_from": sourceFrom,
       "category_name": categoryName,
       "category": category,
     };
 
-    http.Response res = await http.post(
-      Uri.parse(url),
-      body: data,
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      encoding: Encoding.getByName("utf-8"),
-    );
+    // URL of your PHP script.
+    const url = "http://dev.workspace.cbs.lk/editMainTask.php";
 
-    if (res.statusCode.toString() == "200") {
-      if (jsonDecode(res.body) == "true") {
-        if (!mounted) return;
-        print('Sud task created!!');
-        addLog(context,
-            taskId: taskID,
-            taskName: titleController.text,
-            createBy: firstName,
-            createByID: userName,
-            logType: logType,
-            logSummary: logSummary,
-            logDetails: logDetails);
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => OpenTaskPage(
-                    userRoleForDelete: userRoleForDelete,
-                    userName: userName,
-                    firstName: firstName,
-                    lastName: lastName,
-                    task: widget.mainTaskDetails, taskDetails: widget.mainTaskDetails,)));
+    try {
+      final res = await http.post(
+        Uri.parse(url),
+        body: data,
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      );
+
+      if (res.statusCode == 200) {
+        final responseBody = jsonDecode(res.body);
+
+        // Debugging: Print the response data.
+        print("Response from PHP script: $responseBody");
+
+        if (responseBody == "true") {
+          print('Main task edit Successful');
+          addLog(context,
+              taskId: widget.mainTaskDetails.taskId,
+              taskName: widget.mainTaskDetails.taskTitle,
+              createBy: firstName,
+              createByID: userName,
+              logType: logType,
+              logSummary: logSummary,
+              logDetails: logDetails);
+          snackBar(context, " Edit Main Task successful!", Colors.green);
+          Navigator.pushNamed(context, '/Task');
+
+          return true; // PHP code was successful.
+        } else {
+          print('PHP code returned "false".');
+          return false; // PHP code returned "false."
+        }
       } else {
-        if (!mounted) return;
-        snackBar(context, "Error", Colors.red);
+        print('HTTP request failed with status code: ${res.statusCode}');
+        return false; // HTTP request failed.
       }
-    } else {
-      if (!mounted) return;
-      snackBar(context, "Error", Colors.yellow);
+    } catch (e) {
+      print('Error occurred: $e');
+      return false; // An error occurred.
     }
   }
 
-  Future<void> addLog(BuildContext context,
-      {required String taskId,
-      required String taskName,
-      required String createBy,
-      required String createByID,
-      required String logType,
-      required String logSummary,
-      required String logDetails}) async {
+  Future<void> addLog(BuildContext context, {required String taskId, required String taskName, required String createBy, required String createByID, required String logType, required String logSummary, required String logDetails}) async {
     var url = "http://dev.workspace.cbs.lk/addLogUpdate.php";
 
     var data = {
@@ -1136,5 +967,6 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
       if (!mounted) return;
       snackBar(context, "Error", Colors.redAccent);
     }
+
   }
 }

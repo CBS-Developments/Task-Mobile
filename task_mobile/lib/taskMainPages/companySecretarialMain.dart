@@ -195,7 +195,7 @@ class _SecretarialMainState extends State<SecretarialMain> {
                                     userRoleForDelete: userRole,
                                     userName: userName,
                                     firstName: firstName,
-                                    lastName: lastName,
+                                    lastName: lastName, taskDetails: task,
                                   ),
                                 ),
                               );

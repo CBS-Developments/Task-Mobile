@@ -165,7 +165,7 @@ class _CommentsPageState extends State<CommentsPage> {
                     userRoleForDelete: widget.userRoleForDelete,
                     userName: widget.userName,
                     firstName: widget.firstName,
-                    lastName: widget.lastName,
+                    lastName: widget.lastName, taskDetails: widget.task,
                   )),
         );
       }
@@ -276,7 +276,7 @@ class _CommentsPageState extends State<CommentsPage> {
                       userRoleForDelete: widget.userRoleForDelete,
                       userName: widget.userName,
                       firstName: widget.firstName,
-                      lastName: widget.lastName,
+                      lastName: widget.lastName, taskDetails: widget.task,
                     )),
           );
           return true; // PHP code was successful.

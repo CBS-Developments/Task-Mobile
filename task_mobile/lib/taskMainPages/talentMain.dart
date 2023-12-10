@@ -195,7 +195,7 @@ class _TalentMainState extends State<TalentMain> {
                                     userRoleForDelete: userRole,
                                     userName: userName,
                                     firstName: firstName,
-                                    lastName: lastName,
+                                    lastName: lastName, taskDetails: task,
                                   ),
                                 ),
                               );

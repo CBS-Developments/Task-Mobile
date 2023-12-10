@@ -195,7 +195,7 @@ class _DevelopmentMainState extends State<DevelopmentMain> {
                                     userRoleForDelete: userRole,
                                     userName: userName,
                                     firstName: firstName,
-                                    lastName: lastName,
+                                    lastName: lastName, taskDetails: task,
                                   ),
                                 ),
                               );

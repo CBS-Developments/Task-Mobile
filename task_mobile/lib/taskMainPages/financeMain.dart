@@ -195,7 +195,7 @@ class _FinanceMainState extends State<FinanceMain> {
                                     userRoleForDelete: userRole,
                                     userName: userName,
                                     firstName: firstName,
-                                    lastName: lastName,
+                                    lastName: lastName, taskDetails: task,
                                   ),
                                 ),
                               );

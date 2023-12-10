@@ -14,5 +14,9 @@ class AppColor {
   static  Color table = const Color(0xFF7B96E1);
   static  Color tealLog = const Color(0xFF367A7A);
   static  Color taskBox = const Color(0xFFFCFCFC);
+  static Color appLightBlue = const Color(0xFF99B3C6);
+  static  Color appDarkBlue = const Color(0xFF465779);
+  static  Color appGrey = const Color(0xFFD7DCE0);
+  static  Color appBlue = const Color(0xFF2A2F6D);
 
 }

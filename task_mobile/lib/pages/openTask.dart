@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:Workspace_Lite/pages/createSubtaskNew.dart';
+import 'package:Workspace_Lite/pages/editMainTaskNew.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,6 +23,7 @@ import 'package:http/http.dart' as http;
 import 'editMainTask.dart';
 
 class OpenTaskPage extends StatefulWidget {
+  final MainTask taskDetails;
   final String userRoleForDelete;
   final String userName;
   final String firstName;
@@ -34,7 +36,7 @@ class OpenTaskPage extends StatefulWidget {
       required this.userName,
       required this.firstName,
       required this.lastName,
-      required this.task})
+      required this.task, required this.taskDetails})
       : super(key: key);
 
   @override
@@ -587,7 +589,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                     userRoleForDelete: widget.userRoleForDelete,
                     userName: widget.userName,
                     firstName: widget.firstName,
-                    lastName: widget.lastName,
+                    lastName: widget.lastName, taskDetails: widget.task,
                   )),
         );
       }
@@ -698,7 +700,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                       userRoleForDelete: widget.userRoleForDelete,
                       userName: widget.userName,
                       firstName: widget.firstName,
-                      lastName: widget.lastName,
+                      lastName: widget.lastName, taskDetails: widget.taskDetails,
                     )),
           );
           return true; // PHP code was successful.
@@ -809,27 +811,7 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => EditMainTask(
-                                              currentTitle:
-                                                  widget.task.taskTitle,
-                                              currentDescription:
-                                                  widget.task.task_description,
-                                              currentBeneficiary:
-                                                  widget.task.company,
-                                              currentDueDate:
-                                                  widget.task.dueDate,
-                                              currentAssignTo:
-                                                  widget.task.assignTo,
-                                              currentPriority:
-                                                  widget.task.taskTypeName,
-                                              currentSourceFrom:
-                                                  widget.task.sourceFrom,
-                                              currentCategory:
-                                                  widget.task.category_name,
-                                              taskID: widget.task.taskId,
-                                              userName: userName,
-                                              firstName: firstName,
-                                            )),
+                                        builder: (context) => EditMainTaskPage(mainTaskDetails: widget.taskDetails)),
                                   );
                                 },
                                 icon: const Icon(Icons.edit,
