@@ -14,7 +14,7 @@ import '../createAccountPopUps/sourceFromPopUp.dart';
 import '../methods/colors.dart';
 import 'createMainTask.dart';
 
-class EditSubTaskPage extends StatefulWidget {
+class EditSubTaskPage1 extends StatefulWidget {
   final String currentTitle;
   final String currentDescription;
   final String currentBeneficiary;
@@ -27,13 +27,13 @@ class EditSubTaskPage extends StatefulWidget {
   final String userName;
   final String firstName;
 
-  const EditSubTaskPage({Key? key, required this.currentTitle, required this.currentDescription, required this.currentBeneficiary, required this.currentDueDate, required this.currentAssignTo, required this.currentPriority, required this.currentSourceFrom, required this.currentCategory, required this.taskID, required this.userName, required this.firstName}) : super(key: key);
+  const EditSubTaskPage1({Key? key, required this.currentTitle, required this.currentDescription, required this.currentBeneficiary, required this.currentDueDate, required this.currentAssignTo, required this.currentPriority, required this.currentSourceFrom, required this.currentCategory, required this.taskID, required this.userName, required this.firstName}) : super(key: key);
 
   @override
-  State<EditSubTaskPage> createState() => _EditSubTaskPageState();
+  State<EditSubTaskPage1> createState() => _EditSubTaskPage1State();
 }
 
-class _EditSubTaskPageState extends State<EditSubTaskPage> {
+class _EditSubTaskPage1State extends State<EditSubTaskPage1> {
   TextEditingController newSubTitleController = TextEditingController();
   TextEditingController newSubDescriptionController = TextEditingController();
 

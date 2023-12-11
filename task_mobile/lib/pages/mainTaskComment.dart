@@ -106,6 +106,9 @@ class _CommentsPageState extends State<CommentsPage> {
     required taskName,
     required firstName,
     required lastName,
+    required logType,
+    required logSummary,
+    required logDetails,
   }) async {
     // Validate input fields
     if (mainTaskCommentController.text.trim().isEmpty) {
@@ -154,8 +157,11 @@ class _CommentsPageState extends State<CommentsPage> {
         addLog(context,
             taskId: taskID,
             taskName: taskName,
-            createBy: firstName + ' ' + lastName,
-            createByID: userName);
+            createBy: firstName,
+            createByID: userName,
+            logType: logType,
+            logSummary: logSummary,
+            logDetails: logDetails);
 
         Navigator.push(
           context,
@@ -165,7 +171,8 @@ class _CommentsPageState extends State<CommentsPage> {
                     userRoleForDelete: widget.userRoleForDelete,
                     userName: widget.userName,
                     firstName: widget.firstName,
-                    lastName: widget.lastName, taskDetails: widget.task,
+                    lastName: widget.lastName,
+                    taskDetails: widget.task,
                   )),
         );
       }
@@ -276,7 +283,8 @@ class _CommentsPageState extends State<CommentsPage> {
                       userRoleForDelete: widget.userRoleForDelete,
                       userName: widget.userName,
                       firstName: widget.firstName,
-                      lastName: widget.lastName, taskDetails: widget.task,
+                      lastName: widget.lastName,
+                      taskDetails: widget.task,
                     )),
           );
           return true; // PHP code was successful.
@@ -294,22 +302,73 @@ class _CommentsPageState extends State<CommentsPage> {
     }
   }
 
+  // Future<void> addLog(
+  //   BuildContext context, {
+  //   required taskId,
+  //   required taskName,
+  //   required createBy,
+  //   required createByID,
+  // }) async {
+  //   // If all validations pass, proceed with the registration
+  //   var url = "http://dev.workspace.cbs.lk/addLog.php";
+  //
+  //   var data = {
+  //     "log_id": getCurrentDateTime(),
+  //     "task_id": taskId,
+  //     "task_name": taskName,
+  //     "log_summary": 'Commented to Main Task',
+  //     "log_type": 'Commented',
+  //     "log_create_by": createBy,
+  //     "log_create_by_id": createByID,
+  //     "log_create_by_date": getCurrentDate(),
+  //     "log_create_by_month": getCurrentMonth(),
+  //     "log_create_by_year": '',
+  //     "log_created_by_timestamp": getCurrentDateTime(),
+  //   };
+  //
+  //   http.Response res = await http.post(
+  //     Uri.parse(url),
+  //     body: data,
+  //     headers: {
+  //       "Accept": "application/json",
+  //       "Content-Type": "application/x-www-form-urlencoded",
+  //     },
+  //     encoding: Encoding.getByName("utf-8"),
+  //   );
+  //
+  //   if (res.statusCode.toString() == "200") {
+  //     if (jsonDecode(res.body) == "true") {
+  //       if (!mounted) return;
+  //       print('Log added!!');
+  //     } else {
+  //       if (!mounted) return;
+  //       snackBar(context, "Error", Colors.red);
+  //     }
+  //   } else {
+  //     if (!mounted) return;
+  //     snackBar(context, "Error", Colors.redAccent);
+  //   }
+  // }
   Future<void> addLog(
     BuildContext context, {
     required taskId,
     required taskName,
     required createBy,
     required createByID,
+    required logType,
+    required logSummary,
+    required logDetails,
   }) async {
     // If all validations pass, proceed with the registration
-    var url = "http://dev.workspace.cbs.lk/addLog.php";
+    var url = "http://dev.workspace.cbs.lk/addLogUpdate.php";
 
     var data = {
       "log_id": getCurrentDateTime(),
       "task_id": taskId,
       "task_name": taskName,
-      "log_summary": 'Commented to Main Task',
-      "log_type": 'Commented',
+      "log_summary": logSummary,
+      "log_type": logType,
+      "log_details": logDetails,
       "log_create_by": createBy,
       "log_create_by_id": createByID,
       "log_create_by_date": getCurrentDate(),
@@ -509,7 +568,11 @@ class _CommentsPageState extends State<CommentsPage> {
                             taskID: widget.task.taskId,
                             firstName: widget.firstName,
                             lastName: widget.lastName,
-                            taskName: widget.task.taskTitle);
+                            taskName: widget.task.taskTitle,
+                            logType: 'to Main Task',
+                            logSummary: 'Commented',
+                            logDetails:
+                                " Comment: ${mainTaskCommentController.text}");
                         //   getCommentList(widget.task.taskId);
                       },
                       icon: Icon(

@@ -596,7 +596,7 @@ class _OpenSubTaskPageState extends State<OpenSubTaskPage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              EditSubTaskPage(
+                                              EditSubTaskPage1(
                                                   currentTitle:
                                                   task.taskTitle,
                                                   currentDescription: task
