@@ -98,6 +98,16 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
   }
 
   Widget _buildContainer(int index, BuildContext context) {
+
+    List<IconData> containerIcons = [
+      Icons.attach_money,    // Icon for Taxation
+      Icons.people,          // Icon for Talent Management
+      Icons.account_balance, // Icon for Finance & Accounting
+      Icons.assignment,      // Icon for Audit & Assurance
+      Icons.business,        // Icon for Company Secretarial
+      Icons.developer_mode,  // Icon for Developments
+    ];
+
     return Container(
       margin: const EdgeInsets.all(10.0),
       child: MaterialButton(
@@ -132,6 +142,12 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Icon(
+              containerIcons[index], // Set the icon for each container
+              size: 36.0,             // Customize the icon size
+              color: Colors.teal[800],
+            ),
+            const SizedBox(height: 8.0),
             Text(
               widget.containerTexts[index],
               style: const TextStyle(

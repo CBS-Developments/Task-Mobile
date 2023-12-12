@@ -184,12 +184,13 @@ class _CommentsPageState extends State<CommentsPage> {
   }
 
   void showDeleteCommentConfirmation(
-    BuildContext context,
-    String commentID,
-    String createBy,
-    String nameNowUser,
-  ) {
+      BuildContext context,
+      String commentID,
+      String createBy,
+      String nameNowUser,
+      ) {
     print('Now user: $nameNowUser');
+    print('Crate By: $createBy');
     if (createBy == nameNowUser) {
       print(createBy);
       showDialog(
@@ -197,8 +198,7 @@ class _CommentsPageState extends State<CommentsPage> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Confirm Delete'),
-            content:
-                const Text('Are you sure you want to delete this Comment?'),
+            content: const Text('Are you sure you want to delete this Comment?'),
             actions: <Widget>[
               TextButton(
                 child: const Text('Cancel'),
@@ -244,11 +244,14 @@ class _CommentsPageState extends State<CommentsPage> {
   Future<bool> deleteComment(
     String commentId,
   ) async {
+    String logType = 'Comment';
+    String logSummary = 'Deleted';
+    String logDetails = '';
     // Prepare the data to be sent to the PHP script.
     var data = {
       "comment_id": commentId,
-      "comment_delete_by": widget.userName,
-      "comment_delete_by_id": widget.firstName,
+      "comment_delete_by": userName,
+      "comment_delete_by_id": firstName,
       "comment_delete_by_date": getCurrentDate(),
       "comment_delete_by_timestamp": getCurrentDateTime(),
     };
@@ -274,6 +277,7 @@ class _CommentsPageState extends State<CommentsPage> {
 
         if (responseBody == "true") {
           print('Successful');
+          addLog(context, taskId: widget.task.taskId, taskName: widget.task.taskTitle, createBy: firstName, createByID: userName, logType: logType, logSummary: logSummary, logDetails: logDetails);
           snackBar(context, "Comment Deleted successful!", Colors.redAccent);
           Navigator.push(
             context,
@@ -302,53 +306,6 @@ class _CommentsPageState extends State<CommentsPage> {
     }
   }
 
-  // Future<void> addLog(
-  //   BuildContext context, {
-  //   required taskId,
-  //   required taskName,
-  //   required createBy,
-  //   required createByID,
-  // }) async {
-  //   // If all validations pass, proceed with the registration
-  //   var url = "http://dev.workspace.cbs.lk/addLog.php";
-  //
-  //   var data = {
-  //     "log_id": getCurrentDateTime(),
-  //     "task_id": taskId,
-  //     "task_name": taskName,
-  //     "log_summary": 'Commented to Main Task',
-  //     "log_type": 'Commented',
-  //     "log_create_by": createBy,
-  //     "log_create_by_id": createByID,
-  //     "log_create_by_date": getCurrentDate(),
-  //     "log_create_by_month": getCurrentMonth(),
-  //     "log_create_by_year": '',
-  //     "log_created_by_timestamp": getCurrentDateTime(),
-  //   };
-  //
-  //   http.Response res = await http.post(
-  //     Uri.parse(url),
-  //     body: data,
-  //     headers: {
-  //       "Accept": "application/json",
-  //       "Content-Type": "application/x-www-form-urlencoded",
-  //     },
-  //     encoding: Encoding.getByName("utf-8"),
-  //   );
-  //
-  //   if (res.statusCode.toString() == "200") {
-  //     if (jsonDecode(res.body) == "true") {
-  //       if (!mounted) return;
-  //       print('Log added!!');
-  //     } else {
-  //       if (!mounted) return;
-  //       snackBar(context, "Error", Colors.red);
-  //     }
-  //   } else {
-  //     if (!mounted) return;
-  //     snackBar(context, "Error", Colors.redAccent);
-  //   }
-  // }
   Future<void> addLog(
     BuildContext context, {
     required taskId,
