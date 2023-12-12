@@ -100,12 +100,12 @@ class _TaskMainDashboardState extends State<TaskMainDashboard> {
   Widget _buildContainer(int index, BuildContext context) {
 
     List<IconData> containerIcons = [
-      Icons.attach_money,    // Icon for Taxation
-      Icons.people,          // Icon for Talent Management
-      Icons.account_balance, // Icon for Finance & Accounting
-      Icons.assignment,      // Icon for Audit & Assurance
-      Icons.business,        // Icon for Company Secretarial
-      Icons.developer_mode,  // Icon for Developments
+      Icons.attach_money,
+      Icons.people,
+      Icons.account_balance,
+      Icons.assignment,
+      Icons.business,
+      Icons.developer_mode,
     ];
 
     return Container(
