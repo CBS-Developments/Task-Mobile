@@ -1070,6 +1070,7 @@ class _CreateSubTaskPageState extends State<CreateSubTaskPage> {
             logType: logType,
             logSummary: logSummary,
             logDetails: logDetails);
+        snackBar(context, " Sub Task created successful!", Colors.green);
         Navigator.push(
             context,
             MaterialPageRoute(

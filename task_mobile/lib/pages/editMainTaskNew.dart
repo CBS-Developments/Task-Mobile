@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../components/test.dart';
 import '../methods/colors.dart';
 import '../methods/sizes.dart';
+import '../taskMainPages/taxationMain.dart';
 import 'createSubTask.dart';
 
 class EditMainTaskPage extends StatefulWidget {
@@ -910,7 +911,12 @@ class _EditMainTaskPageState extends State<EditMainTaskPage> {
               logSummary: logSummary,
               logDetails: logDetails);
           snackBar(context, " Edit Main Task successful!", Colors.green);
-          Navigator.pushNamed(context, '/Task');
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) {
+              return TaxationMainTask();
+            }),
+          );
 
           return true; // PHP code was successful.
         } else {
