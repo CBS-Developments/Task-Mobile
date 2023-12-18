@@ -7,6 +7,7 @@ import 'package:Workspace_Lite/pages/openSubTask.dart';
 import 'package:Workspace_Lite/pages/subTaskList.dart';
 import 'package:http/http.dart' as http;
 import '../components/test.dart';
+import 'createSubTask.dart';
 
 class SubTaskComment extends StatefulWidget {
   final String userRoleForDelete;
@@ -14,6 +15,7 @@ class SubTaskComment extends StatefulWidget {
   final String firstName;
   final String lastName;
   final Task task;
+  final MainTask mainTaskDetails;
 
   const SubTaskComment(
       {Key? key,
@@ -21,7 +23,7 @@ class SubTaskComment extends StatefulWidget {
       required this.userName,
       required this.firstName,
       required this.lastName,
-      required this.task})
+      required this.task, required this.mainTaskDetails})
       : super(key: key);
 
   @override
@@ -34,7 +36,6 @@ class _SubTaskCommentState extends State<SubTaskComment> {
   String lastName = '';
   String userRole = '';
   List<comment> comments = [];
-  //TextEditingController subTaskCommentController = TextEditingController();
   TextEditingController commentTextController = TextEditingController();
   @override
   void initState() {
@@ -69,78 +70,6 @@ class _SubTaskCommentState extends State<SubTaskComment> {
     final formattedDate = DateFormat('yy-MM').format(now);
     return formattedDate;
   }
-
-  // Future<bool> createMainTaskComment(
-  //     BuildContext context, {
-  //       required userName,
-  //       required taskID,
-  //       required taskName,
-  //       required firstName,
-  //       required lastName,
-  //     }) async {
-  //   // Validate input fields
-  //   if (subTaskCommentController.text.trim().isEmpty) {
-  //     // Show an error message if the combined fields are empty
-  //     snackBar(context, "Please fill in all required fields", Colors.red);
-  //     return false;
-  //   }
-  //
-  //   var url = "http://dev.workspace.cbs.lk/createComment.php";
-  //
-  //   var data = {
-  //     "comment_id": getCurrentDateTime(),
-  //     "task_id": taskID,
-  //     "comment": subTaskCommentController.text,
-  //     "comment_create_by_id": userName,
-  //     "comment_create_by": firstName + ' ' + lastName,
-  //     "comment_create_date": getCurrentDate(),
-  //     "comment_created_timestamp": getCurrentDateTime(),
-  //     "comment_status": "1",
-  //     "comment_edit_by": "",
-  //     "comment_edit_by_id": '',
-  //     "comment_edit_by_date": "",
-  //     "comment_edit_by_timestamp": "",
-  //     "comment_delete_by": "",
-  //     "comment_delete_by_id": "",
-  //     "comment_delete_by_date": "",
-  //     "comment_delete_by_timestamp": "",
-  //     "comment_attachment": '',
-  //   };
-  //
-  //   http.Response res = await http.post(
-  //     Uri.parse(url),
-  //     body: data,
-  //     headers: {
-  //       "Accept": "application/json",
-  //       "Content-Type": "application/x-www-form-urlencoded",
-  //     },
-  //     encoding: Encoding.getByName("utf-8"),
-  //   );
-  //
-  //   if (res.statusCode.toString() == "200") {
-  //     if (jsonDecode(res.body) == "true") {
-  //       if (!mounted) return true;
-  //       subTaskCommentController.clear();
-  //       snackBar(context, "Comment Added Successfully", Colors.green);
-  //       addLog(context, taskId: taskID, taskName: taskName, createBy: firstName + ' ' + lastName, createByID: userName);
-  //
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-  //             builder: (context) => OpenSubTaskPage(
-  //                 task: widget.task,
-  //                 userRoleForDelete: widget.userRoleForDelete,
-  //                 userName: widget.userName,
-  //                 firstName: widget.firstName,
-  //                 lastName: widget.lastName)),
-  //       );
-  //     }
-  //   } else {
-  //     if (!mounted) return false;
-  //     snackBar(context, "Error", Colors.redAccent);
-  //   }
-  //   return true;
-  // }
 
   Future<void> addLog(
     BuildContext context, {
@@ -331,6 +260,12 @@ class _SubTaskCommentState extends State<SubTaskComment> {
               logType: logType,
               logSummary: logSummary,
               logDetails: logDetails);
+          snackBar(context, "Comment Deleted successful!", Colors.redAccent);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => OpenSubTaskPage(userRoleForDelete: widget.userRoleForDelete, userName: userName, firstName: firstName, lastName: lastName, task: widget.task, mainTaskDetails: widget.mainTaskDetails)))
+          ;
           return true; // PHP code was successful.
         } else {
           print('PHP code returned "false".');
@@ -429,72 +364,6 @@ class _SubTaskCommentState extends State<SubTaskComment> {
     }
     return true;
   }
-
-  // Future<void> getCommentList(String taskId) async {
-  //   commentsList
-  //       .clear(); // Assuming that `commentsList` is a List<Comment> in your class
-  //
-  //   var data = {
-  //     "task_id": taskId,
-  //   };
-  //
-  //   const url = "http://dev.workspace.cbs.lk/commentListById.php";
-  //   http.Response response = await http.post(
-  //     Uri.parse(url),
-  //     body: data,
-  //     headers: {
-  //       "Accept": "application/json",
-  //       "Content-Type": "application/x-www-form-urlencoded",
-  //     },
-  //     encoding: Encoding.getByName("utf-8"),
-  //   );
-  //
-  //   if (response.statusCode == 200) {
-  //     final responseJson = json.decode(response.body);
-  //     setState(() {
-  //       for (Map<String, dynamic> details
-  //       in responseJson.cast<Map<String, dynamic>>()) {
-  //         commentsList.add(comment
-  //             .fromJson(details)); // Assuming Comment.fromJson method exists
-  //       }
-  //     });
-  //   } else {
-  //     throw Exception(
-  //         'Failed to load data from the API. Status Code: ${response.statusCode}');
-  //   }
-  // }
-  //
-  // Future<void> getSubTaskListByMainTaskId(String mainTaskId) async {
-  //   subTaskList.clear();
-  //   var data = {
-  //     "main_task_id": mainTaskId,
-  //   };
-  //
-  //   const url = "http://dev.workspace.cbs.lk/subTaskListByMainTaskId.php";
-  //   http.Response res = await http.post(
-  //     Uri.parse(url),
-  //     body: data,
-  //     headers: {
-  //       "Accept": "application/json",
-  //       "Content-Type": "application/x-www-form-urlencoded"
-  //     },
-  //     encoding: Encoding.getByName("utf-8"),
-  //   );
-  //
-  //   if (res.statusCode == 200) {
-  //     final responseJson = json.decode(res.body);
-  //     setState(() {
-  //       for (Map<String, dynamic> details
-  //       in responseJson.cast<Map<String, dynamic>>()) {
-  //         subTaskList.add(Task.fromJson(details));
-  //       }
-  //
-  //       subTaskList.sort((a, b) => b.dueDate.compareTo(a.dueDate));
-  //     });
-  //   } else {
-  //     throw Exception('Failed to load subtasks from API');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -646,7 +515,7 @@ class _SubTaskCommentState extends State<SubTaskComment> {
                             logType: 'to Sub Task',
                             logSummary: 'Commented',
                             logDetails:
-                                "Comment: ${commentTextController.text}", mainTaskDetails: widget.userName);
+                                "Comment: ${commentTextController.text}", mainTaskDetails: widget.mainTaskDetails);
                       },
                       icon: Icon(
                         Icons.send_rounded,

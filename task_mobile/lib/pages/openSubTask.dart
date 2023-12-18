@@ -921,7 +921,7 @@ class _OpenSubTaskPageState extends State<OpenSubTaskPage> {
                   firstName: widget.firstName,
                   lastName: widget.lastName,
                   userRoleForDelete: widget.userRoleForDelete,
-                  task: widget.task,
+                  task: widget.task, mainTaskDetails: widget.mainTaskDetails,
 
                 )
             ),
