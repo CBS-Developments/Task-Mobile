@@ -251,7 +251,7 @@ class _CommentsPageState extends State<CommentsPage> {
     var data = {
       "comment_id": commentId,
       "comment_delete_by": userName,
-      "comment_delete_by_id": firstName,
+      "comment_delete_by_id":  firstName + ' ' + lastName,
       "comment_delete_by_date": getCurrentDate(),
       "comment_delete_by_timestamp": getCurrentDateTime(),
     };
@@ -277,7 +277,7 @@ class _CommentsPageState extends State<CommentsPage> {
 
         if (responseBody == "true") {
           print('Successful');
-          addLog(context, taskId: widget.task.taskId, taskName: widget.task.taskTitle, createBy: firstName, createByID: userName, logType: logType, logSummary: logSummary, logDetails: logDetails);
+          addLog(context, taskId: widget.task.taskId, taskName: widget.task.taskTitle, createBy: widget.firstName, createByID: userName, logType: logType, logSummary: logSummary, logDetails: logDetails);
           snackBar(context, "Comment Deleted successful!", Colors.redAccent);
           Navigator.push(
             context,

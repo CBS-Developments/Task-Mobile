@@ -870,7 +870,7 @@ class _EditMainTaskPageState extends State<EditMainTaskPage> {
       "action_taken_date": getCurrentDate(),
       "action_taken_timestamp": getCurrentDate(),
       "task_edit_by": userName,
-      "task_edit_by_id": firstName,
+      "task_edit_by_id": firstName + ' ' + lastName,
       "task_edit_by_date": getCurrentDate(),
       "task_edit_by_timestamp": getCurrentDate(),
       "company": beneficiary,
