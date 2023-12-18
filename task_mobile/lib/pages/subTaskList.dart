@@ -144,7 +144,7 @@ class _SubTaskListState extends State<SubTaskList> {
                                     userRoleForDelete: userRole,
                                     userName: userName,
                                     firstName: firstName,
-                                    lastName: lastName,
+                                    lastName: lastName, mainTaskDetails: widget.mainTaskDetails,
                                   ),
                                 ),
                               );

@@ -1,10 +1,15 @@
 import 'dart:convert';
+import 'dart:math';
 
+import 'package:Workspace_Lite/pages/subTaskList.dart';
+import 'package:Workspace_Lite/pages/taskMainDash.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:multiselect_formfield/multiselect_formfield.dart';
 import 'package:provider/provider.dart';
 import 'package:Workspace_Lite/taskMainPages/taxationMain.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../components/test.dart';
 import '../createAccountPopUps/assignToPopUp.dart';
 import '../createAccountPopUps/beneficiaryPopUp.dart';
@@ -12,30 +17,159 @@ import '../createAccountPopUps/categoryPopUp.dart';
 import '../createAccountPopUps/priorityPopUp.dart';
 import '../createAccountPopUps/sourceFromPopUp.dart';
 import '../methods/colors.dart';
+import '../methods/sizes.dart';
 import 'createMainTask.dart';
+import 'createSubTask.dart';
 
 class EditSubTaskPage1 extends StatefulWidget {
-  final String currentTitle;
-  final String currentDescription;
-  final String currentBeneficiary;
-  final String currentDueDate;
-  final String currentAssignTo;
-  final String currentPriority;
-  final String currentSourceFrom;
-  final String currentCategory;
   final String taskID;
   final String userName;
   final String firstName;
+  final MainTask mainTaskDetails;
+  final Task task;
 
-  const EditSubTaskPage1({Key? key, required this.currentTitle, required this.currentDescription, required this.currentBeneficiary, required this.currentDueDate, required this.currentAssignTo, required this.currentPriority, required this.currentSourceFrom, required this.currentCategory, required this.taskID, required this.userName, required this.firstName}) : super(key: key);
+  const EditSubTaskPage1({Key? key,required this.taskID, required this.userName, required this.firstName, required this.mainTaskDetails, required this.task}) : super(key: key);
 
   @override
   State<EditSubTaskPage1> createState() => _EditSubTaskPage1State();
 }
 
 class _EditSubTaskPage1State extends State<EditSubTaskPage1> {
-  TextEditingController newSubTitleController = TextEditingController();
-  TextEditingController newSubDescriptionController = TextEditingController();
+  String userName = "";
+  String firstName = "";
+  String lastName = "";
+  String phone = "";
+  String userRole = "";
+
+
+
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  String priority = '';
+  String dueDate = '';
+  String sourceFrom = ''; // Set a default value that exists in the dropdown items
+  String assignTo = ''; // Default value from the items list
+  String beneficiary = ''; // Default value from the items list
+  String categoryName = ''; // Default value from the items list
+  String category = ''; // Default value from the items list
+  int selectedIndex = -1; // Default index value // Default index value
+
+  List<String> selectedAssignTo = [];
+
+
+  List<String> categoryNames = [
+    'Taxation - TAS',
+    'Talent Management - TMS',
+    'Finance & Accounting - AFSS',
+    'Audit & Assurance - ASS',
+    'Company Secretarial - CSS',
+    'Development - DEV'
+    // Add your category items here
+  ];
+
+  List<String> beneficiaries = ['Beneficiary',
+    'A W M Riza',
+    'Academy of Digital Business Pvt. Ltd',
+    'Ajay Hathiramani',
+    'Andea Pereira',
+    'Andrew Downal',
+    'Asanga Karunarathne',
+    'Ashish Debey',
+    'Askalu Lanka Pvt. Ltd',
+    'Axis Tech Lanka (Pvt) Ltd',
+    'B C M Azwath',
+    'Ceylon Secretarial Services Pvt. Ltd',
+    'Codify Lanka Pvt. Ltd',
+    'Colonel Sujith Jayasekera',
+    'Compume (Pvt) Ltd',
+    'Corporate Business Solutions Pvt. Ltd',
+    'Courtesy Law Lanka Pvt. Ltd',
+    'Damith Gangodawilage',
+    'David Murray',
+    'DBA Alumni',
+    'Deepani Attanayake',
+    'Denver De Zylva',
+    'Deshan Senadheera',
+    'Dilhan Fernando',
+    'Dinoo Perera',
+    'Directpay (Pvt) Ltd',
+    'DN Thurairajah & Co.',
+    'Dr. Ishantha Jayasekera',
+    'Dr. Shahani Markus',
+    'E A Bimal Silva',
+    'Eksath Perera',
+    'Emojot Inc.',
+    'Emojot Pvt. Ltd',
+    'Fawas Ashraff',
+    'Fernando Ventures Pvt. Ltd',
+    'GK Wijayananada',
+    'Gullies Beauty Care',
+    'Hemal Kannangara',
+    'Himali De Silva',
+    'Idak Ceylon (Pvt) Ltd',
+    'Imate Construction',
+    'Ishan Dantanarayana',
+    'Jagath Pathirane',
+    'Jithain Hathiramani',
+    'JK Chambers/Kanchana Senanayake',
+    'Kalpitiya Discovery Diving Pvt. Ltd',
+    'Kelsey Services/Kavan Weerasinghe',
+    'L.D Wijerathne',
+    'Lloyd Mills Pvt Ltd',
+    'Lowcodeminds (Pvt) Ltd',
+    'M R Muthalif',
+    'Madu Rathnayake',
+    'Maithri Liyange',
+    'Mars Global Services Pvt. Ltd',
+    'Maryse Perers',
+    'Media Box/Ayesha',
+    'Migara Perera',
+    'Milinda Wattegerda',
+    'Mithun Liyanage',
+    'Mr. Lakshman Jayathilake',
+    'Nature Confort Lanka Holdings Pvt. Ltd',
+    'Nausha Raheem',
+    'Naveen Wijetunga',
+    'Nilangani De Silva',
+    'Nirmana Traders/Surath Herath',
+    'Nitmark Technologies Pvt. Ltd',
+    'Nugawela Transport',
+    'Off2 Lanka',
+    'Paymedia Pvt. Ltd',
+    'Pelicancube (Pvt) Ltd',
+    'Pradipa Jayathilaka',
+    'Prasanna Wijesiri',
+    'Rajeeve Goonetileke',
+    'Rasanga Shanaka',
+    'Ravin',
+    'Reena',
+    'Ruchika Roonahewa',
+    'Rumesh Athukorala',
+    'Sachnitha Rajith Ponnamperuma',
+    'Saliya Silva',
+    'Samantha Maithriwardena',
+    'Sameera Subashingha',
+    'Sampath Gunawardena',
+    'Sanjeeva Abyewardena',
+    'Sayura Beer Shop/Sunil Punchibandara',
+    'Shanil Fernando',
+    'Shirani Kulasinghe',
+    'Sonali Wicremaratne',
+    'Squarehub (Pvt) Ltd',
+    'Stephen Paulraj',
+    'Sumudu Kumara Gunawarden',
+    'Suren Karunakaran',
+    'Tanya Gunasekera',
+    'Taxperts Lanka Pvt. Ltd',
+    'Tesman Melani',
+    'Tharaka',
+    'Tharumal Wijesimghe',
+    'The Embazzy',
+    'The Headmasters Pvt. Ltd',
+    'Thingerbits Pvt. Ltd',
+    'Tikiri Banda & Sons/Dr. Bandara',
+    'Univiser (Pvt) Ltd',
+    'UP Weerasinghe Properties Pvt. Ltd'];
 
   String getCurrentDateTime() {
     final now = DateTime.now();
@@ -49,27 +183,687 @@ class _EditSubTaskPage1State extends State<EditSubTaskPage1> {
     return formattedDate;
   }
 
-  Future<bool> editSubTask(
-      String taskID,
-      String taskTitle,
-      String taskTypeName,
-      String description,
-      String userName,
-      String firstName,
-      String newCompany,
-      String dueDate,
-      String assignTo,
-      String sourceFrom,
-      String categoryName,
-      String category,
-      ) async {
-    // Prepare the data to be sent to the PHP script.
+  String getCurrentMonth() {
+    final now = DateTime.now();
+    final formattedDate = DateFormat('yy-MM').format(now);
+    return formattedDate;
+  }
+
+  String generatedTaskId() {
+    final random = Random();
+    int min = 1; // Smallest 9-digit number
+    int max = 999999999; // Largest 9-digit number
+    int randomNumber = min + random.nextInt(max - min + 1);
+    return randomNumber.toString().padLeft(9, '0');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize assignTo based on selectedAssignTo
+    // assignTo = selectedAssignTo.toString();
+    loadData();
+    beneficiary = widget.task.company;
+    priority = widget.task.taskTypeName;
+    sourceFrom = widget.task.sourceFrom;
+    assignTo = widget.task.assignTo;
+    categoryName = widget.task.categoryName;
+    category = widget.task.category;
+    titleController.text =  widget.task.taskTitle;
+    descriptionController.text =  widget.task.taskDescription;
+    dueDate = widget.task.dueDate;
+  }
+
+  void loadData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString('user_name') ?? "";
+      firstName = prefs.getString('first_name') ?? "";
+      lastName = prefs.getString('last_name') ?? "";
+      phone = prefs.getString('phone') ?? "";
+      userRole = prefs.getString('user_role') ?? "";
+      print(
+          'Data laded in create main task > userName: $userName > userRole: $userRole');
+    });
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
+    );
+
+    if (picked != null && picked != DateTime.now()) {
+      // Define the desired date format
+      final DateFormat formatter = DateFormat('yyyy-MM-dd'); // Example format: yyyy-MM-dd
+
+      setState(() {
+        // Format the picked date using the defined format
+        dueDate = formatter.format(picked);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: SelectableText(
+          widget.task.taskTitle,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.black),
+        elevation: 1.0,
+      ),
+      body: Row(
+        children: [
+          Expanded(
+            flex: 4,
+            child: SizedBox(
+              height: getPageHeight(context),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey, // Shadow color
+                            blurRadius: 5, // Spread radius
+                            offset: Offset(0, 3), // Offset in x and y directions
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.all(8),
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: TextField(
+                              textInputAction: TextInputAction.next,
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
+                              controller: titleController,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Task Title',
+                              ),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+
+                          Container(
+                            margin: EdgeInsets.all(8),
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: TextField(
+                              textInputAction: TextInputAction.done,
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
+                              controller: descriptionController,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                // labelText: 'Description',
+                                hintText: 'Description',
+                              ),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+
+
+
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Padding(
+                                  padding:  EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+                                  child: Row(
+                                    children: [
+                                      Text("Beneficiary:  ",style: TextStyle(color: AppColor.appDarkBlue,fontSize: 15),),
+                                      Expanded(
+                                        child: Autocomplete<String>(
+                                          optionsBuilder: (TextEditingValue textEditingValue) {
+                                            return beneficiaries.where((String option) {
+                                              return option.toLowerCase().contains(
+                                                textEditingValue.text.toLowerCase(),
+                                              );
+                                            });
+                                          },
+                                          onSelected: (String value) {
+                                            setState(() {
+                                              beneficiary = value;
+                                            });
+                                          },
+                                          fieldViewBuilder: (BuildContext context, TextEditingController textEditingController, FocusNode focusNode, VoidCallback onFieldSubmitted) {
+                                            return TextField(
+                                              controller: textEditingController,
+                                              focusNode: focusNode,
+                                              onChanged: (String text) {
+                                                // Perform search or filtering here
+                                              },
+                                              decoration: InputDecoration(
+                                                hintText: '${widget.task.company}',
+                                                hintStyle: TextStyle(fontSize: 16),
+                                                enabledBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(color: Colors.lightBlueAccent), // Normal border color
+                                                ),
+                                                focusedBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(color: AppColor.appDarkBlue), // Focus color
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          optionsViewBuilder: (
+                                              BuildContext context,
+                                              AutocompleteOnSelected<String> onSelected,
+                                              Iterable<String> options,
+                                              ) {
+                                            return Align(
+                                              alignment: Alignment.topLeft,
+                                              child: Material(
+                                                elevation: 4.0,
+                                                child: Container(
+                                                  constraints: BoxConstraints(maxHeight: 200),
+                                                  width: MediaQuery.of(context).size.width*0.55,
+                                                  child: ListView(
+                                                    children: options
+                                                        .map((String option) => ListTile(
+                                                      title: Text(option),
+                                                      onTap: () {
+                                                        onSelected(option);
+                                                      },
+                                                    ))
+                                                        .toList(),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+                            ],
+                          ),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Padding(
+                                  padding:  EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text("Due Date:  ",style: TextStyle(color: AppColor.appDarkBlue,fontSize: 15),),
+                                      TextButton(
+                                        onPressed: () {
+                                          _selectDate(context);
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              dueDate.isEmpty ? 'Select Date' : '$dueDate',style: TextStyle(fontSize: 15,color: Colors.black87),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(5.0),
+                                              child: Icon(Icons.calendar_month_rounded,color: Colors.black87,size: 16,),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+                            ],
+                          ),
+
+
+
+
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                flex:3,
+                                child: Padding(
+                                  padding:  EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+                                  child: MultiSelectFormField(
+                                    autovalidate: AutovalidateMode.always,
+                                    title: Text('Assign To: ',style: TextStyle(color: AppColor.appDarkBlue,fontSize: 15),),
+                                    dataSource: [
+                                      {
+                                        "display": "Deshika",
+                                        "value": "Deshika",
+                                      },
+                                      {
+                                        "display": "Damith",
+                                        "value": "Damith",
+                                      },
+                                      {
+                                        "display": "Iqlas",
+                                        "value": "Iqlas",
+                                      },
+                                      {
+                                        "display": "Udari",
+                                        "value": "Udari",
+                                      },
+                                      {
+                                        "display": "Shahiru",
+                                        "value": "Shahiru",
+                                      },
+                                      {
+                                        "display": "Dinethri",
+                                        "value": "Dinethri",
+                                      },
+                                      {
+                                        "display": "Sulakshana",
+                                        "value": "Sulakshana",
+                                      },
+                                      {
+                                        "display": "Samadhi",
+                                        "value": "Samadhi",
+                                      },
+                                      {
+                                        "display": "Sanjana",
+                                        "value": "Sanjana",
+                                      },
+                                      // Add other items as needed
+                                    ],
+                                    textField: 'display',
+                                    hintWidget: Text('${widget.task.assignTo}'),
+                                    valueField: 'value',
+                                    okButtonLabel: 'OK',
+                                    cancelButtonLabel: 'CANCEL',
+                                    initialValue: selectedAssignTo,
+                                    onSaved: (value) {
+                                      if (value == null) return;
+                                      setState(() {
+                                        selectedAssignTo = value.cast<String>(); // Ensure the value is a list of strings
+                                        assignTo = selectedAssignTo.toString();
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+
+                            ],
+                          ),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Padding(
+                                  padding:  EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+                                  child: Row(
+                                    children: [
+                                      Text("Priority:  ",style: TextStyle(color: AppColor.appDarkBlue,fontSize: 15),),
+                                      Expanded(
+                                        child: Autocomplete<String>(
+                                          optionsBuilder: (TextEditingValue textEditingValue) {
+                                            return ['Top Urgent', 'Medium', 'Regular', 'Low'].where((String option) {
+                                              return option.toLowerCase().contains(
+                                                textEditingValue.text.toLowerCase(),
+                                              );
+                                            });
+                                          },
+                                          onSelected: (String value) {
+                                            setState(() {
+                                              priority = value;
+                                            });
+                                          },
+                                          fieldViewBuilder: (
+                                              BuildContext context,
+                                              TextEditingController textEditingController,
+                                              FocusNode focusNode,
+                                              VoidCallback onFieldSubmitted,
+                                              ) {
+                                            return TextField(
+                                              controller: textEditingController,
+                                              focusNode: focusNode,
+                                              onChanged: (String text) {
+                                                // Perform search or filtering here
+                                              },
+                                              decoration: InputDecoration(
+                                                hintText: '${widget.task.taskTypeName}',
+                                                hintStyle: TextStyle(fontSize: 16),
+                                                enabledBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(color: Colors.lightBlueAccent), // Normal border color
+                                                ),
+                                                focusedBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(color: AppColor.appDarkBlue), // Focus color
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          optionsViewBuilder: (
+                                              BuildContext context,
+                                              AutocompleteOnSelected<String> onSelected,
+                                              Iterable<String> options,
+                                              ) {
+                                            return Align(
+                                              alignment: Alignment.topLeft,
+                                              child: Material(
+                                                elevation: 4.0,
+                                                child: Container(
+                                                  constraints: BoxConstraints(maxHeight: 200),
+                                                  width: MediaQuery.of(context).size.width*0.55,
+                                                  child: ListView(
+                                                    children: options
+                                                        .map((String option) => ListTile(
+                                                      title: Text(option),
+                                                      onTap: () {
+                                                        onSelected(option);
+                                                      },
+                                                    ))
+                                                        .toList(),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Padding(
+                                  padding:  EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+                                  child: Row(
+                                    children: [
+                                      Text("Source From:  ",style: TextStyle(color: AppColor.appDarkBlue,fontSize: 15),),
+                                      Expanded(
+                                        child: Autocomplete<String>(
+                                          optionsBuilder: (TextEditingValue textEditingValue) {
+                                            return ['Skype',
+                                              'Corporate Email',
+                                              'Emojot Email',
+                                              'On Call',
+                                              'Company Chat',
+                                              'Other',].where((String option) {
+                                              return option.toLowerCase().contains(
+                                                textEditingValue.text.toLowerCase(),
+                                              );
+                                            });
+                                          },
+                                          onSelected: (String value) {
+                                            setState(() {
+                                              sourceFrom = value;
+                                            });
+                                          },
+                                          fieldViewBuilder: (
+                                              BuildContext context,
+                                              TextEditingController textEditingController,
+                                              FocusNode focusNode,
+                                              VoidCallback onFieldSubmitted,
+                                              ) {
+                                            return TextField(
+                                              controller: textEditingController,
+                                              focusNode: focusNode,
+                                              onChanged: (String text) {
+                                                // Perform search or filtering here
+                                              },
+                                              decoration: InputDecoration(
+                                                hintText: '${widget.task.sourceFrom}',
+                                                hintStyle: TextStyle(fontSize: 16),
+                                                enabledBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(color: Colors.lightBlueAccent), // Normal border color
+                                                ),
+                                                focusedBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(color: AppColor.appDarkBlue), // Focus color
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          optionsViewBuilder: (
+                                              BuildContext context,
+                                              AutocompleteOnSelected<String> onSelected,
+                                              Iterable<String> options,
+                                              ) {
+                                            return Align(
+                                              alignment: Alignment.topLeft,
+                                              child: Material(
+                                                elevation: 4.0,
+                                                child: Container(
+                                                  constraints: BoxConstraints(maxHeight: 200),
+                                                  width: MediaQuery.of(context).size.width*0.45,
+                                                  child: ListView(
+                                                    children: options
+                                                        .map((String option) => ListTile(
+                                                      title: Text(option),
+                                                      onTap: () {
+                                                        onSelected(option);
+                                                      },
+                                                    ))
+                                                        .toList(),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Padding(
+                                  padding:  EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+                                  child: Row(
+                                    children: [
+                                      Text("Category:  ",style: TextStyle(color: AppColor.appDarkBlue,fontSize: 15),),
+
+                                      Expanded(
+                                        child: Autocomplete<String>(
+                                          optionsBuilder: (TextEditingValue textEditingValue) {
+                                            return categoryNames.where((String option) {
+                                              return option.toLowerCase().contains(
+                                                textEditingValue.text.toLowerCase(),
+                                              );
+                                            });
+                                          },
+                                          onSelected: (String value) {
+                                            setState(() {
+                                              categoryName = value;
+                                              selectedIndex = categoryNames.indexOf(value);
+                                              category = selectedIndex.toString(); // Convert selectedIndex to string
+                                            });
+                                          },
+                                          fieldViewBuilder: (
+                                              BuildContext context,
+                                              TextEditingController textEditingController,
+                                              FocusNode focusNode,
+                                              VoidCallback onFieldSubmitted,
+                                              ) {
+                                            return TextField(
+                                              controller: textEditingController,
+                                              focusNode: focusNode,
+                                              onChanged: (String text) {
+                                                // Perform search or filtering here
+                                              },
+                                              decoration: InputDecoration(
+                                                hintText: '${widget.task.categoryName}',
+                                                hintStyle: TextStyle(fontSize: 16),
+                                                enabledBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(color: Colors.lightBlueAccent), // Normal border color
+                                                ),
+                                                focusedBorder: UnderlineInputBorder(
+                                                  borderSide: BorderSide(color: AppColor.appDarkBlue), // Focus color
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          optionsViewBuilder: (
+                                              BuildContext context,
+                                              AutocompleteOnSelected<String> onSelected,
+                                              Iterable<String> options,
+                                              ) {
+                                            return Align(
+                                              alignment: Alignment.topLeft,
+                                              child: Material(
+                                                elevation: 4.0,
+                                                child: Container(
+                                                  constraints: BoxConstraints(maxHeight: 100),
+                                                  width: MediaQuery.of(context).size.width*0.55,
+                                                  child: ListView(
+                                                    children: options
+                                                        .map((String option) => ListTile(
+                                                      title: Text(option),
+                                                      onTap: () {
+                                                        onSelected(option);
+                                                      },
+                                                    ))
+                                                        .toList(),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 40,),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                height: 40,
+                                width: 140,
+                                padding:
+                                const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    editSubTask();
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: AppColor.loginF,
+                                    backgroundColor: Colors.lightBlue.shade50,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          5), // Rounded corners
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    'Save',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: 40,
+                                width: 140,
+                                padding:
+                                const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: AppColor.loginF,
+                                    backgroundColor: Colors.lightBlue.shade50,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          5), // Rounded corners
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.redAccent),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 20,),
+
+
+
+
+
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+        ],
+      ),
+    );
+
+  }
+  Future<bool> editSubTask() async {
+    String logType ='Sub Task';
+    String logSummary ='Edited';
+    String logDetails ='';
     var data = {
-      "task_id": taskID,
-      "task_title": taskTitle,
-      "task_type_name": taskTypeName,
-      "task_description": description,
-      "task_status_name": 'Pending',
+      "task_id": widget.taskID,
+      "task_title": titleController.text,
+      "task_type_name": priority,
+      "task_description": descriptionController.text,
+      "task_status_name": widget.task.taskStatusName,
       "action_taken_by_id": userName,
       "action_taken_by": firstName,
       "action_taken_date": getCurrentDate(),
@@ -78,7 +872,7 @@ class _EditSubTaskPage1State extends State<EditSubTaskPage1> {
       "task_edit_by_id": firstName,
       "task_edit_by_date": getCurrentDate(),
       "task_edit_by_timestamp": getCurrentDate(),
-      "company": newCompany,
+      "company": beneficiary,
       "due_date": dueDate,
       "assign_to": assignTo,
       "source_from": sourceFrom,
@@ -107,11 +901,19 @@ class _EditSubTaskPage1State extends State<EditSubTaskPage1> {
 
         if (responseBody == "true") {
           print('Successful');
+          addLog(context,
+              taskId: widget.task.taskId,
+              taskName: widget.task.taskTitle,
+              createBy: firstName,
+              createByID: userName,
+              logType: logType,
+              logSummary: logSummary,
+              logDetails: logDetails);
           snackBar(context, " Edit Sub Task successful!", Colors.green);
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) {
-              return const TaxationMainTask();
+              return TaskMainDashboard();
             }),
           );
           return true; // PHP code was successful.
@@ -129,606 +931,47 @@ class _EditSubTaskPage1State extends State<EditSubTaskPage1> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    String newSubBeneficiary = '';
-    String newSubDueDate = '';
-    String newSubAssignToValue = ''; // Define assignToValue in the outer scope
-    String newSubPriorityValue = ''; // Define priorityValue in the outer scope
-    String newSubSourceFromValue = ''; // Define sourceFromValue in the outer scope
-    String newSubCategoryValue = '';
-    String newSubCategoryInt = '';
+  Future<void> addLog(BuildContext context, {required String taskId, required String taskName, required String createBy, required String createByID, required String logType, required String logSummary, required String logDetails}) async {
+    var url = "http://dev.workspace.cbs.lk/addLogUpdate.php";
 
-    return Scaffold(
-      appBar: AppBar(
-        title: SelectableText(
-          widget.currentTitle,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
-        elevation: 1.0,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: null,
-                          controller: newSubTitleController,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            // labelText: 'Task Title',
-                            hintText: widget.currentTitle,
-                          ),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10,),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          textInputAction: TextInputAction.done,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: null,
-                          controller: newSubDescriptionController,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            // labelText: 'Description',
-                            hintText: widget.currentDescription,
-                          ),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Container(
-                      width: 700,
-                      height: 380,
-                      color: Colors.grey.shade300,
-                      child: Row(
-                        children: [
-                          SizedBox(
-                              width: 120,
-                              height: 300,
-                              child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 18,
-                                      bottom: 7,
-                                      top: 8,
-                                    ),
-                                    child: Text(
-                                      'Beneficiary',
-                                      style: TextStyle(
-                                        fontSize:
-                                        14, // Updated font size to 14
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColor.tealLog,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                      height: 8), // Updated height to 8
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.calendar_month_rounded,
-                                        size: 16,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 6,
-                                          bottom: 7,
-                                          top: 10,
-                                        ),
-                                        child: Text(
-                                          'Due Date',
-                                          style: TextStyle(
-                                            fontSize:
-                                            14, // Updated font size to 14
-                                            fontWeight: FontWeight.bold,
-                                            color: AppColor.tealLog,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                      height: 8), // Updated height to 8
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 18,
-                                      bottom: 5,
-                                      top: 22,
-                                    ),
-                                    child: Text(
-                                      'Assign To',
-                                      style: TextStyle(
-                                        fontSize:
-                                        14, // Updated font size to 14
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColor.tealLog,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                      height: 8), // Updated height to 8
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 18,
-                                      bottom: 5,
-                                      top: 22,
-                                    ),
-                                    child: Text(
-                                      'Priority',
-                                      style: TextStyle(
-                                        fontSize:
-                                        14, // Updated font size to 14
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColor.tealLog,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                      height: 8), // Updated height to 8
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 18,
-                                      bottom: 5,
-                                      top: 22,
-                                    ),
-                                    child: Text(
-                                      'Source From', // Updated text here
-                                      style: TextStyle(
-                                        fontSize:
-                                        14, // Updated font size to 14
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColor.tealLog,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                      height: 8), // Updated height to 8
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 18,
-                                      bottom: 5,
-                                      top: 22,
-                                    ),
-                                    child: Text(
-                                      'Task Category',
-                                      style: TextStyle(
-                                        fontSize:
-                                        14, // Updated font size to 14
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColor.tealLog,
-                                      ),
-                                    ),
-                                  ),
-                                  // Add more text fields here
-                                ],
-                              )),
-                          const VerticalDivider(
-                            thickness: 2,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    widget.currentBeneficiary,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  Consumer<BeneficiaryState>(
-                                    builder:
-                                        (context, beneficiaryState, child) {
-                                      newSubBeneficiary = beneficiaryState
-                                          .value ??
-                                          'DefaultBeneficiary'; // Set beneficiaryValue based on state
+    var data = {
+      "log_id": getCurrentDateTime(),
+      "task_id": taskId,
+      "task_name": taskName,
+      "log_summary": logSummary,
+      "log_type": logType,
+      "log_details": logDetails,
+      "log_create_by": createBy,
+      "log_create_by_id": createByID,
+      "log_create_by_date": getCurrentDate(),
+      "log_create_by_month": getCurrentMonth(),
+      "log_create_by_year": '',
+      "log_created_by_timestamp": getCurrentDateTime(),
+    };
 
-                                      return TextButton(
-                                        onPressed: () {
-                                          beneficiaryPopupMenu(
-                                              context, beneficiaryState);
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              newSubBeneficiary,
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                              const EdgeInsets.all(8.0),
-                                              child: Icon(
-                                                Icons
-                                                    .keyboard_arrow_down_rounded,
-                                                color: Colors.black,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    widget.currentDueDate,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  Consumer<DueDateState>(
-                                    builder:
-                                        (context, dueDateState, child) {
-                                      newSubDueDate = dueDateState
-                                          .selectedDate !=
-                                          null
-                                          ? DateFormat('yyyy-MM-dd').format(
-                                          dueDateState.selectedDate!)
-                                          : 'No due date selected';
-
-                                      return TextButton(
-                                        onPressed: () {
-                                          showDatePicker(
-                                            context: context,
-                                            initialDate: DateTime.now(),
-                                            firstDate: DateTime(2023),
-                                            lastDate: DateTime(2030),
-                                          ).then((pickedDate) {
-                                            if (pickedDate != null) {
-                                              dueDateState.selectedDate =
-                                                  pickedDate;
-                                              print(dueDateState
-                                                  .selectedDate);
-                                            }
-                                          });
-                                          // Your logic for dueDate popup menu
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              newSubDueDate,
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                              const EdgeInsets.all(8.0),
-                                              child: Icon(
-                                                Icons
-                                                    .keyboard_arrow_down_rounded,
-                                                color: Colors.black,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    widget.currentAssignTo,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  Consumer<AssignToState>(
-                                    builder:
-                                        (context, assignToState, child) {
-                                      newSubAssignToValue =
-                                          assignToState.value ??
-                                              'Assign To';
-
-                                      return TextButton(
-                                        onPressed: () {
-                                          assignToPopupMenu(
-                                              context, assignToState);
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              newSubAssignToValue,
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                              const EdgeInsets.all(8.0),
-                                              child: Icon(
-                                                Icons
-                                                    .keyboard_arrow_down_rounded,
-                                                color: Colors.black,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-
-                              Row(
-                                children: [
-                                  Text(
-                                    widget.currentPriority,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  Consumer<PriorityState>(
-                                    builder:
-                                        (context, priorityState, child) {
-                                      newSubPriorityValue =
-                                          priorityState.value ?? 'Priority';
-
-                                      return TextButton(
-                                        onPressed: () {
-                                          priorityPopupMenu(
-                                              context, priorityState);
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              newSubPriorityValue,
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                              const EdgeInsets.all(8.0),
-                                              child: Icon(
-                                                Icons
-                                                    .keyboard_arrow_down_rounded,
-                                                color: Colors.black,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    widget.currentSourceFrom,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  Consumer<SourceFromState>(
-                                    builder:
-                                        (context, sourceFromState, child) {
-                                      newSubSourceFromValue =
-                                          sourceFromState.value ??
-                                              'Source From';
-
-                                      return TextButton(
-                                        onPressed: () {
-                                          sourceFromPopupMenu(
-                                              context, sourceFromState);
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              newSubSourceFromValue,
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                              const EdgeInsets.all(8.0),
-                                              child: Icon(
-                                                Icons
-                                                    .keyboard_arrow_down_rounded,
-                                                color: Colors.black,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    widget.currentCategory,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  Consumer<CategoryState>(
-                                    builder:
-                                        (context, categoryState, child) {
-                                      newSubCategoryValue =
-                                          categoryState.value ?? 'Category';
-                                      newSubCategoryInt = categoryState
-                                          .selectedIndex
-                                          .toString();
-
-                                      return TextButton(
-                                        onPressed: () {
-                                          categoryPopupMenu(
-                                              context, categoryState);
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              newSubCategoryValue,
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                              const EdgeInsets.all(8.0),
-                                              child: Icon(
-                                                Icons
-                                                    .keyboard_arrow_down_rounded,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-
-                  ),
-                  const SizedBox(
-                      height:
-                      20), // Add spacing between the form and buttons
-                  SizedBox(
-                    width: 750,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          height: 40,
-                          width: 140,
-                          padding:
-                          const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              editSubTask(
-                                  widget.taskID,
-                                  newSubTitleController.text,
-                                  newSubPriorityValue,
-                                  newSubDescriptionController.text,
-                                  widget.userName,
-                                  widget.firstName,
-                                  newSubBeneficiary,
-                                  newSubDueDate,
-                                  newSubAssignToValue,
-                                  newSubSourceFromValue,
-                                  newSubCategoryValue,
-                                  newSubCategoryInt);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: AppColor.loginF,
-                              backgroundColor: Colors.lightBlue.shade50,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    5), // Rounded corners
-                              ),
-                            ),
-                            child: const Text(
-                              'Save',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          height: 40,
-                          width: 140,
-                          padding:
-                          const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: AppColor.loginF,
-                              backgroundColor: Colors.lightBlue.shade50,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    5), // Rounded corners
-                              ),
-                            ),
-                            child: const Text(
-                              'Cancel',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.redAccent),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+    http.Response res = await http.post(
+      Uri.parse(url),
+      body: data,
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      encoding: Encoding.getByName("utf-8"),
     );
+
+    if (res.statusCode.toString() == "200") {
+      if (jsonDecode(res.body) == "true") {
+        if (!mounted) return;
+        print('Log added!!');
+      } else {
+        if (!mounted) return;
+        snackBar(context, "Error", Colors.red);
+      }
+    } else {
+      if (!mounted) return;
+      snackBar(context, "Error", Colors.redAccent);
+    }
   }
 }
+
+

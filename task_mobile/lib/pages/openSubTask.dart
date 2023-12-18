@@ -24,8 +24,9 @@ class OpenSubTaskPage extends StatefulWidget {
   final String firstName;
   final String lastName;
   final Task task;
+  final MainTask mainTaskDetails;
 
-  const OpenSubTaskPage({Key? key, required this.userRoleForDelete, required this.userName, required this.firstName, required this.lastName, required this.task}) : super(key: key);
+  const OpenSubTaskPage({Key? key, required this.userRoleForDelete, required this.userName, required this.firstName, required this.lastName, required this.task, required this.mainTaskDetails}) : super(key: key);
 
   @override
   State<OpenSubTaskPage> createState() => _OpenSubTaskPageState();
@@ -388,7 +389,7 @@ class _OpenSubTaskPageState extends State<OpenSubTaskPage> {
                   userRoleForDelete: widget.userRoleForDelete,
                   userName: widget.userName,
                   firstName: widget.firstName,
-                  lastName: widget.lastName)),
+                  lastName: widget.lastName, mainTaskDetails: widget.mainTaskDetails,)),
         );
       }
     } else {
@@ -530,7 +531,7 @@ class _OpenSubTaskPageState extends State<OpenSubTaskPage> {
                     userRoleForDelete: widget.userRoleForDelete,
                     userName: widget.userName,
                     firstName: widget.firstName,
-                    lastName: widget.lastName)),
+                    lastName: widget.lastName, mainTaskDetails: widget.mainTaskDetails,)),
           );
           return true; // PHP code was successful.
         } else {
@@ -596,27 +597,7 @@ class _OpenSubTaskPageState extends State<OpenSubTaskPage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              EditSubTaskPage1(
-                                                  currentTitle:
-                                                  task.taskTitle,
-                                                  currentDescription: task
-                                                      .taskDescription,
-                                                  currentBeneficiary:
-                                                  task.company,
-                                                  currentDueDate:
-                                                  task.dueDate,
-                                                  currentAssignTo:
-                                                  task.assignTo,
-                                                  currentPriority:
-                                                  task.taskTypeName,
-                                                  currentSourceFrom:
-                                                  task.sourceFrom,
-                                                  currentCategory:
-                                                  task.categoryName,
-                                                  taskID: task.taskId,
-                                                  userName: userName,
-                                                  firstName: firstName
-                                              )));
+                                              EditSubTaskPage1(taskID: widget.task.taskId, userName: userName, firstName: firstName, mainTaskDetails: widget.mainTaskDetails, task: task)));
                                 },
                                 icon: const Icon(Icons.edit, color: Colors.black, size: 20),
                               ),

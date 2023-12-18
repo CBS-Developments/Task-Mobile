@@ -356,6 +356,7 @@ class _SubTaskCommentState extends State<SubTaskComment> {
     required logType,
     required logSummary,
     required logDetails,
+        required mainTaskDetails,
   }) async {
     // Validate input fields
     if (commentTextController.text.trim().isEmpty) {
@@ -419,7 +420,7 @@ class _SubTaskCommentState extends State<SubTaskComment> {
                   userRoleForDelete: widget.userRoleForDelete,
                   userName: widget.userName,
                   firstName: widget.firstName,
-                  lastName: widget.lastName)),
+                  lastName: widget.lastName, mainTaskDetails: mainTaskDetails,)),
         );
       }
     } else {
@@ -645,7 +646,7 @@ class _SubTaskCommentState extends State<SubTaskComment> {
                             logType: 'to Sub Task',
                             logSummary: 'Commented',
                             logDetails:
-                                "Comment: ${commentTextController.text}");
+                                "Comment: ${commentTextController.text}", mainTaskDetails: widget.userName);
                       },
                       icon: Icon(
                         Icons.send_rounded,
