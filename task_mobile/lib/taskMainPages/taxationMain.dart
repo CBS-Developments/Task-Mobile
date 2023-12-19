@@ -199,12 +199,15 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
                                 ),
                               );
                             },
-                            child: Text(
-                              task.taskTitle,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Text(
+                                task.taskTitle,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
@@ -215,11 +218,27 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
                               Text(
                                 '${task.taskStatusName}...',
                                 style: const TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 11,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ],
+                          ),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                Icon(Icons.maps_home_work_outlined, size: 15, color: Colors.green[800],),
+                                SizedBox(width: 5,),
+                                Text(
+                                  '${task.company}...',
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                           const SizedBox(height: 5,),
                         ],
@@ -229,12 +248,12 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
                       children: [
                         const Text(
                           'Due Date:',
-                          style: TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: 11),
                         ),
                         const SizedBox(width: 5),
                         Text(
                           task.dueDate,
-                          style: const TextStyle(fontSize: 12),
+                          style: const TextStyle(fontSize: 11),
                         ),
                       ],
                     ),
