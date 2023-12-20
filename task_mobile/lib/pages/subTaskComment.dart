@@ -48,8 +48,8 @@ class _SubTaskCommentState extends State<SubTaskComment> {
     setState(() {
       userName = (prefs.getString('user_name') ?? '');
       userRole = (prefs.getString('user_role') ?? '');
-      firstName = (prefs.getString('first_name') ?? '').toUpperCase();
-      lastName = (prefs.getString('last_name') ?? '').toUpperCase();
+      firstName = (prefs.getString('first_name') ?? '');
+      lastName = (prefs.getString('last_name') ?? '');
     });
   }
 
@@ -162,7 +162,7 @@ class _SubTaskCommentState extends State<SubTaskComment> {
     String nameNowUser,
   ) {
     print('Now user: $nameNowUser');
-    print('Crate By: $createBy');
+    print('Create By: $createBy');
     if (createBy == nameNowUser) {
       print(createBy);
       showDialog(
@@ -224,8 +224,8 @@ class _SubTaskCommentState extends State<SubTaskComment> {
 
     var data = {
       "comment_id": commentId,
-      "comment_delete_by": userName,
-      "comment_delete_by_id": firstName,
+      "comment_delete_by":  userName,
+      "comment_delete_by_id":  firstName,
       "comment_delete_by_date": getCurrentDate(),
       "comment_delete_by_timestamp": getCurrentDateTime(),
     };
@@ -255,8 +255,8 @@ class _SubTaskCommentState extends State<SubTaskComment> {
           addLog(context,
               taskId: widget.task.taskId,
               taskName: widget.task.taskTitle,
-              createBy: widget.task.taskCreateBy,
-              createByID: widget.task.taskCreateById,
+              createBy: widget.firstName,
+              createByID: widget.userName,
               logType: logType,
               logSummary: logSummary,
               logDetails: logDetails);
