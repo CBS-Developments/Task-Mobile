@@ -28,6 +28,17 @@ class _AuditMainState extends State<AuditMain> {
   String phone = "";
   String userRole = "";
 
+  int getPendingTaskCount() {
+    return mainTaskList.where((task) => task.taskStatus == "0").length;
+  }
+
+  int getInProgressTaskCount() {
+    return mainTaskList.where((task) => task.taskStatus == "1").length;
+  }
+
+  int getAllTaskCount() {
+    return mainTaskList.length;
+  }
 
   @override
   void initState() {
@@ -77,14 +88,37 @@ class _AuditMainState extends State<AuditMain> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(10.0),
             child: Row(
               children: [
-                Text(
-                  'Main Tasks:',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
+                Expanded(
+                  flex: 4,
+                  child: Row(
+                    children: [
+                      Icon(Icons.check_circle, color: Colors.green,), // Add your desired icon here
+                      SizedBox(width: 8), // Add some spacing between icon and text
+                      Text("All: ${getAllTaskCount()}"),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: Row(
+                    children: [
+                      Icon(Icons.access_time, color: Colors.blue,), // Add your desired icon here
+                      SizedBox(width: 8),
+                      Text("Progress: ${getInProgressTaskCount()}"),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: Row(
+                    children: [
+                      Icon(Icons.pending, color: Colors.purple,), // Add your desired icon here
+                      SizedBox(width: 8),
+                      Text("Pending: ${getPendingTaskCount()}"),
+                    ],
                   ),
                 ),
               ],

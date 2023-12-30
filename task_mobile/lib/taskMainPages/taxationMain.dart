@@ -17,7 +17,6 @@ class TaxationMainTask extends StatefulWidget {
 }
 
 class _TaxationMainTaskState extends State<TaxationMainTask> {
-
   List<MainTask> mainTaskList = [];
   List<MainTask> searchResultAsMainTaskList = [];
   TextEditingController taskListController = TextEditingController();
@@ -28,6 +27,17 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
   String phone = "";
   String userRole = "";
 
+  int getPendingTaskCount() {
+    return mainTaskList.where((task) => task.taskStatus == "0").length;
+  }
+
+  int getInProgressTaskCount() {
+    return mainTaskList.where((task) => task.taskStatus == "1").length;
+  }
+
+  int getAllTaskCount() {
+    return mainTaskList.length;
+  }
 
   @override
   void initState() {
@@ -55,7 +65,9 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
       'Regular': Colors.green,
       'Low': Colors.yellow,
     };
-    return colorMap.containsKey(taskTypeName) ? colorMap[taskTypeName] : Colors.grey;
+    return colorMap.containsKey(taskTypeName)
+        ? colorMap[taskTypeName]
+        : Colors.grey;
   }
 
   @override
@@ -76,15 +88,38 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
       ),
       body: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
+           Padding(
+            padding: EdgeInsets.all(10.0),
             child: Row(
               children: [
-                Text(
-                  'Main Tasks:',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
+                Expanded(
+                  flex: 4,
+                  child: Row(
+                    children: [
+                      Icon(Icons.check_circle, color: Colors.green,), // Add your desired icon here
+                      SizedBox(width: 8), // Add some spacing between icon and text
+                      Text("All: ${getAllTaskCount()}"),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: Row(
+                    children: [
+                      Icon(Icons.access_time, color: Colors.blue,), // Add your desired icon here
+                      SizedBox(width: 8),
+                      Text("Progress: ${getInProgressTaskCount()}"),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: Row(
+                    children: [
+                      Icon(Icons.pending, color: Colors.purple,), // Add your desired icon here
+                      SizedBox(width: 8),
+                      Text("Pending: ${getPendingTaskCount()}"),
+                    ],
                   ),
                 ),
               ],
@@ -194,7 +229,8 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
                                     userRoleForDelete: userRole,
                                     userName: userName,
                                     firstName: firstName,
-                                    lastName: lastName, taskDetails: task,
+                                    lastName: lastName,
+                                    taskDetails: task,
                                   ),
                                 ),
                               );
@@ -213,8 +249,14 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
                           ),
                           Row(
                             children: [
-                              Icon(Icons.double_arrow, size: 15, color: Colors.green[800],),
-                              const SizedBox(width: 5,),
+                              Icon(
+                                Icons.double_arrow,
+                                size: 15,
+                                color: Colors.green[800],
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
                               Text(
                                 '${task.taskStatusName}...',
                                 style: const TextStyle(
@@ -228,8 +270,14 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
                             scrollDirection: Axis.horizontal,
                             child: Row(
                               children: [
-                                Icon(Icons.maps_home_work_outlined, size: 15, color: Colors.green[800],),
-                                SizedBox(width: 5,),
+                                Icon(
+                                  Icons.maps_home_work_outlined,
+                                  size: 15,
+                                  color: Colors.green[800],
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
                                 Text(
                                   '${task.company}...',
                                   style: const TextStyle(
@@ -240,7 +288,9 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 5,),
+                          const SizedBox(
+                            height: 5,
+                          ),
                         ],
                       ),
                     ),
@@ -261,13 +311,16 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: Icon(Icons.flag, color: _getColorForTaskTypeName(task.taskTypeName)),
+                          icon: Icon(Icons.flag,
+                              color:
+                                  _getColorForTaskTypeName(task.taskTypeName)),
                           onPressed: () {
                             // Handle onPressed action for the flag button
                           },
                         ),
                         IconButton(
-                          icon: Icon(Icons.menu_open_rounded, color: Colors.green[800]),
+                          icon: Icon(Icons.menu_open_rounded,
+                              color: Colors.green[800]),
                           onPressed: () {
                             _openInfoDialog(task, task.taskTitle);
                           },
@@ -279,16 +332,13 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
               },
             ),
           ),
-
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => CreateMainTaskPage()
-            ),
+            MaterialPageRoute(builder: (context) => CreateMainTaskPage()),
           );
         },
         backgroundColor: Colors.teal, // Use the actual color, e.g., Colors.teal
@@ -336,10 +386,10 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: SelectableText('$taskTitle',
-            style: const TextStyle(
-                fontSize: 18
-            ),),
+          title: SelectableText(
+            '$taskTitle',
+            style: const TextStyle(fontSize: 18),
+          ),
           content: SelectableText(
               'Task ID: ${task.taskId}\n\nAssign To: ${task.assignTo}\n\nDescription: ${task.task_description}'), // Customize the content as needed
           actions: <Widget>[
@@ -378,12 +428,14 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
         for (Map<String, dynamic> details in responseJson) {
           mainTaskList.add(MainTask.fromJson(details));
         }
-        mainTaskList.sort((a, b) =>
-            b.taskCreatedTimestamp.compareTo(a.taskCreatedTimestamp));
+        mainTaskList.sort(
+            (a, b) => b.taskCreatedTimestamp.compareTo(a.taskCreatedTimestamp));
 
         // Count tasks with taskStatus = 0
-        int pendingTaskCount = mainTaskList.where((task) => task.taskStatus == "0").length;
-        int inProgressTaskCount = mainTaskList.where((task) => task.taskStatus == "1").length;
+        int pendingTaskCount =
+            mainTaskList.where((task) => task.taskStatus == "0").length;
+        int inProgressTaskCount =
+            mainTaskList.where((task) => task.taskStatus == "1").length;
         int allTaskCount = mainTaskList.length;
         print("Pending Task: $pendingTaskCount");
         print("All Task: $allTaskCount");
@@ -393,5 +445,4 @@ class _TaxationMainTaskState extends State<TaxationMainTask> {
       throw Exception('Failed to load jobs from API');
     }
   }
-
 }

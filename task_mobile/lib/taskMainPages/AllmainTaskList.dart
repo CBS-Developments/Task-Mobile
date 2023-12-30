@@ -58,16 +58,24 @@ class _MainTaskListState extends State<MainTaskList> {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Text(
-                  'Main Tasks:',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
+            child: Expanded(
+              flex: 4,
+              child: Row(
+                children: [
+                  Text(
+                    'Main Tasks:',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                    ),
                   ),
-                ),
-              ],
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Expanded(flex : 4, child: Text('All: ')),
+                  Expanded(flex : 1, child: Text('All: '))
+                ],
+              ),
             ),
           ),
           Container(
