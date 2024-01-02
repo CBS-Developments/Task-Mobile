@@ -155,20 +155,6 @@ class _DashboardPageUserState extends State<DashboardPageUser> {
                           color: Colors.teal[800],
                         ),
                       ),
-                      const SizedBox(width: 60),
-                      IconButton(
-                        onPressed: () async {
-                          final prefs = await SharedPreferences.getInstance();
-                          prefs.remove("login_state"); // Remove the "login_state" key
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) {
-                              return const LoginPage();
-                            }),
-                          );
-                        },
-                        icon: const Icon(Icons.logout),
-                      ),
                     ],
                   ),
                   const SizedBox(
@@ -287,6 +273,37 @@ class _DashboardPageUserState extends State<DashboardPageUser> {
                 ],
               ),
             ),
+            const SizedBox(height: 70,),
+            TextButton(
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                prefs.remove("login_state"); // Remove the "login_state" key
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return const LoginPage();
+                  }),
+                );
+              },
+              child: Container(
+                width: 150,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300], // Set your desired background color
+                  borderRadius: BorderRadius.circular(8.0), // Set your desired border radius
+                ),
+                padding: EdgeInsets.all(15.0), // Set your desired padding
+                child: Center(
+                  child: Text(
+                    'Logout',
+                    style: TextStyle(
+                      color: Colors.red, // Set your desired text color
+                      fontSize: 16.0, // Set your desired text size
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
             // Add other drawer items here
           ],
         ),
