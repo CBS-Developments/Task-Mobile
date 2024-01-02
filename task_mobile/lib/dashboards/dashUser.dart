@@ -1,3 +1,4 @@
+import 'package:Workspace_Lite/methods/colors.dart';
 import 'package:Workspace_Lite/pages/taskLog.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,7 +10,7 @@ import '../pages/taskMainDash.dart';
 class DashboardPageUser extends StatefulWidget {
   final List<String> containerTexts = [
     'Tasks',
-    'Log',
+    'Task Log',
     'Chat',
     'Calendar',
   ];
@@ -134,76 +135,61 @@ class _DashboardPageUserState extends State<DashboardPageUser> {
         builder: (BuildContext scaffoldContext) {
           return ListView(
             children: [
-              Container(
-                color: Colors.white,
-                width: getPageWidth(context),
-                height: getPageHeight(context),
-                child: Center(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Container(
-                      width: 350,
-                      height: 700,
-                      color: Colors.white,
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  // Open the drawer when the custom menu button is clicked
-                                  Scaffold.of(scaffoldContext).openDrawer();
-                                },
-                                icon: const Icon(Icons.menu_rounded),
-                              ),
-                              const SizedBox(width: 60),
-                               Text(
-                                'Workspace',
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.teal[800],
-                                ),
-                              ),
-                              const SizedBox(width: 60),
-                              IconButton(
-                                onPressed: () async {
-                                  final prefs = await SharedPreferences.getInstance();
-                                  prefs.remove("login_state"); // Remove the "login_state" key
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) {
-                                      return const LoginPage();
-                                    }),
-                                  );
-                                },
-                                icon: const Icon(Icons.logout),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Divider(),
-                          const SizedBox(
-                            height: 50,
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(5.0),
-                            child: GridView.count(
-                              crossAxisCount: 1,
-                              shrinkWrap: true,
-                              childAspectRatio: 1.8,
-                              children: List.generate(2, (index) {
-                                return _buildContainer(index, context);
-                              }),
-                            ),
-                          ),
-                        ],
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          // Open the drawer when the custom menu button is clicked
+                          Scaffold.of(scaffoldContext).openDrawer();
+                        },
+                        icon: const Icon(Icons.menu_rounded),
                       ),
+                      const SizedBox(width: 60),
+                       Text(
+                        'Workspace',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.teal[800],
+                        ),
+                      ),
+                      const SizedBox(width: 60),
+                      IconButton(
+                        onPressed: () async {
+                          final prefs = await SharedPreferences.getInstance();
+                          prefs.remove("login_state"); // Remove the "login_state" key
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) {
+                              return const LoginPage();
+                            }),
+                          );
+                        },
+                        icon: const Icon(Icons.logout),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Divider(),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(5.0),
+                    child: GridView.count(
+                      crossAxisCount: 1,
+                      shrinkWrap: true,
+                      childAspectRatio: 1.8,
+                      children: List.generate(2, (index) {
+                        return _buildContainer(index, context);
+                      }),
                     ),
                   ),
-                ),
+                ],
               ),
             ],
           );

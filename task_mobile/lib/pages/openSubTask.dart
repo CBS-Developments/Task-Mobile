@@ -67,6 +67,12 @@ class _OpenSubTaskPageState extends State<OpenSubTaskPage> {
     return formattedDate;
   }
 
+  String getCurrentMonth() {
+    final now = DateTime.now();
+    final formattedDate = DateFormat('yy-MM').format(now);
+    return formattedDate;
+  }
+
   void showDeleteConfirmationDialog(
       BuildContext context,
       String userRole,
@@ -210,6 +216,9 @@ class _OpenSubTaskPageState extends State<OpenSubTaskPage> {
   }
 
   Future<bool> markInProgressSubTask(
+      String taskName,
+      String userName,
+      String firstName,
       String taskID,
       ) async {
     // Prepare the data to be sent to the PHP script.
@@ -244,7 +253,12 @@ class _OpenSubTaskPageState extends State<OpenSubTaskPage> {
 
         if (responseBody == "true") {
           print('Successful');
-          snackBar(context, "Sub Task Marked as In Progress!", Colors.blueAccent);
+          addLogStatus(context,
+              taskId: taskID,
+              taskName: taskName,
+              createBy: firstName,
+              createByID: userName);
+         snackBar(context, "Sub Task Marked as In Progress!", Colors.blueAccent);
           // Handle success and navigation based on the category.
           handleCategoryNavigation();
           // Navigator.push(
@@ -269,6 +283,9 @@ class _OpenSubTaskPageState extends State<OpenSubTaskPage> {
   }
 
   Future<bool> completeSubTask(
+      String taskName,
+      String userName,
+      String firstName,
       String taskID,
       ) async {
     // Prepare the data to be sent to the PHP script.
@@ -303,9 +320,16 @@ class _OpenSubTaskPageState extends State<OpenSubTaskPage> {
 
         if (responseBody == "true") {
           print('Successful');
+          addLogStatusComplete(context,
+              taskId: taskID,
+              taskName: taskName,
+              createBy: firstName,
+              createByID: userName);
           snackBar(context, "Sub Task Marked As Complete", Colors.green);
+
           // Handle success and navigation based on the category.
           handleCategoryNavigation();
+
           // Navigator.push(
           //   context,
           //   MaterialPageRoute(builder: (context) {
@@ -428,6 +452,151 @@ class _OpenSubTaskPageState extends State<OpenSubTaskPage> {
     } else {
       throw Exception(
           'Failed to load data from the API. Status Code: ${response.statusCode}');
+    }
+  }
+
+
+  Future<void> addLog(
+      BuildContext context, {
+        required taskId,
+        required taskName,
+        required createBy,
+        required createByID,
+      }) async {
+    // If all validations pass, proceed with the registration
+    var url = "http://dev.workspace.cbs.lk/addLog.php";
+
+    var data = {
+      "log_id": getCurrentDateTime(),
+      "task_id": taskId,
+      "task_name": taskName,
+      "log_summary": 'Commented to Main Task',
+      "log_type": 'Commented',
+      "log_create_by": createBy,
+      "log_create_by_id": createByID,
+      "log_create_by_date": getCurrentDate(),
+      "log_create_by_month": getCurrentMonth(),
+      "log_create_by_year": '',
+      "log_created_by_timestamp": getCurrentDateTime(),
+    };
+
+    http.Response res = await http.post(
+      Uri.parse(url),
+      body: data,
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      encoding: Encoding.getByName("utf-8"),
+    );
+
+    if (res.statusCode.toString() == "200") {
+      if (jsonDecode(res.body) == "true") {
+        if (!mounted) return;
+        print('Log added!!');
+      } else {
+        if (!mounted) return;
+        snackBar(context, "Error", Colors.red);
+      }
+    } else {
+      if (!mounted) return;
+      snackBar(context, "Error", Colors.redAccent);
+    }
+  }
+
+  Future<void> addLogStatus(
+      BuildContext context, {
+        required taskId,
+        required taskName,
+        required createBy,
+        required createByID,
+      }) async {
+    // If all validations pass, proceed with the registration
+    var url = "http://dev.workspace.cbs.lk/addLog.php";
+
+    var data = {
+      "log_id": getCurrentDateTime(),
+      "task_id": taskId,
+      "task_name": taskName,
+      "log_summary": 'Mark as In Progress',
+      "log_type": 'Status Changed',
+      "log_create_by": createBy,
+      "log_create_by_id": createByID,
+      "log_create_by_date": getCurrentDate(),
+      "log_create_by_month": getCurrentMonth(),
+      "log_create_by_year": '',
+      "log_created_by_timestamp": getCurrentDateTime(),
+    };
+
+    http.Response res = await http.post(
+      Uri.parse(url),
+      body: data,
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      encoding: Encoding.getByName("utf-8"),
+    );
+
+    if (res.statusCode.toString() == "200") {
+      if (jsonDecode(res.body) == "true") {
+        if (!mounted) return;
+        print('Log added!!');
+      } else {
+        if (!mounted) return;
+        snackBar(context, "Error", Colors.red);
+      }
+    } else {
+      if (!mounted) return;
+      snackBar(context, "Error", Colors.redAccent);
+    }
+  }
+
+  Future<void> addLogStatusComplete(
+      BuildContext context, {
+        required taskId,
+        required taskName,
+        required createBy,
+        required createByID,
+      }) async {
+    // If all validations pass, proceed with the registration
+    var url = "http://dev.workspace.cbs.lk/addLog.php";
+
+    var data = {
+      "log_id": getCurrentDateTime(),
+      "task_id": taskId,
+      "task_name": taskName,
+      "log_summary": 'Mark as Completed',
+      "log_type": 'Status Changed',
+      "log_create_by": createBy,
+      "log_create_by_id": createByID,
+      "log_create_by_date": getCurrentDate(),
+      "log_create_by_month": getCurrentMonth(),
+      "log_create_by_year": '',
+      "log_created_by_timestamp": getCurrentDateTime(),
+    };
+
+    http.Response res = await http.post(
+      Uri.parse(url),
+      body: data,
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      encoding: Encoding.getByName("utf-8"),
+    );
+
+    if (res.statusCode.toString() == "200") {
+      if (jsonDecode(res.body) == "true") {
+        if (!mounted) return;
+        print('Log added!!');
+      } else {
+        if (!mounted) return;
+        snackBar(context, "Error", Colors.red);
+      }
+    } else {
+      if (!mounted) return;
+      snackBar(context, "Error", Colors.redAccent);
     }
   }
 
@@ -867,10 +1036,16 @@ class _OpenSubTaskPageState extends State<OpenSubTaskPage> {
                           TextButton(
                             onPressed: () {
                               if (widget.task.taskStatus == '0') {
-                                markInProgressSubTask(widget.task.taskId);
+                                markInProgressSubTask(task.taskTitle,
+                                    userName,
+                                    firstName,
+                                    task.taskId);
                                 // Handle 'Mark In Progress' action
                               } else if (widget.task.taskStatus == '1') {
-                                completeSubTask(widget.task.taskId);
+                                completeSubTask( task.taskTitle,
+                                    userName,
+                                    firstName,
+                                    task.taskId);
                                 // Handle 'Mark As Complete' action
                               }
                               // Add a condition for 'Completed' here if needed

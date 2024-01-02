@@ -106,12 +106,12 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 children: [
                   const SizedBox(height: 20,),
-                  const Text(
+                   Text(
                     'Workspace',
                     style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      color: Colors.deepPurple,
+                      color:  Colors.teal[800],
                     ),
                   ),
                   const SizedBox(

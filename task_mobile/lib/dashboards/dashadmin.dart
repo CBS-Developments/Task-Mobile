@@ -3,13 +3,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../methods/sizes.dart';
 import '../pages/loginPage.dart';
+import '../pages/taskLog.dart';
 import '../pages/taskMainDash.dart';
 
 class DashboardPageAdmin extends StatefulWidget {
   // ... (no changes here)
   final List<String> containerTexts = [
     'Tasks',
-    'Email',
+    'Task Log',
     'Chat',
     'Calendar',
   ];
@@ -68,9 +69,11 @@ class _DashboardPageAdminState extends State<DashboardPageAdmin> {
   }
 
   void _handleContainer1Pressed(BuildContext context) {
-    // Add your code for handling the second container button press here.
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => TaskLogPage()),
+    );
   }
-
   void _handleContainer2Pressed(BuildContext context) {
     // Add your code for handling the third container button press here.
   }
@@ -131,76 +134,61 @@ class _DashboardPageAdminState extends State<DashboardPageAdmin> {
           builder: (BuildContext scaffoldContext) {
             return ListView(
               children: [
-                Container(
-                  color: Colors.white,
-                  width: getPageWidth(context),
-                  height: getPageHeight(context),
-                  child: Center(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Container(
-                        width: 350,
-                        height: 700,
-                        color: Colors.white,
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    // Open the drawer when the custom menu button is clicked
-                                    Scaffold.of(scaffoldContext).openDrawer();
-                                  },
-                                  icon: const Icon(Icons.menu_rounded),
-                                ),
-                                const SizedBox(width: 60),
-                                Text(
-                                  'Workspace',
-                                  style: TextStyle(
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.teal[800],
-                                  ),
-                                ),
-                                const SizedBox(width: 60),
-                                IconButton(
-                                  onPressed: () async {
-                                    final prefs = await SharedPreferences.getInstance();
-                                    prefs.remove("login_state"); // Remove the "login_state" key
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) {
-                                        return const LoginPage();
-                                      }),
-                                    );
-                                  },
-                                  icon: const Icon(Icons.logout),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            const Divider(),
-                            const SizedBox(
-                              height: 50,
-                            ),
-                            Container(
-                              padding: const EdgeInsets.all(5.0),
-                              child: GridView.count(
-                                crossAxisCount: 1,
-                                shrinkWrap: true,
-                                childAspectRatio: 1.8,
-                                children: List.generate(1, (index) {
-                                  return _buildContainer(index, context);
-                                }),
-                              ),
-                            ),
-                          ],
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            // Open the drawer when the custom menu button is clicked
+                            Scaffold.of(scaffoldContext).openDrawer();
+                          },
+                          icon: const Icon(Icons.menu_rounded),
                         ),
+                        const SizedBox(width: 60),
+                        Text(
+                          'Workspace',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.teal[800],
+                          ),
+                        ),
+                        const SizedBox(width: 60),
+                        IconButton(
+                          onPressed: () async {
+                            final prefs = await SharedPreferences.getInstance();
+                            prefs.remove("login_state"); // Remove the "login_state" key
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) {
+                                return const LoginPage();
+                              }),
+                            );
+                          },
+                          icon: const Icon(Icons.logout),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Divider(),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(5.0),
+                      child: GridView.count(
+                        crossAxisCount: 1,
+                        shrinkWrap: true,
+                        childAspectRatio: 1.8,
+                        children: List.generate(2, (index) {
+                          return _buildContainer(index, context);
+                        }),
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ],
             );
@@ -225,7 +213,7 @@ class _DashboardPageAdminState extends State<DashboardPageAdmin> {
               child: Row(
                 children: [
                   Text(
-                    'ID: $employee_ID',
+                    'Emp ID: $employee_ID',
                     style: const TextStyle(
                       fontSize: 16,
                       color: Colors.black87,
