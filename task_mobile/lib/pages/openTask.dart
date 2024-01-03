@@ -76,30 +76,34 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
     setState(() {
       userName = (prefs.getString('user_name') ?? '');
       userRole = (prefs.getString('user_role') ?? '');
-      firstName = (prefs.getString('first_name') ?? '').toUpperCase();
-      lastName = (prefs.getString('last_name') ?? '').toUpperCase();
+      firstName = (prefs.getString('first_name') ?? '');
+      lastName = (prefs.getString('last_name') ?? '');
     });
     print('User Name: $userName');
   }
 
   Future<void> addLog(
-    BuildContext context, {
-    required taskId,
-    required taskName,
-    required createBy,
-    required createByID,
-  }) async {
+      BuildContext context, {
+        required taskId,
+        required taskName,
+        required createBy,
+        required createByID,
+        required logType,
+        required logSummary,
+        required logDetails,
+      }) async {
     // If all validations pass, proceed with the registration
-    var url = "http://dev.workspace.cbs.lk/addLog.php";
+    var url = "http://dev.workspace.cbs.lk/addLogUpdate.php";
 
     var data = {
       "log_id": getCurrentDateTime(),
       "task_id": taskId,
       "task_name": taskName,
-      "log_summary": 'Commented to Main Task',
-      "log_type": 'Commented',
-      "log_create_by": createBy,
-      "log_create_by_id": createByID,
+      "log_summary": logSummary,
+      "log_type": logType,
+      "log_details": logDetails,
+      "log_create_by": firstName,
+      "log_create_by_id": userName,
       "log_create_by_date": getCurrentDate(),
       "log_create_by_month": getCurrentMonth(),
       "log_create_by_year": '',
@@ -130,99 +134,71 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
     }
   }
 
-  Future<void> addLogStatus(
-    BuildContext context, {
-    required taskId,
-    required taskName,
-    required createBy,
-    required createByID,
-  }) async {
-    // If all validations pass, proceed with the registration
-    var url = "http://dev.workspace.cbs.lk/addLog.php";
-
+  Future<bool> markInProgressMainTask(
+      BuildContext context, {
+        required taskName,
+        required userName,
+        required firstName,
+        required taskID,
+        required logType,
+        required logSummary,
+        required logDetails,
+      }) async {
+    // Prepare the data to be sent to the PHP script.
     var data = {
-      "log_id": getCurrentDateTime(),
-      "task_id": taskId,
-      "task_name": taskName,
-      "log_summary": 'Mark as In Progress',
-      "log_type": 'Status Changed',
-      "log_create_by": createBy,
-      "log_create_by_id": createByID,
-      "log_create_by_date": getCurrentDate(),
-      "log_create_by_month": getCurrentMonth(),
-      "log_create_by_year": '',
-      "log_created_by_timestamp": getCurrentDateTime(),
+      "task_id": taskID,
+      "task_status": '1',
+      "task_status_name": 'In Progress',
+      "action_taken_by_id": userName,
+      "action_taken_by": firstName,
+      "action_taken_date": getCurrentDateTime(),
+      "action_taken_timestamp": getCurrentDate(),
     };
 
-    http.Response res = await http.post(
-      Uri.parse(url),
-      body: data,
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      encoding: Encoding.getByName("utf-8"),
-    );
+    // URL of your PHP script.
+    const url = "http://dev.workspace.cbs.lk/deleteMainTask.php";
 
-    if (res.statusCode.toString() == "200") {
-      if (jsonDecode(res.body) == "true") {
-        if (!mounted) return;
-        print('Log added!!');
+    try {
+      final res = await http.post(
+        Uri.parse(url),
+        body: data,
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      );
+
+      if (res.statusCode == 200) {
+        final responseBody = jsonDecode(res.body);
+
+        // Debugging: Print the response data.
+        print("Response from PHP script: $responseBody");
+
+        if (responseBody == "true") {
+          print('Successful');
+          addLog(context,
+              taskId: taskID,
+              taskName: taskName,
+              createBy: firstName,
+              createByID: userName,
+              logType: logType,
+              logSummary: logSummary,
+              logDetails: logDetails);
+          handleCategoryNavigation();
+                  snackBar(
+                      context, "Main Marked as In Progress successful!", Colors.green);
+          return true; // PHP code was successful.
+        } else {
+          print('PHP code returned "false".');
+          return false; // PHP code returned "false."
+        }
       } else {
-        if (!mounted) return;
-        snackBar(context, "Error", Colors.red);
+        print('HTTP request failed with status code: ${res.statusCode}');
+        return false; // HTTP request failed.
       }
-    } else {
-      if (!mounted) return;
-      snackBar(context, "Error", Colors.redAccent);
-    }
-  }
-
-  Future<void> addLogStatusComplete(
-    BuildContext context, {
-    required taskId,
-    required taskName,
-    required createBy,
-    required createByID,
-  }) async {
-    // If all validations pass, proceed with the registration
-    var url = "http://dev.workspace.cbs.lk/addLog.php";
-
-    var data = {
-      "log_id": getCurrentDateTime(),
-      "task_id": taskId,
-      "task_name": taskName,
-      "log_summary": 'Mark as Completed',
-      "log_type": 'Status Changed',
-      "log_create_by": createBy,
-      "log_create_by_id": createByID,
-      "log_create_by_date": getCurrentDate(),
-      "log_create_by_month": getCurrentMonth(),
-      "log_create_by_year": '',
-      "log_created_by_timestamp": getCurrentDateTime(),
-    };
-
-    http.Response res = await http.post(
-      Uri.parse(url),
-      body: data,
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      encoding: Encoding.getByName("utf-8"),
-    );
-
-    if (res.statusCode.toString() == "200") {
-      if (jsonDecode(res.body) == "true") {
-        if (!mounted) return;
-        print('Log added!!');
-      } else {
-        if (!mounted) return;
-        snackBar(context, "Error", Colors.red);
-      }
-    } else {
-      if (!mounted) return;
-      snackBar(context, "Error", Colors.redAccent);
+    } catch (e) {
+      print('Error occurred: $e');
+      return false; // An error occurred.
     }
   }
 
@@ -338,75 +314,16 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
     }
   }
 
-  Future<bool> markInProgressMainTask(
-    String taskName,
-    String userName,
-    String firstName,
-    String taskID,
-  ) async {
-    // Prepare the data to be sent to the PHP script.
-    var data = {
-      "task_id": taskID,
-      "task_status": '1',
-      "task_status_name": 'In Progress',
-      "action_taken_by_id": userName,
-      "action_taken_by": firstName,
-      "action_taken_date": getCurrentDateTime(),
-      "action_taken_timestamp": getCurrentDate(),
-    };
-
-    // URL of your PHP script.
-    const url = "http://dev.workspace.cbs.lk/deleteMainTask.php";
-
-    try {
-      final res = await http.post(
-        Uri.parse(url),
-        body: data,
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      );
-
-      if (res.statusCode == 200) {
-        final responseBody = jsonDecode(res.body);
-
-        // Debugging: Print the response data.
-        print("Response from PHP script: $responseBody");
-
-        if (responseBody == "true") {
-          print('Successful');
-          addLogStatus(context,
-              taskId: taskID,
-              taskName: taskName,
-              createBy: firstName,
-              createByID: userName);
-          // Handle success and navigation based on the category.
-          handleCategoryNavigation();
-          snackBar(
-              context, "Main Marked as In Progress successful!", Colors.green);
-
-          return true; // PHP code was successful.
-        } else {
-          print('PHP code returned "false".');
-          return false; // PHP code returned "false."
-        }
-      } else {
-        print('HTTP request failed with status code: ${res.statusCode}');
-        return false; // HTTP request failed.
-      }
-    } catch (e) {
-      print('Error occurred: $e');
-      return false; // An error occurred.
-    }
-  }
-
-  Future<bool> markAsCompletedMainTask(
-    String taskName,
-    String userName,
-    String firstName,
-    String taskID,
-  ) async {
+  Future<bool> markCompleteMainTask(
+      BuildContext context, {
+        required taskName,
+        required userName,
+        required firstName,
+        required taskID,
+        required logType,
+        required logSummary,
+        required logDetails,
+      }) async {
     // Prepare the data to be sent to the PHP script.
     var data = {
       "task_id": taskID,
@@ -439,12 +356,14 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
 
         if (responseBody == "true") {
           print('Successful');
-          addLogStatusComplete(context,
+          addLog(context,
               taskId: taskID,
               taskName: taskName,
               createBy: firstName,
-              createByID: userName);
-          // Handle success and navigation based on the category.
+              createByID: userName,
+              logType: logType,
+              logSummary: logSummary,
+              logDetails: logDetails);
           handleCategoryNavigation();
           snackBar(context, "Main Marked Completed successful!", Colors.green);
 
@@ -1091,17 +1010,29 @@ class _OpenTaskPageState extends State<OpenTaskPage> {
                           onPressed: () {
                             if (widget.task.taskStatus == '0') {
                               markInProgressMainTask(
-                                  widget.task.taskTitle,
-                                  widget.userName,
-                                  widget.firstName,
-                                  widget.task.taskId);
+                                context,
+                                taskName: widget.task.taskTitle,
+                                userName: userName,
+                                firstName: firstName,
+                                taskID: widget.taskDetails.taskId,
+                                logType: 'Main Task',
+                                logSummary: 'Marked In-Progress',
+                                logDetails:
+                                'Main Task Due Date: ${widget.task.dueDate}',
+                              );
                               // Handle 'Mark In Progress' action
                             } else if (widget.task.taskStatus == '1') {
-                              markAsCompletedMainTask(
-                                  widget.task.taskTitle,
-                                  widget.userName,
-                                  widget.firstName,
-                                  widget.task.taskId);
+                              markCompleteMainTask(
+                                context,
+                                taskName: widget.taskDetails.taskTitle,
+                                userName: userName,
+                                firstName: firstName,
+                                taskID: widget.taskDetails.taskId,
+                                logType: 'Main Task',
+                                logSummary: 'Marked as Completed',
+                                logDetails:
+                                'Main Task Due Date: ${widget.taskDetails.dueDate}',
+                              );
                               // Handle 'Mark As Complete' action
                             }
                           },

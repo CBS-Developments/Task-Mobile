@@ -8,6 +8,8 @@ import '../pages/createSubTask.dart';
 import '../pages/openTask.dart';
 
 class MainTaskList extends StatefulWidget {
+  const MainTaskList({super.key});
+
   @override
   State<MainTaskList> createState() => _MainTaskListState();
 }
